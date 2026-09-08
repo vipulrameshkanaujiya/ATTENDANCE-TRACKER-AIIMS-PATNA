@@ -1,4 +1,4 @@
-﻿"use server";
+"use server";
 
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser, getUserProfile } from "@/lib/auth/session";
@@ -72,6 +72,72 @@ export async function updateTopicProgress(topicId: string, status: TopicProgress
   return data;
 }
 
+import { getTodayDateString, getCurrentTimeString } from "@/lib/utils/date";
+
+/**
+ * Strictly returns the next upcoming session that is in the future.
+ * Compares against both the date and start/end time.
+ */
+export async function getNextSession(
+  batchName: string,
+  userId?: string,
+  currentDateStr?: string,
+  currentTimeStr?: string
+): Promise<(ClassSession & { attendance_status?: AttendanceStatus | null }) | null> {
+  const supabase = await createClient();
+  const dateStr = currentDateStr || getTodayDateString();
+  const timeStr = currentTimeStr || getCurrentTimeString();
+
+  // Query upcoming classes from today onwards for the student's batch
+  const { data: upcomingCandidates } = await supabase
+    .from("classes")
+    .select("*, subject:subjects(*)")
+    .gte("date", dateStr)
+    .in("batch_scope", ["ALL", batchName])
+    .order("date", { ascending: true })
+    .order("start_time", { ascending: true })
+    .limit(10);
+
+  if (!upcomingCandidates || upcomingCandidates.length === 0) {
+    return null;
+  }
+
+  // Find the first class that is in the future:
+  // 1. If class.date > dateStr: It is on a future date.
+  // 2. If class.date === dateStr: It is today, and class.end_time > timeStr (session is ongoing or upcoming).
+  const nextClass = upcomingCandidates.find((c: ClassSession) => {
+    if (c.date > dateStr) return true;
+    if (c.date === dateStr) {
+      return c.end_time > timeStr;
+    }
+    return false;
+  });
+
+  if (!nextClass) {
+    return null;
+  }
+
+  // If user ID provided, fetch their attendance status for this class
+  let attendanceStatus: AttendanceStatus | null = null;
+  if (userId) {
+    const { data: att } = await supabase
+      .from("attendance")
+      .select("status")
+      .eq("student_id", userId)
+      .eq("class_id", nextClass.id)
+      .maybeSingle();
+
+    if (att) {
+      attendanceStatus = att.status;
+    }
+  }
+
+  return {
+    ...nextClass,
+    attendance_status: attendanceStatus,
+  };
+}
+
 export async function getStudentDashboardData() {
   const user = await getCurrentUser();
   if (!user) return null;
@@ -79,7 +145,8 @@ export async function getStudentDashboardData() {
   if (!profile) return null;
 
   const supabase = await createClient();
-  const todayStr = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+  const todayStr = getTodayDateString(); // YYYY-MM-DD in IST
+  const currentTimeStr = getCurrentTimeString();
   const batchName = profile.batch?.name || "Batch A";
 
   // Fetch today's classes applicable to student
@@ -110,16 +177,8 @@ export async function getStudentDashboardData() {
     attendance_status: attendanceMap[c.id] || null,
   }));
 
-  // Determine "Next Class"
-  const now = new Date();
-  const currentSeconds = now.getHours() * 3600 + now.getMinutes() * 60;
-  let nextClass = enrichedTodayClasses.find((c: ClassSession) => {
-    const [h, m] = c.start_time.split(":").map(Number);
-    return h * 3600 + m * 60 >= currentSeconds;
-  });
-  if (!nextClass && enrichedTodayClasses.length > 0) {
-    nextClass = enrichedTodayClasses[0];
-  }
+  // Determine "Next Class" strictly comparing current system date/time
+  const nextClass = await getNextSession(batchName, user.id, todayStr, currentTimeStr);
 
   // Fetch active exam countdown
   const { data: activeExam } = await supabase

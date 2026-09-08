@@ -1,7 +1,9 @@
-﻿import { getStudentDashboardData } from "@/app/actions/student";
+import { getStudentDashboardData } from "@/app/actions/student";
 import { AttendanceToggle } from "@/components/student/AttendanceToggle";
 import { Calendar, Clock, MapPin, User, BookOpen, AlertCircle, ChevronRight, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
+
+import { getTodayDateString, parseDateString, formatReadableDate } from "@/lib/utils/date";
 
 export default async function StudentHomePage() {
   const data = await getStudentDashboardData();
@@ -16,8 +18,9 @@ export default async function StudentHomePage() {
 
   const { profile, todayClasses, nextClass, activeExam, subjectAttendance } = data;
 
-  const now = new Date();
-  const dateStr = now.toLocaleDateString("en-US", {
+  const todayStr = getTodayDateString();
+  const dateObj = parseDateString(todayStr);
+  const dateStr = dateObj.toLocaleDateString("en-US", {
     weekday: "long",
     day: "numeric",
     month: "long",
@@ -27,9 +30,12 @@ export default async function StudentHomePage() {
   let countdownDays: number | null = null;
   if (activeExam?.exam_date) {
     const examDate = new Date(activeExam.exam_date);
+    const now = new Date();
     const diffTime = examDate.getTime() - now.getTime();
     countdownDays = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
   }
+
+  const isNextClassFutureDay = nextClass && nextClass.date !== todayStr;
 
   return (
     <div className="space-y-6">
@@ -71,17 +77,22 @@ export default async function StudentHomePage() {
       {nextClass ? (
         <div className="bg-white rounded-2xl border-2 border-blue-600/20 shadow-sm p-5 sm:p-6 relative overflow-hidden">
           <div className="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-bold tracking-wider uppercase px-3 py-1 rounded-bl-xl">
-            Next Session
+            {isNextClassFutureDay ? "Upcoming Session" : "Next Session"}
           </div>
 
           <div className="space-y-3">
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <span className="px-2.5 py-0.5 rounded-md text-xs font-bold bg-blue-100 text-blue-800">
                 {nextClass.subject?.code || "CLASS"}
               </span>
               <span className="text-xs font-semibold text-slate-600">
                 {nextClass.class_type} · {nextClass.batch_scope}
               </span>
+              {isNextClassFutureDay && (
+                <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                  {formatReadableDate(nextClass.date, true)}
+                </span>
+              )}
             </div>
 
             <div>
@@ -111,14 +122,14 @@ export default async function StudentHomePage() {
               {/* 1-Tap Attendance */}
               <AttendanceToggle
                 classId={nextClass.id}
-                initialStatus={nextClass.attendance_status}
+                initialStatus={nextClass.attendance_status || null}
               />
             </div>
           </div>
         </div>
       ) : (
         <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm text-center space-y-1">
-          <p className="text-sm font-semibold text-slate-800">No more classes scheduled today</p>
+          <p className="text-sm font-semibold text-slate-800">No more upcoming classes scheduled</p>
           <p className="text-xs text-slate-500">Enjoy your self-directed learning time!</p>
         </div>
       )}

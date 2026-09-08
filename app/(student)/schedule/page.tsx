@@ -1,9 +1,16 @@
-﻿import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { requireOnboarded } from "@/lib/auth/session";
 import { AttendanceToggle } from "@/components/student/AttendanceToggle";
+import { ScheduleDateNav } from "@/components/student/ScheduleDateNav";
 import { ClassSession } from "@/types/database";
-import { Calendar as CalendarIcon, Clock, MapPin, User, ChevronLeft, ChevronRight, Filter } from "lucide-react";
-import Link from "next/link";
+import { 
+  getTodayDateString, 
+  getWeekRange, 
+  getMonthRange, 
+  formatReadableDate, 
+  parseDateString 
+} from "@/lib/utils/date";
+import { Calendar as CalendarIcon, Clock, MapPin, User } from "lucide-react";
 
 interface SchedulePageProps {
   searchParams: Promise<{
@@ -16,13 +23,21 @@ interface SchedulePageProps {
 export default async function SchedulePage({ searchParams }: SchedulePageProps) {
   const { profile } = await requireOnboarded();
   const params = await searchParams;
-  const currentView = params.view || "today";
-  const selectedDate = params.date || new Date().toISOString().split("T")[0];
+  const todayStr = getTodayDateString();
+
+  // Selected date defaults to today in IST
+  const selectedDate = params.date && /^\d{4}-\d{2}-\d{2}$/.test(params.date)
+    ? params.date
+    : todayStr;
+
+  // View: if view is passed, use it. If user navigated to a specific date different from today without view, default to "day"
+  const currentView: "today" | "day" | "week" | "month" = 
+    params.view || (params.date && params.date !== todayStr ? "day" : "today");
 
   const supabase = await createClient();
   const studentBatch = profile?.batch?.name || "Batch A";
 
-  // Build date range based on view
+  // Build query filtered by batch
   let query = supabase
     .from("classes")
     .select("*, subject:subjects(*)")
@@ -30,25 +45,17 @@ export default async function SchedulePage({ searchParams }: SchedulePageProps) 
     .order("date", { ascending: true })
     .order("start_time", { ascending: true });
 
-  if (currentView === "today" || currentView === "day") {
-    const targetDate = currentView === "today" ? new Date().toISOString().split("T")[0] : selectedDate;
-    query = query.eq("date", targetDate);
+  // Apply date filters strictly
+  if (currentView === "today") {
+    query = query.eq("date", todayStr);
+  } else if (currentView === "day") {
+    query = query.eq("date", selectedDate);
   } else if (currentView === "week") {
-    // 7 days from selected date
-    const d = new Date(selectedDate);
-    const startOfWeek = new Date(d);
-    startOfWeek.setDate(d.getDate() - d.getDay() + 1); // Monday
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6); // Sunday
-
-    query = query
-      .gte("date", startOfWeek.toISOString().split("T")[0])
-      .lte("date", endOfWeek.toISOString().split("T")[0]);
+    const { startOfWeek, endOfWeek } = getWeekRange(selectedDate);
+    query = query.gte("date", startOfWeek).lte("date", endOfWeek);
   } else if (currentView === "month") {
-    const d = new Date(selectedDate);
-    const firstDay = new Date(d.getFullYear(), d.getMonth(), 1).toISOString().split("T")[0];
-    const lastDay = new Date(d.getFullYear(), d.getMonth() + 1, 0).toISOString().split("T")[0];
-    query = query.gte("date", firstDay).lte("date", lastDay);
+    const { startOfMonth, endOfMonth } = getMonthRange(selectedDate);
+    query = query.gte("date", startOfMonth).lte("date", endOfMonth);
   }
 
   const { data: classes } = await query;
@@ -80,51 +87,12 @@ export default async function SchedulePage({ searchParams }: SchedulePageProps) 
 
   return (
     <div className="space-y-6">
-      {/* Header & View Tabs */}
-      <div className="space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-          <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-              Class Schedule
-            </h1>
-            <p className="text-xs text-slate-500 font-medium">
-              Filtered for <span className="text-blue-700 font-semibold">{studentBatch}</span> and Batch-Wide Lectures
-            </p>
-          </div>
-
-          <div className="flex items-center gap-1.5 p-1 bg-slate-200/70 rounded-xl self-start sm:self-auto">
-            {(["today", "day", "week", "month"] as const).map((view) => (
-              <Link
-                key={view}
-                href={`/schedule?view=${view}&date=${selectedDate}`}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition ${
-                  currentView === view
-                    ? "bg-white text-blue-700 shadow-xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                {view}
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        {/* Date Selector Navigation for Day / Week / Month */}
-        {currentView !== "today" && (
-          <div className="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-200 shadow-xs">
-            <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-              <CalendarIcon className="w-4 h-4 text-blue-600" />
-              <span>Viewing: {new Date(selectedDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
-            </span>
-
-            <input
-              type="date"
-              defaultValue={selectedDate}
-              className="text-xs font-medium text-slate-700 bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            />
-          </div>
-        )}
-      </div>
+      {/* Interactive Date Navigation Component */}
+      <ScheduleDateNav
+        currentView={currentView}
+        selectedDate={selectedDate}
+        todayStr={todayStr}
+      />
 
       {/* Schedule List */}
       <div className="space-y-6">
@@ -133,11 +101,16 @@ export default async function SchedulePage({ searchParams }: SchedulePageProps) 
             <div key={date} className="space-y-3">
               <div className="sticky top-14 z-20 bg-slate-50/95 backdrop-blur-sm py-1 flex items-center gap-2">
                 <span className="text-xs font-bold uppercase tracking-wider text-blue-700 bg-blue-100/70 px-2.5 py-0.5 rounded-md">
-                  {new Date(date).toLocaleDateString("en-US", { weekday: "short" })}
+                  {parseDateString(date).toLocaleDateString("en-US", { weekday: "short" })}
                 </span>
                 <span className="text-sm font-bold text-slate-800">
-                  {new Date(date).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" })}
+                  {formatReadableDate(date, false)}
                 </span>
+                {date === todayStr && (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
+                    Today
+                  </span>
+                )}
                 <span className="text-[11px] text-slate-400 font-medium">
                   ({dayClasses.length} {dayClasses.length === 1 ? "class" : "classes"})
                 </span>
@@ -202,7 +175,13 @@ export default async function SchedulePage({ searchParams }: SchedulePageProps) 
         ) : (
           <div className="p-10 text-center bg-white rounded-2xl border border-dashed border-slate-300 space-y-2">
             <CalendarIcon className="w-8 h-8 text-slate-300 mx-auto" />
-            <p className="text-sm font-semibold text-slate-700">No classes found for this timeframe</p>
+            <p className="text-sm font-semibold text-slate-700">
+              {currentView === "today"
+                ? `No classes scheduled for today (${formatReadableDate(todayStr, true)})`
+                : currentView === "day"
+                ? `No classes scheduled for ${formatReadableDate(selectedDate, true)}`
+                : `No classes found for this timeframe`}
+            </p>
             <p className="text-xs text-slate-400">
               Classes will appear once published by the batch administrator.
             </p>
