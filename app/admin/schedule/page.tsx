@@ -1,7 +1,9 @@
-﻿import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/auth/session";
-import { createClassAction, deleteClassAction } from "@/app/actions/admin";
-import { Plus, Trash2, Calendar, Clock, MapPin, User } from "lucide-react";
+import { createClassAction } from "@/app/actions/admin";
+import { Plus } from "lucide-react";
+import AdminScheduleTable from "@/components/admin/AdminScheduleTable";
+import { getTodayDateString } from "@/lib/utils/date";
 
 export default async function AdminSchedulePage() {
   await requireAdmin();
@@ -17,7 +19,9 @@ export default async function AdminSchedulePage() {
     .select("*, subject:subjects(*)")
     .order("date", { ascending: false })
     .order("start_time", { ascending: true })
-    .limit(50);
+    .limit(100);
+
+  const todayStr = getTodayDateString();
 
   return (
     <div className="space-y-8">
@@ -26,7 +30,7 @@ export default async function AdminSchedulePage() {
           Schedule & Class Sessions
         </h1>
         <p className="text-xs text-slate-500 font-medium">
-          Add new sessions manually or review existing schedule entries
+          Add new sessions manually or edit and review existing schedule entries
         </p>
       </div>
 
@@ -44,7 +48,7 @@ export default async function AdminSchedulePage() {
               name="date"
               type="date"
               required
-              defaultValue={new Date().toISOString().split("T")[0]}
+              defaultValue={todayStr}
               className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
@@ -157,62 +161,11 @@ export default async function AdminSchedulePage() {
         </form>
       </div>
 
-      {/* Class List */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
-        <h2 className="text-sm font-bold uppercase tracking-wider text-slate-800">
-          Scheduled Sessions ({classes?.length || 0})
-        </h2>
-
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider border-b border-slate-200">
-              <tr>
-                <th className="p-3">Date & Time</th>
-                <th className="p-3">Subject</th>
-                <th className="p-3">Topic</th>
-                <th className="p-3">Type & Batch</th>
-                <th className="p-3">Faculty & Venue</th>
-                <th className="p-3 text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {(classes || []).map((c: any) => (
-                <tr key={c.id} className="hover:bg-slate-50">
-                  <td className="p-3 whitespace-nowrap font-medium text-slate-800">
-                    <div>{c.date}</div>
-                    <div className="text-[11px] text-slate-400">{c.start_time.slice(0, 5)} - {c.end_time.slice(0, 5)}</div>
-                  </td>
-                  <td className="p-3 font-bold text-blue-700">
-                    {c.subject?.code || "—"}
-                  </td>
-                  <td className="p-3 font-medium text-slate-900 max-w-[200px] truncate">
-                    {c.topic}
-                  </td>
-                  <td className="p-3 whitespace-nowrap">
-                    <span className="font-semibold text-slate-700">{c.class_type}</span>
-                    <span className="text-slate-400 block text-[11px]">{c.batch_scope}</span>
-                  </td>
-                  <td className="p-3 whitespace-nowrap text-slate-500">
-                    <div>{c.faculty || "—"}</div>
-                    <div className="text-[11px] text-slate-400">{c.venue}</div>
-                  </td>
-                  <td className="p-3 text-right">
-                    <form action={deleteClassAction.bind(null, c.id)}>
-                      <button
-                        type="submit"
-                        className="p-1.5 rounded-lg text-rose-600 hover:bg-rose-50 transition"
-                        title="Delete class"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </form>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      {/* Class List Table with Edit and Delete actions */}
+      <AdminScheduleTable
+        initialClasses={(classes as any) || []}
+        subjects={subjects || []}
+      />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { requireAdmin } from "@/lib/auth/session";
 import { ClassType, BatchScope, AttendanceStatus } from "@/types/database";
 import { revalidatePath } from "next/cache";
@@ -8,7 +9,7 @@ import { revalidatePath } from "next/cache";
 // 1. CLASS / SCHEDULE ACTIONS
 export async function createClassAction(formData: FormData) {
   await requireAdmin();
-  const supabase = await createClient();
+  const supabase = createAdminClient();
 
   const date = formData.get("date")?.toString();
   const start_time = formData.get("start_time")?.toString();
@@ -24,11 +25,14 @@ export async function createClassAction(formData: FormData) {
     throw new Error("Missing required class fields");
   }
 
+  const formattedStartTime = start_time.length === 5 ? `${start_time}:00` : start_time;
+  const formattedEndTime = end_time.length === 5 ? `${end_time}:00` : end_time;
+
   const { error } = await supabase.from("classes").insert({
     date,
-    start_time,
-    end_time,
-    subject_id,
+    start_time: formattedStartTime,
+    end_time: formattedEndTime,
+    subject_id: subject_id === "" ? null : subject_id,
     topic,
     faculty,
     venue,
@@ -43,9 +47,65 @@ export async function createClassAction(formData: FormData) {
   revalidatePath("/home");
 }
 
+export async function updateClassAction(classId: string, formData: FormData) {
+  try {
+    await requireAdmin();
+    const supabase = createAdminClient();
+
+    const date = formData.get("date")?.toString();
+    const start_time = formData.get("start_time")?.toString();
+    const end_time = formData.get("end_time")?.toString();
+    const subject_id = formData.get("subject_id")?.toString() || null;
+    const topic = formData.get("topic")?.toString();
+    const faculty = formData.get("faculty")?.toString() || null;
+    const venue = formData.get("venue")?.toString() || null;
+    const class_type = formData.get("class_type")?.toString() as ClassType;
+    const batch_scope = formData.get("batch_scope")?.toString() as BatchScope;
+
+    if (!classId) {
+      return { success: false, error: "Missing class ID" };
+    }
+
+    if (!date || !start_time || !end_time || !class_type || !batch_scope) {
+      return { success: false, error: "Missing required class fields" };
+    }
+
+    const formattedStartTime = start_time.length === 5 ? `${start_time}:00` : start_time;
+    const formattedEndTime = end_time.length === 5 ? `${end_time}:00` : end_time;
+
+    const { error } = await supabase
+      .from("classes")
+      .update({
+        date,
+        start_time: formattedStartTime,
+        end_time: formattedEndTime,
+        subject_id: subject_id === "" ? null : subject_id,
+        topic: topic || "",
+        faculty,
+        venue,
+        class_type,
+        batch_scope,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", classId);
+
+    if (error) {
+      return { success: false, error: "Failed to update class: " + error.message };
+    }
+
+    revalidatePath("/admin/schedule");
+    revalidatePath("/schedule");
+    revalidatePath("/home");
+
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err?.message || "An unexpected error occurred" };
+  }
+}
+
 export async function deleteClassAction(classId: string) {
   await requireAdmin();
-  const supabase = await createClient();
+  const supabase = createAdminClient();
 
   const { error } = await supabase.from("classes").delete().eq("id", classId);
   if (error) throw new Error("Failed to delete class: " + error.message);
