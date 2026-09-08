@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { demoAttendanceStats, demoAttendanceHistory } from "@/lib/demo/mock-data";
@@ -46,24 +46,89 @@ export default function DemoAttendancePage() {
       <div className="space-y-3">
         <h2 className="text-xs font-bold uppercase tracking-wider text-slate-700">Subject Breakdown</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {demoAttendanceStats.subjects.map((s) => (
-            <button
-              key={s.code}
-              onClick={() => setSelectedSub(selectedSub === s.code ? "ALL" : s.code)}
-              className={`p-4 rounded-xl border text-left bg-white transition shadow-xs ${
-                selectedSub === s.code ? "border-blue-500 ring-2 ring-blue-500/20" : "border-slate-200 hover:border-slate-300"
-              }`}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-bold text-slate-800">{s.name}</span>
-                <span className="text-xs font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">{s.percentage}%</span>
-              </div>
-              <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden mb-1.5">
-                <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${s.percentage}%` }} />
-              </div>
-              <p className="text-[11px] text-slate-400">{s.attended} attended / {s.total} sessions</p>
-            </button>
-          ))}
+          {demoAttendanceStats.subjects.map((s: any) => {
+            const isSelected = selectedSub === s.code;
+            if (s.is_split) {
+              const theoryPct = s.theory?.percentage || 0;
+              const practicalPct = s.practical?.percentage || 0;
+              return (
+                <button
+                  key={s.code}
+                  type="button"
+                  onClick={() => setSelectedSub(isSelected ? "ALL" : s.code)}
+                  className={`p-4 rounded-xl border text-left bg-white transition shadow-xs space-y-3 ${
+                    isSelected ? "border-blue-500 ring-2 ring-blue-500/20" : "border-slate-200 hover:border-slate-300"
+                  }`}
+                >
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <div>
+                      <span className="text-xs font-bold text-slate-800 block">{s.name}</span>
+                      <span className="text-[10px] text-slate-400 font-medium">Combined: {s.percentage}%</span>
+                    </div>
+                    <span className="text-xs font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      {s.percentage}%
+                    </span>
+                  </div>
+
+                  {/* Theory */}
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-semibold text-slate-700">
+                        Theory: <span className="font-bold text-slate-900">{theoryPct}%</span>{" "}
+                        <span className="text-[11px] font-normal text-slate-500">
+                          ({s.theory?.attended}/{s.theory?.total})
+                        </span>
+                      </span>
+                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">
+                        {theoryPct}%
+                      </span>
+                    </div>
+                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-emerald-500 rounded-full transition-all" style={{ width: `${theoryPct}%` }} />
+                    </div>
+                  </div>
+
+                  {/* Practical */}
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-semibold text-slate-700">
+                        Practical: <span className="font-bold text-slate-900">{practicalPct}%</span>{" "}
+                        <span className="text-[11px] font-normal text-slate-500">
+                          ({s.practical?.attended}/{s.practical?.total})
+                        </span>
+                      </span>
+                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">
+                        {practicalPct}%
+                      </span>
+                    </div>
+                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-emerald-500 rounded-full transition-all" style={{ width: `${practicalPct}%` }} />
+                    </div>
+                  </div>
+                </button>
+              );
+            }
+
+            return (
+              <button
+                key={s.code}
+                type="button"
+                onClick={() => setSelectedSub(isSelected ? "ALL" : s.code)}
+                className={`p-4 rounded-xl border text-left bg-white transition shadow-xs ${
+                  isSelected ? "border-blue-500 ring-2 ring-blue-500/20" : "border-slate-200 hover:border-slate-300"
+                }`}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-bold text-slate-800">{s.name}</span>
+                  <span className="text-xs font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">{s.percentage}%</span>
+                </div>
+                <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden mb-1.5">
+                  <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${s.percentage}%` }} />
+                </div>
+                <p className="text-[11px] text-slate-400">{s.attended} attended / {s.total} sessions</p>
+              </button>
+            );
+          })}
         </div>
       </div>
 

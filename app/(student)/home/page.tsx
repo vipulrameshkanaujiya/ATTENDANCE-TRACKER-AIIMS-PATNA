@@ -219,44 +219,146 @@ export default async function StudentHomePage() {
 
         {subjectAttendance.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {subjectAttendance.map((sub: any) => (
-              <div
-                key={sub.subject_id}
-                className="p-3.5 rounded-xl border border-slate-100 bg-slate-50/50 space-y-2"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-slate-800">
-                    {sub.subject_name}
-                  </span>
-                  <span
-                    className={`text-xs font-bold px-2 py-0.5 rounded-md ${
-                      sub.percentage >= 75
-                        ? "bg-emerald-100 text-emerald-800"
-                        : sub.percentage >= 65
-                        ? "bg-amber-100 text-amber-800"
-                        : "bg-rose-100 text-rose-800"
-                    }`}
-                  >
-                    {sub.percentage}%
-                  </span>
-                </div>
-                <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+            {subjectAttendance.map((sub: any) => {
+              if (sub.is_split) {
+                const theoryPct = sub.theory?.total ? sub.theory.percentage : 0;
+                const practicalPct = sub.practical?.total ? sub.practical.percentage : 0;
+                return (
                   <div
-                    className={`h-full rounded-full transition-all ${
-                      sub.percentage >= 75
-                        ? "bg-emerald-500"
-                        : sub.percentage >= 65
-                        ? "bg-amber-500"
-                        : "bg-rose-500"
-                    }`}
-                    style={{ width: `${Math.min(100, sub.percentage)}%` }}
-                  />
+                    key={sub.subject_id}
+                    className="p-3.5 rounded-xl border border-slate-100 bg-slate-50/50 space-y-2.5"
+                  >
+                    <div className="flex items-center justify-between border-b border-slate-200/50 pb-1.5">
+                      <span className="text-xs font-bold text-slate-800">
+                        {sub.subject_name}
+                      </span>
+                      <span className="text-[10px] font-semibold text-slate-400">
+                        Combined: {sub.percentage}%
+                      </span>
+                    </div>
+
+                    {/* Theory Breakdown */}
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-semibold text-slate-700">
+                          Theory:{" "}
+                          <span className="font-bold text-slate-900">
+                            {sub.theory?.total ? `${theoryPct}%` : "—"}
+                          </span>{" "}
+                          <span className="text-[11px] font-normal text-slate-500">
+                            ({sub.theory?.attended || 0}/{sub.theory?.total || 0})
+                          </span>
+                        </span>
+                        {sub.theory?.total > 0 && (
+                          <span
+                            className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                              theoryPct >= 75
+                                ? "bg-emerald-100 text-emerald-800"
+                                : theoryPct >= 65
+                                ? "bg-amber-100 text-amber-800"
+                                : "bg-rose-100 text-rose-800"
+                            }`}
+                          >
+                            {theoryPct}%
+                          </span>
+                        )}
+                      </div>
+                      <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full rounded-full transition-all ${
+                            theoryPct >= 75
+                              ? "bg-emerald-500"
+                              : theoryPct >= 65
+                              ? "bg-amber-500"
+                              : "bg-rose-500"
+                          }`}
+                          style={{ width: `${Math.min(100, theoryPct)}%` }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Practical Breakdown */}
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-semibold text-slate-700">
+                          Practical:{" "}
+                          <span className="font-bold text-slate-900">
+                            {sub.practical?.total ? `${practicalPct}%` : "—"}
+                          </span>{" "}
+                          <span className="text-[11px] font-normal text-slate-500">
+                            ({sub.practical?.attended || 0}/{sub.practical?.total || 0})
+                          </span>
+                        </span>
+                        {sub.practical?.total > 0 && (
+                          <span
+                            className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                              practicalPct >= 75
+                                ? "bg-emerald-100 text-emerald-800"
+                                : practicalPct >= 65
+                                ? "bg-amber-100 text-amber-800"
+                                : "bg-rose-100 text-rose-800"
+                            }`}
+                          >
+                            {practicalPct}%
+                          </span>
+                        )}
+                      </div>
+                      <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full rounded-full transition-all ${
+                            practicalPct >= 75
+                              ? "bg-emerald-500"
+                              : practicalPct >= 65
+                              ? "bg-amber-500"
+                              : "bg-rose-500"
+                          }`}
+                          style={{ width: `${Math.min(100, practicalPct)}%` }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+
+              return (
+                <div
+                  key={sub.subject_id}
+                  className="p-3.5 rounded-xl border border-slate-100 bg-slate-50/50 space-y-2"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-800">
+                      {sub.subject_name}
+                    </span>
+                    <span
+                      className={`text-xs font-bold px-2 py-0.5 rounded-md ${
+                        sub.percentage >= 75
+                          ? "bg-emerald-100 text-emerald-800"
+                          : sub.percentage >= 65
+                          ? "bg-amber-100 text-amber-800"
+                          : "bg-rose-100 text-rose-800"
+                      }`}
+                    >
+                      {sub.percentage}%
+                    </span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all ${
+                        sub.percentage >= 75
+                          ? "bg-emerald-500"
+                          : sub.percentage >= 65
+                          ? "bg-amber-500"
+                          : "bg-rose-500"
+                      }`}
+                      style={{ width: `${Math.min(100, sub.percentage)}%` }}
+                    />
+                  </div>
+                  <p className="text-[11px] text-slate-400">
+                    {sub.attended} attended / {sub.total} sessions
+                  </p>
                 </div>
-                <p className="text-[11px] text-slate-400">
-                  {sub.attended} attended / {sub.total} sessions
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <p className="text-xs text-slate-400 italic">

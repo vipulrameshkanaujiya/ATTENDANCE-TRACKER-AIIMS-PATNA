@@ -8,9 +8,11 @@ import {
   ClassSession, 
   Subject, 
   BatchAggregateStats,
-  Exam 
+  Exam,
+  StudentSubjectAttendance
 } from "@/types/database";
 import { revalidatePath } from "next/cache";
+import { buildSubjectAttendanceBreakdown } from "@/lib/utils/attendance";
 
 export async function toggleAttendance(classId: string, status: AttendanceStatus) {
   const user = await getCurrentUser();
@@ -189,10 +191,10 @@ export async function getStudentDashboardData() {
     .limit(1)
     .maybeSingle();
 
-  // Subject-wise attendance calculation
+  // Subject-wise attendance calculation with Theory vs Practical split
   const { data: allStudentAttendance } = await supabase
     .from("attendance")
-    .select("status, class:classes(id, subject_id, batch_scope)")
+    .select("status, class:classes(id, subject_id, batch_scope, class_type)")
     .eq("student_id", user.id);
 
   const { data: allSubjects } = await supabase
@@ -200,30 +202,25 @@ export async function getStudentDashboardData() {
     .select("*")
     .order("display_order", { ascending: true });
 
-  const subjectStatsMap: Record<string, { name: string; color: string; attended: number; total: number }> = {};
-  (allSubjects || []).forEach((s: Subject) => {
-    subjectStatsMap[s.id] = { name: s.name, color: s.color_code, attended: 0, total: 0 };
-  });
+  const breakdownMap = buildSubjectAttendanceBreakdown(
+    (allSubjects as any) || [],
+    (allStudentAttendance as any) || []
+  );
 
-  (allStudentAttendance || []).forEach((att: any) => {
-    const subId = att.class?.subject_id;
-    if (subId && subjectStatsMap[subId]) {
-      subjectStatsMap[subId].total += 1;
-      if (att.status === "PRESENT") {
-        subjectStatsMap[subId].attended += 1;
-      }
-    }
-  });
-
-  const subjectAttendanceList = Object.entries(subjectStatsMap)
-    .filter(([_, data]) => data.total > 0)
-    .map(([id, data]) => ({
-      subject_id: id,
+  const subjectAttendanceList: StudentSubjectAttendance[] = Object.values(breakdownMap)
+    .filter((data) => data.total > 0)
+    .map((data) => ({
+      id: data.id,
+      subject_id: data.id,
       subject_name: data.name,
+      subject_code: data.code,
       color: data.color,
+      is_split: data.is_split,
       attended: data.attended,
       total: data.total,
-      percentage: Math.round((data.attended / data.total) * 100),
+      percentage: data.percentage,
+      theory: data.theory,
+      practical: data.practical,
     }));
 
   return {

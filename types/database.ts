@@ -155,6 +155,26 @@ export interface SubjectAttendanceStat {
   avg_attendance_pct: number;
 }
 
+export interface SubjectAttendanceBucket {
+  attended: number;
+  total: number;
+  percentage: number;
+}
+
+export interface StudentSubjectAttendance {
+  id: string;
+  subject_id: string;
+  subject_name: string;
+  subject_code: string;
+  color: string;
+  is_split: boolean;
+  attended: number;
+  total: number;
+  percentage: number;
+  theory?: SubjectAttendanceBucket;
+  practical?: SubjectAttendanceBucket;
+}
+
 export interface BatchAggregateStats {
   active_students_30d: number;
   batch_average_attendance_pct: number;

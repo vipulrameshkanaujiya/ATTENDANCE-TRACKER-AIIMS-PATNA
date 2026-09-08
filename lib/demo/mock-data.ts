@@ -1,4 +1,4 @@
-﻿export interface DemoClass {
+export interface DemoClass {
   id: string;
   date: string;
   start_time: string;
@@ -104,11 +104,59 @@ export const demoAttendanceStats = {
   total_attended: 42,
   total_classes: 50,
   subjects: [
-    { code: "PATH", name: "Pathology", percentage: 84, attended: 16, total: 19, color: "bg-blue-600" },
-    { code: "PHARMA", name: "Pharmacology", percentage: 88, attended: 15, total: 17, color: "bg-emerald-600" },
-    { code: "MICRO", name: "Microbiology", percentage: 79, attended: 11, total: 14, color: "bg-amber-600" },
-    { code: "MED", name: "Medicine", percentage: 87, attended: 7, total: 8, color: "bg-cyan-600" },
-    { code: "CFM", name: "Community Medicine", percentage: 80, attended: 4, total: 5, color: "bg-purple-600" },
+    {
+      code: "PATH",
+      name: "Pathology",
+      percentage: 84,
+      attended: 16,
+      total: 19,
+      color: "bg-blue-600",
+      is_split: true,
+      theory: { attended: 12, total: 15, percentage: 80 },
+      practical: { attended: 4, total: 4, percentage: 100 },
+    },
+    {
+      code: "PHARMA",
+      name: "Pharmacology",
+      percentage: 88,
+      attended: 15,
+      total: 17,
+      color: "bg-emerald-600",
+      is_split: true,
+      theory: { attended: 11, total: 13, percentage: 85 },
+      practical: { attended: 4, total: 4, percentage: 100 },
+    },
+    {
+      code: "MICRO",
+      name: "Microbiology",
+      percentage: 79,
+      attended: 11,
+      total: 14,
+      color: "bg-amber-600",
+      is_split: true,
+      theory: { attended: 8, total: 10, percentage: 80 },
+      practical: { attended: 3, total: 4, percentage: 75 },
+    },
+    {
+      code: "MED",
+      name: "Medicine",
+      percentage: 87,
+      attended: 7,
+      total: 8,
+      color: "bg-cyan-600",
+      is_split: false,
+    },
+    {
+      code: "CFM",
+      name: "Community Medicine",
+      percentage: 80,
+      attended: 4,
+      total: 5,
+      color: "bg-purple-600",
+      is_split: true,
+      theory: { attended: 3, total: 4, percentage: 75 },
+      practical: { attended: 1, total: 1, percentage: 100 },
+    },
   ],
 };
 
