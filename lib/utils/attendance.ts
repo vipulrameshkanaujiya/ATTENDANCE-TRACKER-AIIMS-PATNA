@@ -48,6 +48,8 @@ export function getAttendanceColor(pct: number): {
   };
 }
 
+import { HistoricalSubjectCode, StudentHistoricalAttendance } from "@/types/database";
+
 /**
  * Specifically targeted subjects requiring Theory vs Practical split:
  * - Pathology (PATH)
@@ -57,6 +59,26 @@ export function getAttendanceColor(pct: number): {
  * - Community & Family Medicine (CFM)
  */
 export const SPLIT_SUBJECT_CODES = ["PATH", "PHARMA", "MICRO", "FMT", "CFM"] as const;
+
+/**
+ * Maps a subject code or name to its canonical historical subject code.
+ */
+export function getHistoricalSubjectCode(code?: string | null, name?: string | null): HistoricalSubjectCode | null {
+  const c = (code || "").trim().toUpperCase();
+  if (c === "PATH" || c === "PATHOLOGY") return "PATH";
+  if (c === "PHARMA" || c === "PHARM" || c === "PHARMACOLOGY") return "PHARMA";
+  if (c === "MICRO" || c === "MICROBIOLOGY") return "MICRO";
+  if (c === "FMT" || c === "FORENSIC") return "FMT";
+  if (c === "CFM" || c === "COMMUNITY" || c === "PSM") return "CFM";
+
+  const n = (name || "").trim().toLowerCase();
+  if (n.includes("pathology")) return "PATH";
+  if (n.includes("pharmacology")) return "PHARMA";
+  if (n.includes("microbiology")) return "MICRO";
+  if (n.includes("forensic") || n.includes("fmt")) return "FMT";
+  if (n.includes("community") || n.includes("cfm")) return "CFM";
+  return null;
+}
 
 /**
  * Theory Attendance: Lecture, SDL, Integration, Tutorial
@@ -116,10 +138,17 @@ export interface SubjectAttendanceBreakdown {
   percentage: number;
   theory?: AttendanceBucket;
   practical?: AttendanceBucket;
+  historical?: {
+    theory_attended: number;
+    theory_total: number;
+    practical_attended: number;
+    practical_total: number;
+  };
 }
 
 /**
  * Computes individual subject breakdown with theory/practical separation for the 5 target subjects.
+ * If historicalRecords are provided, combines pre-September and September attendance data.
  */
 export function buildSubjectAttendanceBreakdown(
   subjects: Array<{ id: string; name: string; code: string; color_code?: string; display_order?: number }>,
@@ -129,7 +158,8 @@ export function buildSubjectAttendanceBreakdown(
       subject_id?: string | null;
       class_type?: string | null;
     } | null;
-  }>
+  }>,
+  historicalRecords?: StudentHistoricalAttendance[]
 ): Record<string, SubjectAttendanceBreakdown> {
   const map: Record<string, SubjectAttendanceBreakdown> = {};
 
@@ -174,6 +204,36 @@ export function buildSubjectAttendanceBreakdown(
       }
     }
   });
+
+  // Merge historical records for the 5 split subjects
+  if (historicalRecords && historicalRecords.length > 0) {
+    Object.values(map).forEach((sub) => {
+      const histCode = getHistoricalSubjectCode(sub.code, sub.name);
+      if (!histCode) return;
+
+      const hist = historicalRecords.find((h) => h.subject_code === histCode);
+      if (hist) {
+        sub.historical = {
+          theory_attended: hist.theory_attended || 0,
+          theory_total: hist.theory_total || 0,
+          practical_attended: hist.practical_attended || 0,
+          practical_total: hist.practical_total || 0,
+        };
+
+        if (sub.theory) {
+          sub.theory.attended += hist.theory_attended || 0;
+          sub.theory.total += hist.theory_total || 0;
+        }
+        if (sub.practical) {
+          sub.practical.attended += hist.practical_attended || 0;
+          sub.practical.total += hist.practical_total || 0;
+        }
+
+        sub.attended += (hist.theory_attended || 0) + (hist.practical_attended || 0);
+        sub.total += (hist.theory_total || 0) + (hist.practical_total || 0);
+      }
+    });
+  }
 
   Object.values(map).forEach((sub) => {
     sub.percentage = sub.total > 0 ? Math.round((sub.attended / sub.total) * 100) : 0;

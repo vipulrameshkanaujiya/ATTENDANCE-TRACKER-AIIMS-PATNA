@@ -1,10 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
 import { requireOnboarded } from "@/lib/auth/session";
 import { AttendanceToggle } from "@/components/student/AttendanceToggle";
+import { PreSeptemberAttendanceCard } from "@/components/student/PreSeptemberAttendanceCard";
 import { Subject, ClassSession } from "@/types/database";
 import { CheckCircle2, Clock, Calendar, BookOpen, Filter } from "lucide-react";
 import Link from "next/link";
 import { buildSubjectAttendanceBreakdown } from "@/lib/utils/attendance";
+import { getStudentHistoricalAttendance } from "@/app/actions/student";
 
 interface AttendancePageProps {
   searchParams: Promise<{
@@ -35,15 +37,29 @@ export default async function AttendancePage({ searchParams }: AttendancePagePro
     .eq("student_id", profile?.id || "")
     .order("marked_at", { ascending: false });
 
-  // 3. Calculate Overall & Subject-wise attendance metrics
-  const totalAttended = (attendanceRecords || []).filter((r: any) => r.status === "PRESENT").length;
-  const totalMarked = (attendanceRecords || []).length;
+  // 3. Fetch pre-September historical attendance records
+  const historicalRecords = await getStudentHistoricalAttendance(profile?.id || "");
+
+  // 4. Calculate Combined Overall Attendance metrics
+  const septAttended = (attendanceRecords || []).filter((r: any) => r.status === "PRESENT").length;
+  const septTotal = (attendanceRecords || []).length;
+
+  let histAttended = 0;
+  let histTotal = 0;
+  (historicalRecords || []).forEach((h) => {
+    histAttended += (h.theory_attended || 0) + (h.practical_attended || 0);
+    histTotal += (h.theory_total || 0) + (h.practical_total || 0);
+  });
+
+  const totalAttended = septAttended + histAttended;
+  const totalMarked = septTotal + histTotal;
   const overallPercentage = totalMarked > 0 ? Math.round((totalAttended / totalMarked) * 100) : 0;
 
   // Subject breakdown map with Theory vs Practical split for the 5 target subjects
   const subjectBreakdown = buildSubjectAttendanceBreakdown(
     (subjects as any) || [],
-    (attendanceRecords as any) || []
+    (attendanceRecords as any) || [],
+    historicalRecords
   );
 
   // Filter attendance history
@@ -86,6 +102,11 @@ export default async function AttendancePage({ searchParams }: AttendancePagePro
               ? "✓ Currently meeting NMC 75% exam eligibility threshold."
               : "⚠️ Below NMC 75% requirement. Prioritize upcoming clinical postings."}
           </p>
+          {histTotal > 0 && (
+            <p className="text-[11px] text-slate-400">
+              Includes pre-September historical attendance ({histAttended}/{histTotal}) + September sessions ({septAttended}/{septTotal})
+            </p>
+          )}
         </div>
 
         <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full flex items-center justify-center border-8 border-slate-100 relative">
@@ -96,6 +117,9 @@ export default async function AttendancePage({ searchParams }: AttendancePagePro
           </div>
         </div>
       </div>
+
+      {/* Pre-September Historical Attendance Entry / Locked View */}
+      <PreSeptemberAttendanceCard initialRecords={historicalRecords} />
 
       {/* Subject Breakdown Cards */}
       <div className="space-y-3">

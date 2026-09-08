@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/auth/session";
 import { addRosterStudentAction, resetStudentClaimAction, updateStudentBatchAction, bulkImportRosterAction } from "@/app/actions/admin";
 import { Users, Hash, ShieldCheck, UserPlus, RotateCcw, FileText, AlertTriangle } from "lucide-react";
+import { AdminHistoricalAttendanceModal } from "@/components/admin/AdminHistoricalAttendanceModal";
 
 export default async function AdminStudentsPage() {
   await requireAdmin();
@@ -229,18 +230,27 @@ export default async function AdminStudentsPage() {
                       )}
                     </td>
                     <td className="p-3 text-right">
-                      {r.status === "CLAIMED" && (
-                        <form action={resetStudentClaimAction.bind(null, r.id)} className="inline">
-                          <button
-                            type="submit"
-                            title="Reset claim to allow student to re-link"
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md border border-rose-200 text-rose-700 bg-rose-50 hover:bg-rose-100 text-[11px] font-semibold transition"
-                          >
-                            <RotateCcw className="w-3 h-3" />
-                            <span>Reset Claim</span>
-                          </button>
-                        </form>
-                      )}
+                      <div className="flex items-center justify-end gap-1.5">
+                        {r.status === "CLAIMED" && (r.claimed_user?.id || r.claimed_by_user_id) && (
+                          <AdminHistoricalAttendanceModal
+                            studentId={r.claimed_user?.id || r.claimed_by_user_id}
+                            studentName={r.full_name || r.claimed_user?.full_name || "MBBS Student"}
+                            rollNumber={r.roll_number}
+                          />
+                        )}
+                        {r.status === "CLAIMED" && (
+                          <form action={resetStudentClaimAction.bind(null, r.id)} className="inline">
+                            <button
+                              type="submit"
+                              title="Reset claim to allow student to re-link"
+                              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md border border-rose-200 text-rose-700 bg-rose-50 hover:bg-rose-100 text-[11px] font-semibold transition"
+                            >
+                              <RotateCcw className="w-3 h-3" />
+                              <span>Reset Claim</span>
+                            </button>
+                          </form>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -262,7 +272,13 @@ export default async function AdminStudentsPage() {
                     <td className="p-3">
                       <span className="text-emerald-600 font-semibold">Active</span>
                     </td>
-                    <td className="p-3 text-right text-slate-400">—</td>
+                    <td className="p-3 text-right">
+                      <AdminHistoricalAttendanceModal
+                        studentId={s.id}
+                        studentName={s.full_name || "MBBS Student"}
+                        rollNumber={s.roll_number || "Pending"}
+                      />
+                    </td>
                   </tr>
                 ))
               )}

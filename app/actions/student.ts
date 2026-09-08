@@ -9,7 +9,9 @@ import {
   Subject, 
   BatchAggregateStats,
   Exam,
-  StudentSubjectAttendance
+  StudentSubjectAttendance,
+  HistoricalSubjectCode,
+  StudentHistoricalAttendance,
 } from "@/types/database";
 import { revalidatePath } from "next/cache";
 import { buildSubjectAttendanceBreakdown } from "@/lib/utils/attendance";
@@ -191,7 +193,7 @@ export async function getStudentDashboardData() {
     .limit(1)
     .maybeSingle();
 
-  // Subject-wise attendance calculation with Theory vs Practical split
+  // Subject-wise attendance calculation with Theory vs Practical split and Historical Data
   const { data: allStudentAttendance } = await supabase
     .from("attendance")
     .select("status, class:classes(id, subject_id, batch_scope, class_type)")
@@ -202,9 +204,12 @@ export async function getStudentDashboardData() {
     .select("*")
     .order("display_order", { ascending: true });
 
+  const historicalAttendance = await getStudentHistoricalAttendance(user.id);
+
   const breakdownMap = buildSubjectAttendanceBreakdown(
     (allSubjects as any) || [],
-    (allStudentAttendance as any) || []
+    (allStudentAttendance as any) || [],
+    historicalAttendance
   );
 
   const subjectAttendanceList: StudentSubjectAttendance[] = Object.values(breakdownMap)
@@ -230,4 +235,126 @@ export async function getStudentDashboardData() {
     activeExam: (activeExam as Exam) || null,
     subjectAttendance: subjectAttendanceList,
   };
+}
+
+/**
+ * Fetches pre-September historical attendance records for a student.
+ * Fails gracefully if table does not exist.
+ */
+export async function getStudentHistoricalAttendance(
+  studentId?: string
+): Promise<StudentHistoricalAttendance[]> {
+  try {
+    const user = await getCurrentUser();
+    if (!user) return [];
+    const targetStudentId = studentId || user.id;
+
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("student_historical_attendance")
+      .select("*")
+      .eq("student_id", targetStudentId);
+
+    if (error) {
+      // Graceful fallback for missing table
+      return [];
+    }
+
+    return (data as StudentHistoricalAttendance[]) || [];
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Saves a student's one-time historical attendance entry for the 5 split subjects.
+ * Locked once submitted.
+ */
+export async function saveStudentHistoricalAttendanceAction(
+  entries: Array<{
+    subject_code: HistoricalSubjectCode;
+    theory_attended: number;
+    theory_total: number;
+    practical_attended: number;
+    practical_total: number;
+  }>
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return { success: false, error: "Authentication required. Please sign in." };
+    }
+
+    const supabase = await createClient();
+
+    // Check if one-time entry has already been locked
+    const { data: existingRecords, error: checkError } = await supabase
+      .from("student_historical_attendance")
+      .select("is_one_time_set")
+      .eq("student_id", user.id)
+      .eq("is_one_time_set", true);
+
+    if (checkError && checkError.code !== "PGRST205") {
+      return { success: false, error: "Database error: " + checkError.message };
+    }
+
+    if (existingRecords && existingRecords.length > 0) {
+      return {
+        success: false,
+        error: "Historical attendance has already been recorded as a one-time entry. Only an administrator can modify this data.",
+      };
+    }
+
+    const validCodes: HistoricalSubjectCode[] = ["PATH", "PHARMA", "MICRO", "FMT", "CFM"];
+
+    for (const entry of entries) {
+      if (!validCodes.includes(entry.subject_code)) {
+        return { success: false, error: `Invalid subject code: ${entry.subject_code}` };
+      }
+      const tAtt = Number(entry.theory_attended);
+      const tTot = Number(entry.theory_total);
+      const pAtt = Number(entry.practical_attended);
+      const pTot = Number(entry.practical_total);
+
+      if (isNaN(tAtt) || isNaN(tTot) || tAtt < 0 || tTot < 0) {
+        return { success: false, error: `Invalid theory values for ${entry.subject_code}` };
+      }
+      if (tAtt > tTot) {
+        return { success: false, error: `Theory attended (${tAtt}) cannot exceed total (${tTot}) for ${entry.subject_code}` };
+      }
+      if (isNaN(pAtt) || isNaN(pTot) || pAtt < 0 || pTot < 0) {
+        return { success: false, error: `Invalid practical values for ${entry.subject_code}` };
+      }
+      if (pAtt > pTot) {
+        return { success: false, error: `Practical attended (${pAtt}) cannot exceed total (${pTot}) for ${entry.subject_code}` };
+      }
+    }
+
+    const payload = entries.map((e) => ({
+      student_id: user.id,
+      subject_code: e.subject_code,
+      theory_attended: Number(e.theory_attended) || 0,
+      theory_total: Number(e.theory_total) || 0,
+      practical_attended: Number(e.practical_attended) || 0,
+      practical_total: Number(e.practical_total) || 0,
+      is_one_time_set: true,
+      updated_at: new Date().toISOString(),
+    }));
+
+    const { error: upsertError } = await supabase
+      .from("student_historical_attendance")
+      .upsert(payload, { onConflict: "student_id,subject_code" });
+
+    if (upsertError) {
+      return { success: false, error: "Failed to save historical attendance: " + upsertError.message };
+    }
+
+    revalidatePath("/attendance");
+    revalidatePath("/home");
+    revalidatePath("/admin/students");
+
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err?.message || "An unexpected error occurred" };
+  }
 }

@@ -181,6 +181,22 @@ export interface BatchAggregateStats {
   subject_averages: SubjectAttendanceStat[];
 }
 
+export type HistoricalSubjectCode = "PATH" | "PHARMA" | "MICRO" | "FMT" | "CFM";
+
+export interface StudentHistoricalAttendance {
+  id: string;
+  student_id: string;
+  subject_code: HistoricalSubjectCode;
+  theory_attended: number;
+  theory_total: number;
+  practical_attended: number;
+  practical_total: number;
+  is_one_time_set: boolean;
+  created_at: string;
+  updated_at: string;
+  updated_by?: string | null;
+}
+
 export type RosterStatus = "UNCLAIMED" | "CLAIMED" | "DISABLED";
 
 export interface StudentRosterEntry {

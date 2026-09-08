@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { requireAdmin } from "@/lib/auth/session";
-import { ClassType, BatchScope, AttendanceStatus } from "@/types/database";
+import { ClassType, BatchScope, AttendanceStatus, HistoricalSubjectCode, StudentHistoricalAttendance } from "@/types/database";
 import { revalidatePath } from "next/cache";
 
 // 1. CLASS / SCHEDULE ACTIONS
@@ -397,6 +397,106 @@ export async function bulkImportRosterAction(formData: FormData) {
   }
 
   revalidatePath("/admin/students");
+}
+
+// 8. STUDENT HISTORICAL ATTENDANCE ADMINISTRATIVE OVERRIDE
+export async function adminGetStudentHistoricalAttendanceAction(
+  studentId: string
+): Promise<{ success: boolean; data?: StudentHistoricalAttendance[]; error?: string }> {
+  try {
+    await requireAdmin();
+    const supabase = createAdminClient();
+
+    const { data, error } = await supabase
+      .from("student_historical_attendance")
+      .select("*")
+      .eq("student_id", studentId);
+
+    if (error) {
+      if (error.code === "PGRST205") {
+        return { success: true, data: [] };
+      }
+      return { success: false, error: error.message };
+    }
+
+    return { success: true, data: (data as StudentHistoricalAttendance[]) || [] };
+  } catch (err: any) {
+    return { success: false, error: err?.message || "Failed to get historical records" };
+  }
+}
+
+export async function adminUpdateStudentHistoricalAttendanceAction(
+  studentId: string,
+  entries: Array<{
+    subject_code: HistoricalSubjectCode;
+    theory_attended: number;
+    theory_total: number;
+    practical_attended: number;
+    practical_total: number;
+    is_one_time_set?: boolean;
+  }>
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const { user: adminUser } = await requireAdmin();
+    const supabase = createAdminClient();
+
+    if (!studentId) {
+      return { success: false, error: "Missing student ID" };
+    }
+
+    const validCodes: HistoricalSubjectCode[] = ["PATH", "PHARMA", "MICRO", "FMT", "CFM"];
+
+    for (const entry of entries) {
+      if (!validCodes.includes(entry.subject_code)) {
+        return { success: false, error: `Invalid subject code: ${entry.subject_code}` };
+      }
+      const tAtt = Number(entry.theory_attended);
+      const tTot = Number(entry.theory_total);
+      const pAtt = Number(entry.practical_attended);
+      const pTot = Number(entry.practical_total);
+
+      if (isNaN(tAtt) || isNaN(tTot) || tAtt < 0 || tTot < 0) {
+        return { success: false, error: `Invalid theory values for ${entry.subject_code}` };
+      }
+      if (tAtt > tTot) {
+        return { success: false, error: `Theory attended (${tAtt}) cannot exceed total (${tTot}) for ${entry.subject_code}` };
+      }
+      if (isNaN(pAtt) || isNaN(pTot) || pAtt < 0 || pTot < 0) {
+        return { success: false, error: `Invalid practical values for ${entry.subject_code}` };
+      }
+      if (pAtt > pTot) {
+        return { success: false, error: `Practical attended (${pAtt}) cannot exceed total (${pTot}) for ${entry.subject_code}` };
+      }
+    }
+
+    const payload = entries.map((e) => ({
+      student_id: studentId,
+      subject_code: e.subject_code,
+      theory_attended: Number(e.theory_attended) || 0,
+      theory_total: Number(e.theory_total) || 0,
+      practical_attended: Number(e.practical_attended) || 0,
+      practical_total: Number(e.practical_total) || 0,
+      is_one_time_set: e.is_one_time_set ?? true,
+      updated_at: new Date().toISOString(),
+      updated_by: adminUser.id,
+    }));
+
+    const { error: upsertError } = await supabase
+      .from("student_historical_attendance")
+      .upsert(payload, { onConflict: "student_id,subject_code" });
+
+    if (upsertError) {
+      return { success: false, error: "Failed to update historical attendance: " + upsertError.message };
+    }
+
+    revalidatePath("/admin/students");
+    revalidatePath("/attendance");
+    revalidatePath("/home");
+
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err?.message || "An unexpected error occurred" };
+  }
 }
 
 
