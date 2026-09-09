@@ -1,16 +1,17 @@
-import { getStudentDashboardData } from "@/app/actions/student";
-import { AttendanceToggle } from "@/components/student/AttendanceToggle";
-import { Calendar, Clock, MapPin, User, BookOpen, AlertCircle, ChevronRight, CheckCircle2 } from "lucide-react";
-import Link from "next/link";
+"use client";
 
+import { useStudentData } from "@/components/student/StudentDataProvider";
+import { AttendanceToggle } from "@/components/student/AttendanceToggle";
+import { Clock, MapPin, User, ChevronRight } from "lucide-react";
+import Link from "next/link";
 import { getTodayDateString, parseDateString, formatReadableDate } from "@/lib/utils/date";
 
-export default async function StudentHomePage() {
-  const data = await getStudentDashboardData();
+export default function StudentHomePage() {
+  const { dashboardData: data, isLoading } = useStudentData();
 
-  if (!data) {
+  if (isLoading || !data) {
     return (
-      <div className="p-8 text-center bg-white rounded-2xl border border-slate-200 shadow-sm">
+      <div className="p-8 text-center bg-white rounded-2xl border border-slate-200 shadow-sm animate-pulse">
         <p className="text-sm text-slate-500">Loading student profile and daily schedule...</p>
       </div>
     );

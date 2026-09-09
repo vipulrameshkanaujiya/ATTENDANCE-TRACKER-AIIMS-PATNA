@@ -1,89 +1,91 @@
-import { createClient } from "@/lib/supabase/server";
-import { requireOnboarded } from "@/lib/auth/session";
+"use client";
+
+import { useSearchParams } from "next/navigation";
+import { useStudentData } from "@/components/student/StudentDataProvider";
 import { AttendanceToggle } from "@/components/student/AttendanceToggle";
 import { ScheduleDateNav } from "@/components/student/ScheduleDateNav";
-import { ClassSession } from "@/types/database";
-import { 
-  getTodayDateString, 
-  getWeekRange, 
-  getMonthRange, 
-  formatReadableDate, 
-  parseDateString 
-} from "@/lib/utils/date";
-import { Calendar as CalendarIcon, Clock, MapPin, User } from "lucide-react";
+import { Calendar as CalendarIcon, MapPin, User } from "lucide-react";
+import { getTodayDateString, parseDateString, formatReadableDate } from "@/lib/utils/date";
+import { useMemo } from "react";
 
-interface SchedulePageProps {
-  searchParams: Promise<{
-    date?: string;
-    view?: "today" | "day" | "week" | "month";
-    subject?: string;
-  }>;
+function getWeekRange(dateStr: string) {
+  const d = parseDateString(dateStr);
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1); 
+  const start = new Date(d.setDate(diff));
+  const end = new Date(d.setDate(diff + 6));
+  return {
+    startOfWeek: start.toISOString().split("T")[0],
+    endOfWeek: end.toISOString().split("T")[0],
+  };
 }
 
-export default async function SchedulePage({ searchParams }: SchedulePageProps) {
-  const { profile } = await requireOnboarded();
-  const params = await searchParams;
+function getMonthRange(dateStr: string) {
+  const d = parseDateString(dateStr);
+  const start = new Date(d.getFullYear(), d.getMonth(), 1);
+  const end = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+  return {
+    startOfMonth: start.toISOString().split("T")[0],
+    endOfMonth: end.toISOString().split("T")[0],
+  };
+}
+
+export default function SchedulePage() {
+  const searchParams = useSearchParams();
+  const dateParam = searchParams.get("date");
+  const viewParam = searchParams.get("view");
   const todayStr = getTodayDateString();
 
-  // Selected date defaults to today in IST
-  const selectedDate = params.date && /^\d{4}-\d{2}-\d{2}$/.test(params.date)
-    ? params.date
+  const selectedDate = dateParam && /^\d{4}-\d{2}-\d{2}$/.test(dateParam)
+    ? dateParam
     : todayStr;
 
-  // View: if view is passed, use it. If user navigated to a specific date different from today without view, default to "day"
   const currentView: "today" | "day" | "week" | "month" = 
-    params.view || (params.date && params.date !== todayStr ? "day" : "today");
+    (viewParam as any) || (dateParam && dateParam !== todayStr ? "day" : "today");
 
-  const supabase = await createClient();
-  const studentBatch = profile?.batch?.name || "Batch A";
+  const { dashboardData, deferredData, isLoading } = useStudentData();
 
-  // Build query filtered by batch
-  let query = supabase
-    .from("classes")
-    .select("*, subject:subjects(*)")
-    .in("batch_scope", ["ALL", studentBatch])
-    .order("date", { ascending: true })
-    .order("start_time", { ascending: true });
-
-  // Apply date filters strictly
-  if (currentView === "today") {
-    query = query.eq("date", todayStr);
-  } else if (currentView === "day") {
-    query = query.eq("date", selectedDate);
-  } else if (currentView === "week") {
-    const { startOfWeek, endOfWeek } = getWeekRange(selectedDate);
-    query = query.gte("date", startOfWeek).lte("date", endOfWeek);
-  } else if (currentView === "month") {
-    const { startOfMonth, endOfMonth } = getMonthRange(selectedDate);
-    query = query.gte("date", startOfMonth).lte("date", endOfMonth);
-  }
-
-  const { data: classes } = await query;
-
-  // Fetch student attendance for loaded classes
-  const classIds = (classes || []).map((c: ClassSession) => c.id);
-  let attendanceMap: Record<string, any> = {};
-  if (classIds.length > 0 && profile) {
-    const { data: att } = await supabase
-      .from("attendance")
-      .select("class_id, status")
-      .eq("student_id", profile.id)
-      .in("class_id", classIds);
-
-    (att || []).forEach((r: any) => {
+  const filteredData = useMemo(() => {
+    if (!dashboardData || !deferredData) return null;
+    let classes = deferredData.scheduleClasses || [];
+    const attendanceMap: Record<string, string> = {};
+    (dashboardData.allStudentAttendance || []).forEach((r: any) => {
       attendanceMap[r.class_id] = r.status;
     });
+
+    if (currentView === "today") {
+      classes = classes.filter((c: any) => c.date === todayStr);
+    } else if (currentView === "day") {
+      classes = classes.filter((c: any) => c.date === selectedDate);
+    } else if (currentView === "week") {
+      const { startOfWeek, endOfWeek } = getWeekRange(selectedDate);
+      classes = classes.filter((c: any) => c.date >= startOfWeek && c.date <= endOfWeek);
+    } else if (currentView === "month") {
+      const { startOfMonth, endOfMonth } = getMonthRange(selectedDate);
+      classes = classes.filter((c: any) => c.date >= startOfMonth && c.date <= endOfMonth);
+    }
+
+    const groupedByDate: Record<string, any[]> = {};
+    classes.forEach((c: any) => {
+      if (!groupedByDate[c.date]) groupedByDate[c.date] = [];
+      groupedByDate[c.date].push({
+        ...c,
+        attendance_status: attendanceMap[c.id] || null,
+      });
+    });
+
+    return { groupedByDate, hasClasses: classes.length > 0 };
+  }, [dashboardData, deferredData, currentView, selectedDate, todayStr]);
+
+  if (isLoading || !filteredData) {
+    return (
+      <div className="p-8 text-center bg-white rounded-2xl border border-slate-200 shadow-sm animate-pulse">
+        <p className="text-sm text-slate-500">Loading schedule...</p>
+      </div>
+    );
   }
 
-  // Group by date
-  const groupedByDate: Record<string, ClassSession[]> = {};
-  (classes || []).forEach((c: any) => {
-    if (!groupedByDate[c.date]) groupedByDate[c.date] = [];
-    groupedByDate[c.date].push({
-      ...c,
-      attendance_status: attendanceMap[c.id] || null,
-    });
-  });
+  const { groupedByDate, hasClasses } = filteredData;
 
   return (
     <div className="space-y-6">

@@ -1,18 +1,20 @@
-﻿import { createClient } from "@/lib/supabase/server";
-import { requireOnboarded } from "@/lib/auth/session";
+"use client";
+
+import { useStudentData } from "@/components/student/StudentDataProvider";
 import { Users, BarChart2, ShieldCheck, Award } from "lucide-react";
 
-export default async function StatsPage() {
-  await requireOnboarded();
-  const supabase = await createClient();
+export default function StatsPage() {
+  const { deferredData, isLoading } = useStudentData();
 
-  // Call secure database RPC function for aggregate statistics
-  const { data: rawStats, error } = await supabase.rpc("get_batch_aggregate_stats");
-  const stats = rawStats || {
-    active_students_30d: 0,
-    batch_average_attendance_pct: 0,
-    subject_averages: [],
-  };
+  if (isLoading || !deferredData) {
+    return (
+      <div className="p-8 text-center bg-white rounded-2xl border border-slate-200 shadow-sm animate-pulse">
+        <p className="text-sm text-slate-500">Loading statistics...</p>
+      </div>
+    );
+  }
+
+  const stats = deferredData.stats;
 
   return (
     <div className="space-y-6">

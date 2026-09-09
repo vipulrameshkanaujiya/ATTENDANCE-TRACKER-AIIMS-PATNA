@@ -76,7 +76,7 @@ export async function updateTopicProgress(topicId: string, status: TopicProgress
   return data;
 }
 
-import { getTodayDateString, getCurrentTimeString } from "@/lib/utils/date";
+import { getTodayDateString, getCurrentTimeString, shiftDateString } from "@/lib/utils/date";
 
 /**
  * Strictly returns the next upcoming session that is in the future.
@@ -153,16 +153,39 @@ export async function getStudentDashboardData() {
   const currentTimeStr = getCurrentTimeString();
   const batchName = profile.batch?.name || "Batch A";
 
-  // Fetch today's classes applicable to student
-  const { data: todayClasses } = await supabase
-    .from("classes")
-    .select("*, subject:subjects(*)")
-    .eq("date", todayStr)
-    .in("batch_scope", ["ALL", batchName])
-    .order("start_time", { ascending: true });
+  // Batch network requests
+  const [
+    { data: todayClasses },
+    { data: activeExam },
+    { data: allStudentAttendance },
+    { data: allSubjects },
+    historicalAttendance
+  ] = await Promise.all([
+    supabase
+      .from("classes")
+      .select("id, date, start_time, end_time, topic, class_type, batch_scope, venue, faculty, subject:subjects(id, code, name)")
+      .eq("date", todayStr)
+      .in("batch_scope", ["ALL", batchName])
+      .order("start_time", { ascending: true }),
+    supabase
+      .from("exams")
+      .select("id, title, exam_date, description")
+      .eq("is_active", true)
+      .order("exam_date", { ascending: true })
+      .limit(1)
+      .maybeSingle(),
+    supabase
+      .from("attendance")
+      .select("status, class_id, class:classes(id, subject_id, batch_scope, class_type, date)")
+      .eq("student_id", user.id),
+    supabase
+      .from("subjects")
+      .select("id, code, name, color_code, display_order")
+      .order("display_order", { ascending: true }),
+    getStudentHistoricalAttendance(user.id)
+  ]);
 
-  // Fetch student's attendance records for today
-  const classIds = (todayClasses || []).map((c: ClassSession) => c.id);
+  const classIds = (todayClasses || []).map((c: any) => c.id);
   let attendanceMap: Record<string, AttendanceStatus> = {};
   if (classIds.length > 0) {
     const { data: attRecords } = await supabase
@@ -176,35 +199,13 @@ export async function getStudentDashboardData() {
     });
   }
 
-  const enrichedTodayClasses = (todayClasses || []).map((c: ClassSession) => ({
+  const enrichedTodayClasses = (todayClasses || []).map((c: any) => ({
     ...c,
     attendance_status: attendanceMap[c.id] || null,
   }));
 
   // Determine "Next Class" strictly comparing current system date/time
   const nextClass = await getNextSession(batchName, user.id, todayStr, currentTimeStr);
-
-  // Fetch active exam countdown
-  const { data: activeExam } = await supabase
-    .from("exams")
-    .select("*")
-    .eq("is_active", true)
-    .order("exam_date", { ascending: true })
-    .limit(1)
-    .maybeSingle();
-
-  // Subject-wise attendance calculation with Theory vs Practical split and Historical Data
-  const { data: allStudentAttendance } = await supabase
-    .from("attendance")
-    .select("status, class:classes(id, subject_id, batch_scope, class_type)")
-    .eq("student_id", user.id);
-
-  const { data: allSubjects } = await supabase
-    .from("subjects")
-    .select("*")
-    .order("display_order", { ascending: true });
-
-  const historicalAttendance = await getStudentHistoricalAttendance(user.id);
 
   const breakdownMap = buildSubjectAttendanceBreakdown(
     (allSubjects as any) || [],
@@ -234,6 +235,56 @@ export async function getStudentDashboardData() {
     nextClass: nextClass || null,
     activeExam: (activeExam as Exam) || null,
     subjectAttendance: subjectAttendanceList,
+    allStudentAttendance: allStudentAttendance || [],
+    historicalAttendance: historicalAttendance || [],
+    allSubjects: allSubjects || [],
+  };
+}
+
+export async function getDeferredStudentData() {
+  const user = await getCurrentUser();
+  if (!user) return null;
+  const profile = await getUserProfile(user.id);
+  if (!profile) return null;
+
+  const supabase = await createClient();
+  const batchName = profile.batch?.name || "Batch A";
+  const todayStr = getTodayDateString();
+
+  const [
+    { data: scheduleClasses },
+    { data: units },
+    { data: progressRecords },
+    { data: rawStats }
+  ] = await Promise.all([
+    supabase
+      .from("classes")
+      .select("id, date, start_time, end_time, topic, class_type, batch_scope, venue, faculty, subject:subjects(id, code, name)")
+      .in("batch_scope", ["ALL", batchName])
+      .gte("date", shiftDateString(todayStr, -14))
+      .lte("date", shiftDateString(todayStr, 30))
+      .order("date", { ascending: true })
+      .order("start_time", { ascending: true }),
+    supabase
+      .from("units")
+      .select("id, subject_id, unit_number, title, topics(id, title, topic_code, display_order)")
+      .order("unit_number", { ascending: true }),
+    supabase
+      .from("student_topic_progress")
+      .select("topic_id, status")
+      .eq("student_id", user.id),
+    supabase.rpc("get_batch_aggregate_stats")
+  ]);
+
+  return {
+    scheduleClasses: scheduleClasses || [],
+    units: units || [],
+    progressRecords: progressRecords || [],
+    stats: rawStats || {
+      active_students_30d: 0,
+      batch_average_attendance_pct: 0,
+      subject_averages: [],
+    }
   };
 }
 

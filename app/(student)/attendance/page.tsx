@@ -1,75 +1,67 @@
-import { createClient } from "@/lib/supabase/server";
-import { requireOnboarded } from "@/lib/auth/session";
+"use client";
+
+import { useSearchParams } from "next/navigation";
+import { useStudentData } from "@/components/student/StudentDataProvider";
 import { AttendanceToggle } from "@/components/student/AttendanceToggle";
 import { PreSeptemberAttendanceCard } from "@/components/student/PreSeptemberAttendanceCard";
-import { Subject, ClassSession } from "@/types/database";
-import { CheckCircle2, Clock, Calendar, BookOpen, Filter } from "lucide-react";
-import Link from "next/link";
 import { buildSubjectAttendanceBreakdown } from "@/lib/utils/attendance";
-import { getStudentHistoricalAttendance } from "@/app/actions/student";
+import Link from "next/link";
+import { useMemo } from "react";
 
-interface AttendancePageProps {
-  searchParams: Promise<{
-    subject?: string;
-    month?: string;
-  }>;
-}
+export default function AttendancePage() {
+  const searchParams = useSearchParams();
+  const selectedSubjectId = searchParams.get("subject") || "ALL";
+  const selectedMonth = searchParams.get("month") || "";
 
-export default async function AttendancePage({ searchParams }: AttendancePageProps) {
-  const { profile } = await requireOnboarded();
-  const params = await searchParams;
-  const selectedSubjectId = params.subject || "ALL";
-  const selectedMonth = params.month || "";
+  const { dashboardData, isLoading } = useStudentData();
 
-  const supabase = await createClient();
-  const studentBatch = profile?.batch?.name || "Batch A";
+  const metrics = useMemo(() => {
+    if (!dashboardData) return null;
+    const { allStudentAttendance: attendanceRecords, historicalAttendance: historicalRecords, allSubjects: subjects } = dashboardData;
 
-  // 1. Fetch all subjects for filter tabs
-  const { data: subjects } = await supabase
-    .from("subjects")
-    .select("*")
-    .order("display_order", { ascending: true });
+    const septAttended = (attendanceRecords || []).filter((r: any) => r.status === "PRESENT").length;
+    const septTotal = (attendanceRecords || []).length;
 
-  // 2. Fetch all student attendance records
-  const { data: attendanceRecords } = await supabase
-    .from("attendance")
-    .select("*, class:classes(*, subject:subjects(*))")
-    .eq("student_id", profile?.id || "")
-    .order("marked_at", { ascending: false });
+    let histAttended = 0;
+    let histTotal = 0;
+    (historicalRecords || []).forEach((h: any) => {
+      histAttended += (h.theory_attended || 0) + (h.practical_attended || 0);
+      histTotal += (h.theory_total || 0) + (h.practical_total || 0);
+    });
 
-  // 3. Fetch pre-September historical attendance records
-  const historicalRecords = await getStudentHistoricalAttendance(profile?.id || "");
+    const totalAttended = septAttended + histAttended;
+    const totalMarked = septTotal + histTotal;
+    const overallPercentage = totalMarked > 0 ? Math.round((totalAttended / totalMarked) * 100) : 0;
 
-  // 4. Calculate Combined Overall Attendance metrics
-  const septAttended = (attendanceRecords || []).filter((r: any) => r.status === "PRESENT").length;
-  const septTotal = (attendanceRecords || []).length;
+    const subjectBreakdown = buildSubjectAttendanceBreakdown(
+      subjects || [],
+      attendanceRecords || [],
+      historicalRecords
+    );
 
-  let histAttended = 0;
-  let histTotal = 0;
-  (historicalRecords || []).forEach((h) => {
-    histAttended += (h.theory_attended || 0) + (h.practical_attended || 0);
-    histTotal += (h.theory_total || 0) + (h.practical_total || 0);
-  });
+    let filteredHistory = attendanceRecords || [];
+    if (selectedSubjectId !== "ALL") {
+      filteredHistory = filteredHistory.filter((r: any) => r.class?.subject_id === selectedSubjectId);
+    }
+    if (selectedMonth) {
+      filteredHistory = filteredHistory.filter((r: any) => r.class?.date?.startsWith(selectedMonth));
+    }
 
-  const totalAttended = septAttended + histAttended;
-  const totalMarked = septTotal + histTotal;
-  const overallPercentage = totalMarked > 0 ? Math.round((totalAttended / totalMarked) * 100) : 0;
+    return {
+      septAttended, septTotal, histAttended, histTotal, totalAttended, totalMarked, overallPercentage, subjectBreakdown, filteredHistory
+    };
+  }, [dashboardData, selectedSubjectId, selectedMonth]);
 
-  // Subject breakdown map with Theory vs Practical split for the 5 target subjects
-  const subjectBreakdown = buildSubjectAttendanceBreakdown(
-    (subjects as any) || [],
-    (attendanceRecords as any) || [],
-    historicalRecords
-  );
-
-  // Filter attendance history
-  let filteredHistory = attendanceRecords || [];
-  if (selectedSubjectId !== "ALL") {
-    filteredHistory = filteredHistory.filter((r: any) => r.class?.subject_id === selectedSubjectId);
+  if (isLoading || !metrics || !dashboardData) {
+    return (
+      <div className="p-8 text-center bg-white rounded-2xl border border-slate-200 shadow-sm animate-pulse">
+        <p className="text-sm text-slate-500">Loading attendance records...</p>
+      </div>
+    );
   }
-  if (selectedMonth) {
-    filteredHistory = filteredHistory.filter((r: any) => r.class?.date?.startsWith(selectedMonth));
-  }
+
+  const { septAttended, septTotal, histAttended, histTotal, totalAttended, totalMarked, overallPercentage, subjectBreakdown, filteredHistory } = metrics;
+  const historicalRecords = dashboardData.historicalAttendance;
 
   return (
     <div className="space-y-6">

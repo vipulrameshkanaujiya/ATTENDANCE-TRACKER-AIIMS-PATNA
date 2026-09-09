@@ -1,61 +1,57 @@
-﻿import { createClient } from "@/lib/supabase/server";
-import { requireOnboarded } from "@/lib/auth/session";
+"use client";
+
+import { useSearchParams } from "next/navigation";
+import { useStudentData } from "@/components/student/StudentDataProvider";
 import { TopicStatusPill } from "@/components/student/TopicStatusPill";
 import { BookOpen, CheckCircle, ChevronDown } from "lucide-react";
 import Link from "next/link";
+import { useMemo } from "react";
 
-interface TopicsPageProps {
-  searchParams: Promise<{
-    subject?: string;
-  }>;
-}
+export default function TopicsPage() {
+  const searchParams = useSearchParams();
+  const { dashboardData, deferredData, isLoading } = useStudentData();
 
-export default async function TopicsPage({ searchParams }: TopicsPageProps) {
-  const { profile } = await requireOnboarded();
-  const params = await searchParams;
-  const supabase = await createClient();
+  const metrics = useMemo(() => {
+    if (!dashboardData || !deferredData) return null;
+    const { allSubjects: subjects } = dashboardData;
+    const { units: allUnits, progressRecords } = deferredData;
 
-  // 1. Fetch all subjects
-  const { data: subjects } = await supabase
-    .from("subjects")
-    .select("*")
-    .order("display_order", { ascending: true });
+    const activeSubjectId = searchParams.get("subject") || subjects?.[0]?.id || "";
 
-  const activeSubjectId = params.subject || subjects?.[0]?.id || "";
+    const units = allUnits.filter((u: any) => u.subject_id === activeSubjectId);
 
-  // 2. Fetch units and topics for active subject
-  const { data: units } = await supabase
-    .from("units")
-    .select("*, topics(*)")
-    .eq("subject_id", activeSubjectId)
-    .order("unit_number", { ascending: true });
-
-  // 3. Fetch current student's progress
-  const { data: progressRecords } = await supabase
-    .from("student_topic_progress")
-    .select("topic_id, status")
-    .eq("student_id", profile?.id || "");
-
-  const progressMap: Record<string, "NOT_STARTED" | "LEARNING" | "COMPLETED"> = {};
-  (progressRecords || []).forEach((p: any) => {
-    progressMap[p.topic_id] = p.status;
-  });
-
-  // Calculate subject progress stats
-  let totalTopics = 0;
-  let completedTopics = 0;
-  let learningTopics = 0;
-
-  (units || []).forEach((u: any) => {
-    (u.topics || []).forEach((t: any) => {
-      totalTopics++;
-      const st = progressMap[t.id] || "NOT_STARTED";
-      if (st === "COMPLETED") completedTopics++;
-      if (st === "LEARNING") learningTopics++;
+    const progressMap: Record<string, "NOT_STARTED" | "LEARNING" | "COMPLETED"> = {};
+    (progressRecords || []).forEach((p: any) => {
+      progressMap[p.topic_id] = p.status;
     });
-  });
 
-  const completionPct = totalTopics > 0 ? Math.round((completedTopics / totalTopics) * 100) : 0;
+    let totalTopics = 0;
+    let completedTopics = 0;
+    let learningTopics = 0;
+
+    (units || []).forEach((u: any) => {
+      (u.topics || []).forEach((t: any) => {
+        totalTopics++;
+        const st = progressMap[t.id] || "NOT_STARTED";
+        if (st === "COMPLETED") completedTopics++;
+        if (st === "LEARNING") learningTopics++;
+      });
+    });
+
+    const completionPct = totalTopics > 0 ? Math.round((completedTopics / totalTopics) * 100) : 0;
+
+    return { subjects, activeSubjectId, units, progressMap, totalTopics, completedTopics, learningTopics, completionPct };
+  }, [dashboardData, deferredData, searchParams]);
+
+  if (isLoading || !metrics || !dashboardData || !deferredData) {
+    return (
+      <div className="p-8 text-center bg-white rounded-2xl border border-slate-200 shadow-sm animate-pulse">
+        <p className="text-sm text-slate-500">Loading curriculum...</p>
+      </div>
+    );
+  }
+
+  const { subjects, activeSubjectId, units, progressMap, totalTopics, completedTopics, learningTopics, completionPct } = metrics;
 
   return (
     <div className="space-y-6">
@@ -70,7 +66,7 @@ export default async function TopicsPage({ searchParams }: TopicsPageProps) {
 
       {/* Subject Filter Tabs */}
       <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-        {(subjects || []).map((sub) => {
+        {(subjects || []).map((sub: any) => {
           const isActive = sub.id === activeSubjectId;
           return (
             <Link
