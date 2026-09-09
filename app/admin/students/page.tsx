@@ -3,6 +3,7 @@ import { requireAdmin } from "@/lib/auth/session";
 import { addRosterStudentAction, resetStudentClaimAction, updateStudentBatchAction, bulkImportRosterAction } from "@/app/actions/admin";
 import { Users, Hash, ShieldCheck, UserPlus, RotateCcw, FileText, AlertTriangle } from "lucide-react";
 import { AdminHistoricalAttendanceModal } from "@/components/admin/AdminHistoricalAttendanceModal";
+import { AdminAutoPresentToggle } from "@/components/admin/AdminAutoPresentToggle";
 
 export default async function AdminStudentsPage() {
   await requireAdmin();
@@ -25,6 +26,12 @@ export default async function AdminStudentsPage() {
     .from("users")
     .select("*, batch:batches(*)")
     .order("roll_number", { ascending: true });
+
+  const { data: autoPresentPrefs } = await supabase
+    .from("student_auto_present_preferences")
+    .select("*");
+
+  const prefsMap = new Map(autoPresentPrefs?.map((p: any) => [p.student_id, p]) || []);
 
   const totalRoster = rosterEntries?.length || users?.length || 0;
   const claimedCount = rosterEntries
@@ -232,11 +239,17 @@ export default async function AdminStudentsPage() {
                     <td className="p-3 text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         {r.status === "CLAIMED" && (r.claimed_user?.id || r.claimed_by_user_id) && (
-                          <AdminHistoricalAttendanceModal
-                            studentId={r.claimed_user?.id || r.claimed_by_user_id}
-                            studentName={r.full_name || r.claimed_user?.full_name || "MBBS Student"}
-                            rollNumber={r.roll_number}
-                          />
+                          <>
+                            <AdminAutoPresentToggle
+                              studentId={r.claimed_user?.id || r.claimed_by_user_id}
+                              isEnabled={!!prefsMap.get(r.claimed_user?.id || r.claimed_by_user_id)?.is_enabled}
+                            />
+                            <AdminHistoricalAttendanceModal
+                              studentId={r.claimed_user?.id || r.claimed_by_user_id}
+                              studentName={r.full_name || r.claimed_user?.full_name || "MBBS Student"}
+                              rollNumber={r.roll_number}
+                            />
+                          </>
                         )}
                         {r.status === "CLAIMED" && (
                           <form action={resetStudentClaimAction.bind(null, r.id)} className="inline">
@@ -273,11 +286,17 @@ export default async function AdminStudentsPage() {
                       <span className="text-emerald-600 font-semibold">Active</span>
                     </td>
                     <td className="p-3 text-right">
-                      <AdminHistoricalAttendanceModal
-                        studentId={s.id}
-                        studentName={s.full_name || "MBBS Student"}
-                        rollNumber={s.roll_number || "Pending"}
-                      />
+                      <div className="flex items-center justify-end gap-1.5">
+                        <AdminAutoPresentToggle
+                          studentId={s.id}
+                          isEnabled={!!prefsMap.get(s.id)?.is_enabled}
+                        />
+                        <AdminHistoricalAttendanceModal
+                          studentId={s.id}
+                          studentName={s.full_name || "MBBS Student"}
+                          rollNumber={s.roll_number || "Pending"}
+                        />
+                      </div>
                     </td>
                   </tr>
                 ))

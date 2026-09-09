@@ -216,3 +216,10 @@ export interface StudentRosterEntry {
   } | null;
 }
 
+export interface StudentAutoPresentPreference {
+  id: string;
+  student_id: string;
+  is_enabled: boolean;
+  enabled_from: string | null;
+  updated_at: string;
+}

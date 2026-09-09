@@ -145,10 +145,14 @@ export async function getStudentDashboardData() {
   const profile = await getUserProfile(user.id);
   if (!profile) return null;
 
+  const batchName = profile.batch?.name || "Batch A";
+  
+  // 1. Process Auto-Present before fetching data
+  await processAutoPresent(user.id, batchName);
+
   const supabase = await createClient();
   const todayStr = getTodayDateString(); // YYYY-MM-DD in IST
   const currentTimeStr = getCurrentTimeString();
-  const batchName = profile.batch?.name || "Batch A";
 
   // Batch network requests
   const [
@@ -156,6 +160,7 @@ export async function getStudentDashboardData() {
     { data: activeExam },
     { data: allStudentAttendance },
     { data: allSubjects },
+    { data: autoPresentPref },
     historicalAttendance
   ] = await Promise.all([
     supabase
@@ -167,18 +172,24 @@ export async function getStudentDashboardData() {
     supabase
       .from("exams")
       .select("id, title, exam_date, description")
+      .gte("exam_date", todayStr)
       .eq("is_active", true)
       .order("exam_date", { ascending: true })
       .limit(1)
       .maybeSingle(),
     supabase
       .from("attendance")
-      .select("status, class_id, class:classes(id, subject_id, batch_scope, class_type, date)")
+      .select("id, class_id, status, class:classes(subject_id, date, class_type)")
       .eq("student_id", user.id),
     supabase
       .from("subjects")
-      .select("id, code, name, color_code, display_order")
+      .select("id, name, code, color_code, display_order, type, semester, is_active")
       .order("display_order", { ascending: true }),
+    supabase
+      .from("student_auto_present_preferences")
+      .select("*")
+      .eq("student_id", user.id)
+      .maybeSingle(),
     getStudentHistoricalAttendance(user.id)
   ]);
 
@@ -235,6 +246,7 @@ export async function getStudentDashboardData() {
     allStudentAttendance: allStudentAttendance || [],
     historicalAttendance: historicalAttendance || [],
     allSubjects: allSubjects || [],
+    autoPresentPref: autoPresentPref || null,
   };
 }
 
@@ -448,4 +460,70 @@ export async function saveStudentHistoricalAttendanceAction(
     console.error("Unexpected error in saveStudentHistoricalAttendanceAction:", err);
     return { success: false, error: err?.message || "An unexpected error occurred while saving historical attendance." };
   }
+}
+export async function toggleAutoPresent(isEnabled: boolean) {
+  const user = await getCurrentUser();
+  if (!user) throw new Error("Authentication required");
+  const supabase = await createClient();
+  const todayStr = getTodayDateString();
+
+  const { error } = await supabase
+    .from("student_auto_present_preferences")
+    .upsert(
+      {
+        student_id: user.id,
+        is_enabled: isEnabled,
+        enabled_from: isEnabled ? todayStr : null,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "student_id" }
+    );
+  if (error) throw new Error("Failed to update auto-present preference: " + error.message);
+  return { success: true };
+}
+
+export async function processAutoPresent(userId: string, batchName: string) {
+  const supabase = await createClient();
+  const todayStr = getTodayDateString();
+
+  const { data: pref } = await supabase
+    .from("student_auto_present_preferences")
+    .select("*")
+    .eq("student_id", userId)
+    .single();
+
+  if (!pref || !pref.is_enabled || !pref.enabled_from) return;
+
+  // Fetch all classes since enabled_from to today
+  const { data: classes } = await supabase
+    .from("classes")
+    .select("id")
+    .in("batch_scope", ["ALL", batchName])
+    .gte("date", pref.enabled_from)
+    .lte("date", todayStr);
+
+  if (!classes || classes.length === 0) return;
+
+  // Fetch existing attendance records
+  const classIds = classes.map(c => c.id);
+  const { data: existingAttendance } = await supabase
+    .from("attendance")
+    .select("class_id")
+    .eq("student_id", userId)
+    .in("class_id", classIds);
+
+  const existingIds = new Set(existingAttendance?.map(a => a.class_id) || []);
+  const missingClassIds = classIds.filter(id => !existingIds.has(id));
+
+  if (missingClassIds.length === 0) return;
+
+  // Insert PRESENT for missing classes
+  const toInsert = missingClassIds.map(classId => ({
+    student_id: userId,
+    class_id: classId,
+    status: "PRESENT",
+    updated_at: new Date().toISOString(),
+  }));
+
+  await supabase.from("attendance").insert(toInsert);
 }

@@ -2,9 +2,61 @@
 
 import { useStudentData } from "@/components/student/StudentDataProvider";
 import { AttendanceToggle } from "@/components/student/AttendanceToggle";
-import { Clock, MapPin, User, ChevronRight } from "lucide-react";
+import { Clock, MapPin, User, ChevronRight, Loader2, Bot } from "lucide-react";
 import Link from "next/link";
 import { getTodayDateString, parseDateString, formatReadableDate } from "@/lib/utils/date";
+import { useState, useTransition } from "react";
+import { toggleAutoPresent } from "@/app/actions/student";
+
+function AutoPresentCard({ initialPref }: { initialPref: any }) {
+  const [isEnabled, setIsEnabled] = useState(initialPref?.is_enabled || false);
+  const [isPending, startTransition] = useTransition();
+
+  const handleToggle = () => {
+    const newValue = !isEnabled;
+    setIsEnabled(newValue);
+    startTransition(async () => {
+      try {
+        await toggleAutoPresent(newValue);
+      } catch (e) {
+        setIsEnabled(!newValue);
+        alert("Failed to update Auto-Present mode.");
+      }
+    });
+  };
+
+  return (
+    <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-4 mt-4 transition-colors">
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-start gap-3">
+          <div className="p-2 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-lg shrink-0">
+            <Bot className="w-5 h-5" />
+          </div>
+          <div>
+            <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm">Auto-Present Mode</h3>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 max-w-[240px]">
+              {isEnabled ? "🟢 Active • You are marked Present for all classes. Mark Absent manually if needed." : "⚪ Inactive • Tap to enable auto-marking of all classes."}
+            </p>
+          </div>
+        </div>
+        <button
+          onClick={handleToggle}
+          disabled={isPending}
+          className={`relative shrink-0 w-11 h-6 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
+            isEnabled ? 'bg-indigo-600' : 'bg-slate-300 dark:bg-slate-600'
+          }`}
+        >
+          {isPending && <Loader2 className="absolute top-1 left-[14px] w-4 h-4 text-white animate-spin z-10" />}
+          <span
+            className={`inline-block w-4 h-4 bg-white rounded-full transition-transform transform ${
+              isEnabled ? 'translate-x-6' : 'translate-x-1'
+            } mt-1`}
+          />
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default function StudentHomePage() {
   const { dashboardData: data, isLoading } = useStudentData();
@@ -17,7 +69,7 @@ export default function StudentHomePage() {
     );
   }
 
-  const { profile, todayClasses, nextClass, activeExam, subjectAttendance } = data;
+  const { profile, todayClasses, nextClass, activeExam, subjectAttendance, autoPresentPref } = data;
 
   const todayStr = getTodayDateString();
   const dateObj = parseDateString(todayStr);
@@ -73,6 +125,9 @@ export default function StudentHomePage() {
           </div>
         )}
       </div>
+
+      {/* Auto-Present Toggle Card */}
+      <AutoPresentCard initialPref={autoPresentPref} />
 
       {/* 2. NEXT CLASS Hero Card */}
       {nextClass ? (

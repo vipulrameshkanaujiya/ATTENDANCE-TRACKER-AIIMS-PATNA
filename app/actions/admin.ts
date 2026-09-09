@@ -5,6 +5,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { requireAdmin } from "@/lib/auth/session";
 import { ClassType, BatchScope, AttendanceStatus, HistoricalSubjectCode, StudentHistoricalAttendance } from "@/types/database";
 import { revalidatePath } from "next/cache";
+import { getTodayDateString } from "@/lib/utils/date";
 
 // 1. CLASS / SCHEDULE ACTIONS
 export async function createClassAction(formData: FormData) {
@@ -500,3 +501,23 @@ export async function adminUpdateStudentHistoricalAttendanceAction(
 }
 
 
+export async function adminToggleAutoPresentAction(studentId: string, isEnabled: boolean) {
+  await requireAdmin();
+  const supabase = await createClient();
+  const todayStr = getTodayDateString();
+
+  const { error } = await supabase
+    .from("student_auto_present_preferences")
+    .upsert(
+      {
+        student_id: studentId,
+        is_enabled: isEnabled,
+        enabled_from: isEnabled ? todayStr : null,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "student_id" }
+    );
+  if (error) throw new Error("Failed to update auto-present preference: " + error.message);
+  revalidatePath("/admin/students");
+  return { success: true };
+}
