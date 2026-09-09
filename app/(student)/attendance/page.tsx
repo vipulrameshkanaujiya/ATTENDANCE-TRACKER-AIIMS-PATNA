@@ -119,6 +119,12 @@ export default function AttendancePage() {
       {console.log("🔍 DEBUG: subjectBreakdown =", subjectBreakdown)}
       {console.log("🔍 DEBUG: subjectBreakdown keys =", subjectBreakdown ? Object.keys(subjectBreakdown) : "undefined")}
 
+      <div className="bg-red-100 p-4 mb-4 rounded-xl border border-red-400">
+        <p className="text-red-800 font-bold">🔍 DEBUG: Subject section is rendering</p>
+        <p className="text-red-700">allSubjects count: {dashboardData?.allSubjects?.length || 0}</p>
+        <p className="text-red-700">subjectBreakdown keys: {subjectBreakdown ? Object.keys(subjectBreakdown).length : 0}</p>
+      </div>
+
       {/* Subject Breakdown Cards */}
       <div className="space-y-3">
         <h2 className="text-sm font-bold uppercase tracking-wider text-slate-700">
