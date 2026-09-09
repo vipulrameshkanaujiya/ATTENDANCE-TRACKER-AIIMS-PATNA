@@ -6,7 +6,7 @@ import { AttendanceToggle } from "@/components/student/AttendanceToggle";
 import { ScheduleDateNav } from "@/components/student/ScheduleDateNav";
 import { Calendar as CalendarIcon, MapPin, User } from "lucide-react";
 import { getTodayDateString, parseDateString, formatReadableDate } from "@/lib/utils/date";
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 
 function getWeekRange(dateStr: string) {
   const d = parseDateString(dateStr);
@@ -32,16 +32,21 @@ function getMonthRange(dateStr: string) {
 
 export default function SchedulePage() {
   const searchParams = useSearchParams();
-  const dateParam = searchParams.get("date");
-  const viewParam = searchParams.get("view");
   const todayStr = getTodayDateString();
 
-  const selectedDate = dateParam && /^\d{4}-\d{2}-\d{2}$/.test(dateParam)
-    ? dateParam
-    : todayStr;
+  const initialDate = searchParams.get("date") || todayStr;
+  const initialView = searchParams.get("view") || (initialDate !== todayStr ? "day" : "today");
 
-  const currentView: "today" | "day" | "week" | "month" = 
-    (viewParam as any) || (dateParam && dateParam !== todayStr ? "day" : "today");
+  const [selectedDate, setSelectedDate] = useState(initialDate);
+  const [currentView, setCurrentView] = useState<"today" | "day" | "week" | "month">(initialView as any);
+
+  // Sync state if URL changes (e.g. back button)
+  useEffect(() => {
+    const d = searchParams.get("date");
+    const v = searchParams.get("view");
+    if (d) setSelectedDate(d);
+    if (v) setCurrentView(v as any);
+  }, [searchParams]);
 
   const { dashboardData, deferredData, isLoading } = useStudentData();
 
@@ -94,6 +99,14 @@ export default function SchedulePage() {
         currentView={currentView}
         selectedDate={selectedDate}
         todayStr={todayStr}
+        onChangeView={(view) => {
+          setCurrentView(view);
+          window.history.replaceState({}, '', `/schedule?view=${view}&date=${selectedDate}`);
+        }}
+        onChangeDate={(date) => {
+          setSelectedDate(date);
+          window.history.replaceState({}, '', `/schedule?view=${currentView}&date=${date}`);
+        }}
       />
 
       {/* Schedule List */}

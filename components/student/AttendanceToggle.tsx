@@ -1,9 +1,10 @@
-﻿"use client";
+"use client";
 
 import { toggleAttendance } from "@/app/actions/student";
 import { AttendanceStatus } from "@/types/database";
-import { Check, X, Loader2 } from "lucide-react";
-import { useState, useTransition } from "react";
+import { Check, X } from "lucide-react";
+import { useState } from "react";
+import { useStudentData } from "@/components/student/StudentDataProvider";
 import clsx from "clsx";
 
 interface AttendanceToggleProps {
@@ -14,18 +15,24 @@ interface AttendanceToggleProps {
 
 export function AttendanceToggle({ classId, initialStatus, compact = false }: AttendanceToggleProps) {
   const [status, setStatus] = useState<AttendanceStatus | null>(initialStatus);
-  const [isPending, startTransition] = useTransition();
+  const { updateAttendanceLocally } = useStudentData();
 
   const handleToggle = (newStatus: AttendanceStatus) => {
-    setStatus(newStatus); // Optimistic UI update
-    startTransition(async () => {
-      try {
-        await toggleAttendance(classId, newStatus);
-      } catch (err) {
-        // Rollback on network/permission error
-        setStatus(initialStatus);
-        console.error("Failed to mark attendance", err);
+    // 1. Optimistic UI update locally (component level)
+    setStatus(newStatus);
+    
+    // 2. Optimistic UI update globally (context level)
+    updateAttendanceLocally(classId, newStatus);
+
+    // 3. Fire server action in background (no await blocking UI)
+    toggleAttendance(classId, newStatus).catch((err) => {
+      // 4. Rollback on network/permission error
+      setStatus(initialStatus);
+      if (initialStatus) {
+         updateAttendanceLocally(classId, initialStatus);
       }
+      alert("Failed to save attendance, please try again");
+      console.error("Failed to mark attendance", err);
     });
   };
 
@@ -34,7 +41,6 @@ export function AttendanceToggle({ classId, initialStatus, compact = false }: At
       <button
         type="button"
         onClick={() => handleToggle("PRESENT")}
-        disabled={isPending}
         className={clsx(
           "flex items-center justify-center gap-1 font-semibold transition-all select-none",
           compact
@@ -45,18 +51,13 @@ export function AttendanceToggle({ classId, initialStatus, compact = false }: At
             : "bg-white text-slate-600 hover:bg-slate-50 border border-slate-200"
         )}
       >
-        {isPending && status === "PRESENT" ? (
-          <Loader2 className="w-3.5 h-3.5 animate-spin" />
-        ) : (
-          <Check className="w-3.5 h-3.5 stroke-[2.5]" />
-        )}
+        <Check className="w-3.5 h-3.5 stroke-[2.5]" />
         <span>Present</span>
       </button>
 
       <button
         type="button"
         onClick={() => handleToggle("ABSENT")}
-        disabled={isPending}
         className={clsx(
           "flex items-center justify-center gap-1 font-semibold transition-all select-none",
           compact
@@ -67,11 +68,7 @@ export function AttendanceToggle({ classId, initialStatus, compact = false }: At
             : "bg-white text-slate-600 hover:bg-slate-50 border border-slate-200"
         )}
       >
-        {isPending && status === "ABSENT" ? (
-          <Loader2 className="w-3.5 h-3.5 animate-spin" />
-        ) : (
-          <X className="w-3.5 h-3.5 stroke-[2.5]" />
-        )}
+        <X className="w-3.5 h-3.5 stroke-[2.5]" />
         <span>Absent</span>
       </button>
     </div>

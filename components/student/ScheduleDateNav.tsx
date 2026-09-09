@@ -1,6 +1,4 @@
 "use client";
-
-import { useRouter } from "next/navigation";
 import { 
   Calendar as CalendarIcon, 
   ChevronLeft, 
@@ -18,24 +16,28 @@ interface ScheduleDateNavProps {
   currentView: "today" | "day" | "week" | "month";
   selectedDate: string;
   todayStr: string;
+  onChangeView: (view: "today" | "day" | "week" | "month") => void;
+  onChangeDate: (date: string) => void;
 }
 
 export function ScheduleDateNav({
   currentView,
   selectedDate,
   todayStr,
+  onChangeView,
+  onChangeDate
 }: ScheduleDateNavProps) {
-  const router = useRouter();
-
   const handleViewChange = (newView: "today" | "day" | "week" | "month") => {
     const targetDate = newView === "today" ? todayStr : selectedDate;
-    router.push(`/schedule?view=${newView}&date=${targetDate}`);
+    onChangeDate(targetDate);
+    onChangeView(newView);
   };
 
   const handleDateChange = (newDate: string) => {
     if (!newDate) return;
     const view = currentView === "today" ? "day" : currentView;
-    router.push(`/schedule?view=${view}&date=${newDate}`);
+    onChangeView(view);
+    onChangeDate(newDate);
   };
 
   const handleStepDate = (direction: -1 | 1) => {
@@ -47,7 +49,8 @@ export function ScheduleDateNav({
     }
     const nextDate = shiftDateString(selectedDate, delta);
     const view = currentView === "today" ? "day" : currentView;
-    router.push(`/schedule?view=${view}&date=${nextDate}`);
+    onChangeView(view);
+    onChangeDate(nextDate);
   };
 
   const { days: weekDays } = getWeekRange(selectedDate);

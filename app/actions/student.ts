@@ -41,9 +41,6 @@ export async function toggleAttendance(classId: string, status: AttendanceStatus
     throw new Error("Failed to record attendance: " + error.message);
   }
 
-  revalidatePath("/home");
-  revalidatePath("/schedule");
-  revalidatePath("/attendance");
   return data;
 }
 
@@ -250,6 +247,9 @@ export async function getDeferredStudentData() {
   const supabase = await createClient();
   const batchName = profile.batch?.name || "Batch A";
   const todayStr = getTodayDateString();
+  const d = new Date(todayStr);
+  const startOfMonth = new Date(d.getFullYear(), d.getMonth(), 1).toISOString().split("T")[0];
+  const endOfNextMonth = new Date(d.getFullYear(), d.getMonth() + 2, 0).toISOString().split("T")[0];
 
   const [
     { data: scheduleClasses },
@@ -261,8 +261,8 @@ export async function getDeferredStudentData() {
       .from("classes")
       .select("id, date, start_time, end_time, topic, class_type, batch_scope, venue, faculty, subject:subjects(id, code, name)")
       .in("batch_scope", ["ALL", batchName])
-      .gte("date", shiftDateString(todayStr, -14))
-      .lte("date", shiftDateString(todayStr, 30))
+      .gte("date", startOfMonth)
+      .lte("date", endOfNextMonth)
       .order("date", { ascending: true })
       .order("start_time", { ascending: true }),
     supabase
