@@ -183,7 +183,7 @@ export async function getStudentDashboardData() {
       .eq("student_id", user.id),
     supabase
       .from("subjects")
-      .select("id, name, code, color_code, display_order, type, semester, is_active")
+      .select("id, name, code, color_code, display_order")
       .order("display_order", { ascending: true }),
     supabase
       .from("student_auto_present_preferences")
