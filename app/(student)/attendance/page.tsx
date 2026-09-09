@@ -114,6 +114,11 @@ export default function AttendancePage() {
       {/* Pre-September Historical Attendance Entry / Locked View */}
       <PreSeptemberAttendanceCard initialRecords={historicalRecords} />
 
+      {console.log("🔍 DEBUG: dashboardData =", dashboardData)}
+      {console.log("🔍 DEBUG: allSubjects =", dashboardData?.allSubjects)}
+      {console.log("🔍 DEBUG: subjectBreakdown =", subjectBreakdown)}
+      {console.log("🔍 DEBUG: subjectBreakdown keys =", subjectBreakdown ? Object.keys(subjectBreakdown) : "undefined")}
+
       {/* Subject Breakdown Cards */}
       <div className="space-y-3">
         <h2 className="text-sm font-bold uppercase tracking-wider text-slate-700">
