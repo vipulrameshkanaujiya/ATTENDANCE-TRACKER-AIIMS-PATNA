@@ -245,11 +245,17 @@ export async function getStudentHistoricalAttendance(
   studentId?: string
 ): Promise<StudentHistoricalAttendance[]> {
   try {
-    const user = await getCurrentUser();
-    if (!user) return [];
-    const targetStudentId = studentId || user.id;
-
     const supabase = await createClient();
+    let targetStudentId = studentId;
+
+    if (!targetStudentId) {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) return [];
+      targetStudentId = user.id;
+    }
+
     const { data, error } = await supabase
       .from("student_historical_attendance")
       .select("*")
@@ -280,14 +286,20 @@ export async function saveStudentHistoricalAttendanceAction(
   }>
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    const user = await getCurrentUser();
-    if (!user) {
-      return { success: false, error: "Authentication required. Please sign in." };
-    }
-
+    // 1. Use createClient() for student operations to ensure student auth context and cookies are used
     const supabase = await createClient();
 
-    // Check if one-time entry has already been locked
+    // 2. Obtain authenticated user directly from the client session
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return { success: false, error: "Not authenticated. Please log in to record your attendance." };
+    }
+
+    // 3. Check if one-time entry has already been locked for this student
     const { data: existingRecords, error: checkError } = await supabase
       .from("student_historical_attendance")
       .select("is_one_time_set")
@@ -295,7 +307,7 @@ export async function saveStudentHistoricalAttendanceAction(
       .eq("is_one_time_set", true);
 
     if (checkError && checkError.code !== "PGRST205") {
-      return { success: false, error: "Database error: " + checkError.message };
+      console.warn("Notice checking historical attendance:", checkError.message);
     }
 
     if (existingRecords && existingRecords.length > 0) {
@@ -320,33 +332,60 @@ export async function saveStudentHistoricalAttendanceAction(
         return { success: false, error: `Invalid theory values for ${entry.subject_code}` };
       }
       if (tAtt > tTot) {
-        return { success: false, error: `Theory attended (${tAtt}) cannot exceed total (${tTot}) for ${entry.subject_code}` };
+        return {
+          success: false,
+          error: `Theory attended (${tAtt}) cannot exceed total (${tTot}) for ${entry.subject_code}`,
+        };
       }
       if (isNaN(pAtt) || isNaN(pTot) || pAtt < 0 || pTot < 0) {
         return { success: false, error: `Invalid practical values for ${entry.subject_code}` };
       }
       if (pAtt > pTot) {
-        return { success: false, error: `Practical attended (${pAtt}) cannot exceed total (${pTot}) for ${entry.subject_code}` };
+        return {
+          success: false,
+          error: `Practical attended (${pAtt}) cannot exceed total (${pTot}) for ${entry.subject_code}`,
+        };
       }
     }
 
-    const payload = entries.map((e) => ({
-      student_id: user.id,
-      subject_code: e.subject_code,
-      theory_attended: Number(e.theory_attended) || 0,
-      theory_total: Number(e.theory_total) || 0,
-      practical_attended: Number(e.practical_attended) || 0,
-      practical_total: Number(e.practical_total) || 0,
-      is_one_time_set: true,
-      updated_at: new Date().toISOString(),
-    }));
+    // 4. Upsert records explicitly with student_id: user.id (matching auth.uid()) and specific RLS error capture
+    for (const entry of entries) {
+      const { error: upsertError } = await supabase
+        .from("student_historical_attendance")
+        .upsert(
+          {
+            student_id: user.id, // CRITICAL: Must match auth.uid()
+            subject_code: entry.subject_code,
+            theory_attended: Number(entry.theory_attended) || 0,
+            theory_total: Number(entry.theory_total) || 0,
+            practical_attended: Number(entry.practical_attended) || 0,
+            practical_total: Number(entry.practical_total) || 0,
+            is_one_time_set: true,
+            updated_at: new Date().toISOString(),
+          },
+          { onConflict: "student_id,subject_code" }
+        );
 
-    const { error: upsertError } = await supabase
-      .from("student_historical_attendance")
-      .upsert(payload, { onConflict: "student_id,subject_code" });
+      if (upsertError) {
+        console.error(`Historical attendance upsert error for ${entry.subject_code}:`, upsertError);
 
-    if (upsertError) {
-      return { success: false, error: "Failed to save historical attendance: " + upsertError.message };
+        // Specific handling for Row-Level Security violation
+        if (
+          upsertError.code === "42501" ||
+          upsertError.message?.toLowerCase().includes("row-level security") ||
+          upsertError.message?.toLowerCase().includes("violates row-level security policy")
+        ) {
+          return {
+            success: false,
+            error: `Row-level security violation for ${entry.subject_code}: ${upsertError.message} (student_id: ${user.id}). Please verify that table RLS policies permit INSERT/UPDATE for auth.uid().`,
+          };
+        }
+
+        return {
+          success: false,
+          error: `Failed to save historical attendance for ${entry.subject_code}: ${upsertError.message}`,
+        };
+      }
     }
 
     revalidatePath("/attendance");
@@ -355,6 +394,7 @@ export async function saveStudentHistoricalAttendanceAction(
 
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err?.message || "An unexpected error occurred" };
+    console.error("Unexpected error in saveStudentHistoricalAttendanceAction:", err);
+    return { success: false, error: err?.message || "An unexpected error occurred while saving historical attendance." };
   }
 }

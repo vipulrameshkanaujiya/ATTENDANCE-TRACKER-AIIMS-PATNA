@@ -625,23 +625,18 @@ DROP POLICY IF EXISTS "Historical attendance student select own" ON public.stude
 CREATE POLICY "Historical attendance student select own" ON public.student_historical_attendance
 FOR SELECT USING (auth.uid() = student_id);
 
+-- 3. Student Policy: INSERT own records
 DROP POLICY IF EXISTS "Historical attendance student insert own" ON public.student_historical_attendance;
 CREATE POLICY "Historical attendance student insert own" ON public.student_historical_attendance
 FOR INSERT WITH CHECK (
-    auth.uid() = student_id AND (
-        NOT EXISTS (
-            SELECT 1 FROM public.student_historical_attendance existing
-            WHERE existing.student_id = auth.uid() 
-              AND existing.subject_code = student_historical_attendance.subject_code
-              AND existing.is_one_time_set = true
-        )
-    )
+    auth.uid() = student_id
 );
 
+-- 4. Student Policy: UPDATE own records (locked records blocked via trigger)
 DROP POLICY IF EXISTS "Historical attendance student update own" ON public.student_historical_attendance;
 CREATE POLICY "Historical attendance student update own" ON public.student_historical_attendance
 FOR UPDATE USING (
-    auth.uid() = student_id AND is_one_time_set = false
+    auth.uid() = student_id
 ) WITH CHECK (
     auth.uid() = student_id
 );
