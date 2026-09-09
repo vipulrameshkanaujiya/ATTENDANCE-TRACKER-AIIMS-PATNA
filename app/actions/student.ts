@@ -179,7 +179,7 @@ export async function getStudentDashboardData() {
       .maybeSingle(),
     supabase
       .from("attendance")
-      .select("id, class_id, status, class:classes(subject_id, date, class_type)")
+      .select("id, class_id, status, class:classes(subject_id, date, class_type, start_time, end_time, topic, batch_scope, subject:subjects(code, name))")
       .eq("student_id", user.id),
     supabase
       .from("subjects")
