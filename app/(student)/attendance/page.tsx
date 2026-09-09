@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useStudentData } from "@/components/student/StudentDataProvider";
 import { AttendanceToggle } from "@/components/student/AttendanceToggle";
 import { PreSeptemberAttendanceCard } from "@/components/student/PreSeptemberAttendanceCard";
+import { SubjectAttendanceCard } from "@/components/student/SubjectAttendanceCard";
 import { buildSubjectAttendanceBreakdown } from "@/lib/utils/attendance";
 import Link from "next/link";
 import { useMemo } from "react";
@@ -120,171 +121,13 @@ export default function AttendancePage() {
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {Object.entries(subjectBreakdown).map(([subId, stat]) => {
-            const pct = stat.total > 0 ? Math.round((stat.attended / stat.total) * 100) : 0;
-            const isSelected = selectedSubjectId === subId;
-
-            if (stat.is_split) {
-              const theoryPct = stat.theory?.total ? stat.theory.percentage : 0;
-              const practicalPct = stat.practical?.total ? stat.practical.percentage : 0;
-
-              return (
-                <Link
-                  key={subId}
-                  href={`/attendance?subject=${isSelected ? "ALL" : subId}`}
-                  className={`p-4 rounded-xl border transition-all text-left bg-white shadow-xs space-y-3 ${
-                    isSelected
-                      ? "border-blue-500 ring-2 ring-blue-500/20"
-                      : "border-slate-200 hover:border-slate-300"
-                  }`}
-                >
-                  <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                    <div>
-                      <span className="text-xs font-bold text-slate-800 block">
-                        {stat.name}
-                      </span>
-                      <span className="text-[10px] text-slate-400 font-medium">
-                        Combined: {stat.total > 0 ? `${pct}%` : "No data"}
-                      </span>
-                    </div>
-                    <span
-                      className={`text-xs font-bold px-2 py-0.5 rounded-md ${
-                        pct >= 75
-                          ? "bg-emerald-100 text-emerald-800"
-                          : pct >= 65
-                          ? "bg-amber-100 text-amber-800"
-                          : "bg-rose-100 text-rose-800"
-                      }`}
-                    >
-                      {stat.total > 0 ? `${pct}%` : "—"}
-                    </span>
-                  </div>
-
-                  {/* Theory Split */}
-                  <div className="space-y-1">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-semibold text-slate-700">
-                        Theory:{" "}
-                        <span className="font-bold text-slate-900">
-                          {stat.theory?.total ? `${theoryPct}%` : "—"}
-                        </span>{" "}
-                        <span className="text-[11px] font-normal text-slate-500">
-                          ({stat.theory?.attended || 0}/{stat.theory?.total || 0})
-                        </span>
-                      </span>
-                      {(stat.theory?.total ?? 0) > 0 && (
-                        <span
-                          className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
-                            theoryPct >= 75
-                              ? "bg-emerald-100 text-emerald-800"
-                              : theoryPct >= 65
-                              ? "bg-amber-100 text-amber-800"
-                              : "bg-rose-100 text-rose-800"
-                          }`}
-                        >
-                          {theoryPct}%
-                        </span>
-                      )}
-                    </div>
-                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all ${
-                          theoryPct >= 75
-                            ? "bg-emerald-500"
-                            : theoryPct >= 65
-                            ? "bg-amber-500"
-                            : "bg-rose-500"
-                        }`}
-                        style={{ width: `${Math.min(100, theoryPct)}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Practical Split */}
-                  <div className="space-y-1">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-semibold text-slate-700">
-                        Practical:{" "}
-                        <span className="font-bold text-slate-900">
-                          {stat.practical?.total ? `${practicalPct}%` : "—"}
-                        </span>{" "}
-                        <span className="text-[11px] font-normal text-slate-500">
-                          ({stat.practical?.attended || 0}/{stat.practical?.total || 0})
-                        </span>
-                      </span>
-                      {(stat.practical?.total ?? 0) > 0 && (
-                        <span
-                          className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
-                            practicalPct >= 75
-                              ? "bg-emerald-100 text-emerald-800"
-                              : practicalPct >= 65
-                              ? "bg-amber-100 text-amber-800"
-                              : "bg-rose-100 text-rose-800"
-                          }`}
-                        >
-                          {practicalPct}%
-                        </span>
-                      )}
-                    </div>
-                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all ${
-                          practicalPct >= 75
-                            ? "bg-emerald-500"
-                            : practicalPct >= 65
-                            ? "bg-amber-500"
-                            : "bg-rose-500"
-                        }`}
-                        style={{ width: `${Math.min(100, practicalPct)}%` }}
-                      />
-                    </div>
-                  </div>
-                </Link>
-              );
-            }
-
-            return (
-              <Link
-                key={subId}
-                href={`/attendance?subject=${isSelected ? "ALL" : subId}`}
-                className={`p-4 rounded-xl border transition-all text-left bg-white shadow-xs ${
-                  isSelected
-                    ? "border-blue-500 ring-2 ring-blue-500/20"
-                    : "border-slate-200 hover:border-slate-300"
-                }`}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-slate-800">
-                    {stat.name}
-                  </span>
-                  <span
-                    className={`text-xs font-bold px-2 py-0.5 rounded-md ${
-                      pct >= 75
-                        ? "bg-emerald-100 text-emerald-800"
-                        : pct >= 65
-                        ? "bg-amber-100 text-amber-800"
-                        : "bg-rose-100 text-rose-800"
-                    }`}
-                  >
-                    {stat.total > 0 ? `${pct}%` : "No data"}
-                  </span>
-                </div>
-
-                <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden mb-2">
-                  <div
-                    className={`h-full rounded-full transition-all ${
-                      pct >= 75 ? "bg-emerald-500" : pct >= 65 ? "bg-amber-500" : "bg-rose-500"
-                    }`}
-                    style={{ width: `${Math.min(100, pct)}%` }}
-                  />
-                </div>
-
-                <p className="text-[11px] text-slate-400">
-                  {stat.attended} attended / {stat.total} recorded
-                </p>
-              </Link>
-            );
-          })}
+          {Object.entries(subjectBreakdown).map(([subId, stat]) => (
+            <SubjectAttendanceCard
+              key={subId}
+              stat={stat}
+              isSelected={selectedSubjectId === subId}
+            />
+          ))}
         </div>
       </div>
 
