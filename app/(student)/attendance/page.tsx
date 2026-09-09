@@ -121,13 +121,17 @@ export default function AttendancePage() {
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {Object.entries(subjectBreakdown).map(([subId, stat]) => (
-            <SubjectAttendanceCard
-              key={subId}
-              stat={stat}
-              isSelected={selectedSubjectId === subId}
-            />
-          ))}
+          {dashboardData?.allSubjects?.map((subject: any) => {
+            const stat = subjectBreakdown?.[subject.id];
+            if (!stat) return null;
+            return (
+              <SubjectAttendanceCard
+                key={subject.id}
+                stat={stat}
+                isSelected={selectedSubjectId === subject.id}
+              />
+            );
+          })}
         </div>
       </div>
 
