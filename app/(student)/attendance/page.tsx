@@ -64,6 +64,11 @@ export default function AttendancePage() {
   const { septAttended, septTotal, histAttended, histTotal, totalAttended, totalMarked, overallPercentage, subjectBreakdown, filteredHistory } = metrics;
   const historicalRecords = dashboardData.historicalAttendance;
 
+  console.log("🔍 DEBUG: dashboardData =", dashboardData);
+  console.log("🔍 DEBUG: allSubjects =", dashboardData?.allSubjects);
+  console.log("🔍 DEBUG: subjectBreakdown =", subjectBreakdown);
+  console.log("🔍 DEBUG: subjectBreakdown keys =", subjectBreakdown ? Object.keys(subjectBreakdown) : "undefined");
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -113,11 +118,6 @@ export default function AttendancePage() {
 
       {/* Pre-September Historical Attendance Entry / Locked View */}
       <PreSeptemberAttendanceCard initialRecords={historicalRecords} />
-
-      {console.log("🔍 DEBUG: dashboardData =", dashboardData)}
-      {console.log("🔍 DEBUG: allSubjects =", dashboardData?.allSubjects)}
-      {console.log("🔍 DEBUG: subjectBreakdown =", subjectBreakdown)}
-      {console.log("🔍 DEBUG: subjectBreakdown keys =", subjectBreakdown ? Object.keys(subjectBreakdown) : "undefined")}
 
       <div className="bg-red-100 p-4 mb-4 rounded-xl border border-red-400">
         <p className="text-red-800 font-bold">🔍 DEBUG: Subject section is rendering</p>
