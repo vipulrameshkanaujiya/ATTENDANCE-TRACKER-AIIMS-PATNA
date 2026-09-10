@@ -33,10 +33,14 @@ export function generateFutureClasses(
     return holidays.includes(dStr);
   };
 
-  // Helper to get week of month (1-5)
-  const getWeekOfMonth = (d: Date) => {
-    const firstDay = new Date(d.getFullYear(), d.getMonth(), 1).getDay();
-    return Math.ceil((d.getDate() + firstDay) / 7);
+  // Helper to get occurrence of weekday in month (1st, 2nd, etc)
+  const getOccurrenceOfWeekday = (d: Date) => {
+    const dayOfWeek = d.getDay(); // 0=Sun, 1=Mon, ...
+    const firstOfMonth = new Date(d.getFullYear(), d.getMonth(), 1);
+    const firstDayOfWeek = firstOfMonth.getDay();
+    const offset = (dayOfWeek - firstDayOfWeek + 7) % 7;
+    const firstDateWithThisWeekday = 1 + offset;
+    return Math.floor((d.getDate() - firstDateWithThisWeekday) / 7) + 1;
   };
 
   let currentDate = new Date(start);
@@ -48,7 +52,7 @@ export function generateFutureClasses(
 
     const dayOfWeek = currentDate.getDay(); // 0 = Sun, 1 = Mon, ..., 6 = Sat
     const dateStr = currentDate.toISOString().split("T")[0];
-    const weekOfMonth = getWeekOfMonth(currentDate);
+    const occurrence = getOccurrenceOfWeekday(currentDate);
 
     if (dayOfWeek === 1) { // Monday
       // Lectures (Mon-Thu, 8-10 AM)
@@ -56,7 +60,7 @@ export function generateFutureClasses(
       classes.push({ date: dateStr, start_time: "09:00:00", end_time: "10:00:00", subject_code: "PHARMA", class_type: "Lecture", batch_scope: "ALL" });
       
       // Tutorials (Mondays, 2-4 PM)
-      const tutSubject = (weekOfMonth === 1 || weekOfMonth === 4) ? "PATH" : (weekOfMonth === 2 || weekOfMonth === 5) ? "PHARMA" : "MICRO";
+      const tutSubject = (occurrence === 1 || occurrence === 4) ? "PATH" : (occurrence === 2 || occurrence === 5) ? "PHARMA" : "MICRO";
       classes.push({ date: dateStr, start_time: "14:00:00", end_time: "16:00:00", subject_code: tutSubject, class_type: "Tutorial", batch_scope: "ALL" });
     }
     else if (dayOfWeek === 2) { // Tuesday
@@ -84,8 +88,8 @@ export function generateFutureClasses(
       classes.push({ date: dateStr, start_time: "14:00:00", end_time: "16:00:00", subject_code: pracSubject, class_type: "Practical", batch_scope: batchStr });
     }
     else if (dayOfWeek === 6) { // Saturday
-      if (weekOfMonth >= 1 && weekOfMonth <= 3) {
-        const satSubject = weekOfMonth === 1 ? "PATH" : weekOfMonth === 2 ? "PHARMA" : "MICRO";
+      if (occurrence >= 1 && occurrence <= 3) {
+        const satSubject = occurrence === 1 ? "PATH" : occurrence === 2 ? "PHARMA" : "MICRO";
         classes.push({ date: dateStr, start_time: "10:00:00", end_time: "12:00:00", subject_code: satSubject, class_type: "Integration", batch_scope: "ALL" });
         classes.push({ date: dateStr, start_time: "12:00:00", end_time: "13:00:00", subject_code: satSubject, class_type: "SDL", batch_scope: "ALL" });
       }
