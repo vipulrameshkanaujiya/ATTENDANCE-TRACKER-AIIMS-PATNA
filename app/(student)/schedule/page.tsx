@@ -113,10 +113,10 @@ export default function SchedulePage() {
           Object.entries(groupedByDate).map(([date, dayClasses]) => (
             <div key={date} className="space-y-3">
               <div className="sticky top-14 z-20 bg-slate-50/95 backdrop-blur-sm py-1 flex items-center gap-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-blue-700 bg-blue-100/70 px-2.5 py-0.5 rounded-md">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100 bg-slate-200 dark:bg-slate-800 px-2.5 py-0.5 rounded-md">
                   {parseDateString(date).toLocaleDateString("en-US", { weekday: "short" })}
                 </span>
-                <span className="text-sm font-bold text-slate-800 dark:text-slate-200">
+                <span className="text-sm font-bold text-slate-500 dark:text-slate-400">
                   {formatReadableDate(date, false)}
                 </span>
                 {date === todayStr && (

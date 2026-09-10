@@ -50,7 +50,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Student protected routes
-  const protectedStudentRoutes = ["/home", "/schedule", "/attendance", "/topics", "/stats", "/profile"];
+  const protectedStudentRoutes = ["/home", "/schedule", "/attendance", "/stats", "/profile"];
   const isProtectedStudentRoute = protectedStudentRoutes.some((route) => pathname.startsWith(route));
 
   if (isProtectedStudentRoute) {
@@ -80,3 +80,4 @@ export const config = {
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
+

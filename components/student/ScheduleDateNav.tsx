@@ -66,7 +66,7 @@ export function ScheduleDateNav({
         </div>
 
         {/* View Switcher Tabs */}
-        <div className="flex items-center gap-1 p-1 bg-slate-200/70 rounded-xl self-start sm:self-auto">
+        <div className="flex items-center gap-1 p-1 bg-slate-100 dark:bg-slate-900 rounded-xl self-start sm:self-auto">
           {(["day", "week", "month"] as const).map((view) => (
             <button
               key={view}
@@ -74,8 +74,8 @@ export function ScheduleDateNav({
               onClick={() => handleViewChange(view)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition ${
                 currentView === view
-                  ? "bg-white dark:bg-slate-900 text-blue-700 shadow-xs"
-                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
+                  ? "bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 shadow-xs"
+                  : "text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100"
               }`}
             >
               {view}

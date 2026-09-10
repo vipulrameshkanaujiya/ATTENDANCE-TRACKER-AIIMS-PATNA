@@ -360,13 +360,7 @@ export default function DemoHomePage() {
             </h2>
             <p className="text-xs text-slate-500">Student self-paced topic tracking</p>
           </div>
-          <Link
-            href="/demo/topics"
-            className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-0.5"
-          >
-            <span>Topic Checklist</span>
-            <ChevronRight className="w-3.5 h-3.5" />
-          </Link>
+          
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -389,3 +383,4 @@ export default function DemoHomePage() {
     </div>
   );
 }
+

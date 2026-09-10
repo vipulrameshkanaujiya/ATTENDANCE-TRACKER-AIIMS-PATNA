@@ -30,7 +30,7 @@ export default function DemoLayout({
     { label: "Home", href: "/demo", icon: Home },
     { label: "Schedule", href: "/demo/schedule", icon: Calendar },
     { label: "Attendance", href: "/demo/attendance", icon: CheckSquare },
-    { label: "Topics", href: "/demo/topics", icon: BookOpen },
+
     { label: "Stats", href: "/demo/stats", icon: BarChart3 },
   ];
 
@@ -177,3 +177,4 @@ export default function DemoLayout({
     </div>
   );
 }
+

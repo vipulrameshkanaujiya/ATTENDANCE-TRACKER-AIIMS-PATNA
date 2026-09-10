@@ -9,7 +9,6 @@ const navItems = [
   { label: "Home", href: "/home", icon: Home },
   { label: "Schedule", href: "/schedule", icon: Calendar },
   { label: "Attendance", href: "/attendance", icon: CheckSquare },
-  { label: "Topics", href: "/topics", icon: BookOpen },
   { label: "Stats", href: "/stats", icon: BarChart3 },
 ];
 

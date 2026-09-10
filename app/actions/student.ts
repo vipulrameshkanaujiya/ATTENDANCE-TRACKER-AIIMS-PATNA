@@ -81,7 +81,7 @@ export async function updateTopicProgress(topicId: string, status: TopicProgress
   }
 
   revalidatePath("/home");
-  revalidatePath("/topics");
+
   return data;
 }
 
@@ -569,3 +569,4 @@ export async function processAutoPresent(userId: string, batchName: string) {
 
   await supabase.from("attendance").insert(toInsert);
 }
+

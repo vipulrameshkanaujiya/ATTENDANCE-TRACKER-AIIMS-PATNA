@@ -177,7 +177,7 @@ export async function createSubjectAction(formData: FormData) {
   if (error) throw new Error("Failed to create subject: " + error.message);
 
   revalidatePath("/admin/curriculum");
-  revalidatePath("/topics");
+
 }
 
 export async function createUnitAction(formData: FormData) {
@@ -199,7 +199,7 @@ export async function createUnitAction(formData: FormData) {
   if (error) throw new Error("Failed to create unit: " + error.message);
 
   revalidatePath("/admin/curriculum");
-  revalidatePath("/topics");
+
 }
 
 export async function createTopicAction(formData: FormData) {
@@ -223,7 +223,7 @@ export async function createTopicAction(formData: FormData) {
   if (error) throw new Error("Failed to create topic: " + error.message);
 
   revalidatePath("/admin/curriculum");
-  revalidatePath("/topics");
+
 }
 
 // 5. EXAM COUNTDOWN MANAGEMENT
@@ -521,3 +521,4 @@ export async function adminToggleAutoPresentAction(studentId: string, isEnabled:
   revalidatePath("/admin/students");
   return { success: true };
 }
+
