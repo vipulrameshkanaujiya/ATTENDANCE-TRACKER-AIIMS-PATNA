@@ -28,10 +28,16 @@ export function generateFutureClasses(
   // Normalize batch string to standard
   const batchStr = batch.startsWith("Batch A") ? "Batch A" : batch.startsWith("Batch B") ? "Batch B" : batch.startsWith("Batch C") ? "Batch C" : "Batch A";
 
+  const getLocalDateString = (d: Date) => {
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
   // Helper to check if a date is a holiday
   const isHoliday = (d: Date) => {
-    const dStr = d.toISOString().split("T")[0];
-    return holidays.includes(dStr);
+    return holidays.includes(getLocalDateString(d));
   };
 
   // Helper to get occurrence of weekday in month (1st, 2nd, etc)
@@ -75,7 +81,7 @@ export function generateFutureClasses(
     }
 
     const dayOfWeek = currentDate.getDay(); // 0 = Sun, 1 = Mon, ..., 6 = Sat
-    const dateStr = currentDate.toISOString().split("T")[0];
+    const dateStr = getLocalDateString(currentDate);
     const occurrence = getOccurrenceOfWeekday(currentDate);
 
     if (dayOfWeek === 1) { // Monday
