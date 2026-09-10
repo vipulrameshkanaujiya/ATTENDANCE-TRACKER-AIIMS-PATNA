@@ -1,4 +1,4 @@
-﻿export function generateFutureClasses(
+export function generateFutureClasses(
   startDate: string,
   endDate: string,
   batch: "Batch A" | "Batch B" | "Batch C" | string
@@ -96,14 +96,14 @@
       addClass(dateStr, "08:00:00", "09:00:00", "MICRO", "Lecture", "ALL");
       addClass(dateStr, "09:00:00", "10:00:00", "PATH", "Lecture", "ALL");
       
-      const pracSubject = batchStr === "Batch A" ? "PHARMA" : batchStr === "Batch B" ? "MICRO" : "PATH";
+      const pracSubject = batchStr === "Batch A" ? "MICRO" : batchStr === "Batch B" ? "PATH" : "PHARMA";
       addClass(dateStr, "14:00:00", "16:00:00", pracSubject, "Practical", batchStr);
     }
     else if (dayOfWeek === 4) { // Thursday
       addClass(dateStr, "08:00:00", "09:00:00", "PATH", "Lecture", "ALL");
       addClass(dateStr, "09:00:00", "10:00:00", "PHARMA", "Lecture", "ALL");
       
-      const pracSubject = batchStr === "Batch A" ? "MICRO" : batchStr === "Batch B" ? "PATH" : "PHARMA";
+      const pracSubject = batchStr === "Batch A" ? "PHARMA" : batchStr === "Batch B" ? "MICRO" : "PATH";
       addClass(dateStr, "14:00:00", "16:00:00", pracSubject, "Practical", batchStr);
     }
     else if (dayOfWeek === 6) { // Saturday
