@@ -17,32 +17,43 @@ import { revalidatePath } from "next/cache";
 import { buildSubjectAttendanceBreakdown } from "@/lib/utils/attendance";
 import { generateFutureClasses } from "@/lib/utils/schedule-predictor";
 
-export async function toggleAttendance(classId: string, status: AttendanceStatus) {
+export async function toggleAttendance(classId: string, status: AttendanceStatus | null) {
   const user = await getCurrentUser();
   if (!user) throw new Error("Authentication required");
 
   const supabase = await createClient();
 
-  // Upsert attendance record for current student and target class
-  const { data, error } = await supabase
-    .from("attendance")
-    .upsert(
-      {
-        student_id: user.id,
-        class_id: classId,
-        status: status,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: "student_id,class_id" }
-    )
-    .select()
-    .single();
+  if (status === null) {
+    const { error } = await supabase
+      .from("attendance")
+      .delete()
+      .eq("student_id", user.id)
+      .eq("class_id", classId);
+    
+    if (error) throw new Error(error.message);
+  } else {
+    // Upsert attendance record for current student and target class
+    const { data, error } = await supabase
+      .from("attendance")
+      .upsert(
+        {
+          student_id: user.id,
+          class_id: classId,
+          status: status,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "student_id, class_id" }
+      )
+      .select()
+      .single();
 
-  if (error) {
-    throw new Error("Failed to record attendance: " + error.message);
+    if (error) throw new Error(error.message);
   }
 
-  return data;
+  // Revalidate so data refetches automatically
+  revalidatePath("/attendance");
+  revalidatePath("/schedule");
+  revalidatePath("/home");
 }
 
 export async function updateTopicProgress(topicId: string, status: TopicProgressStatus) {
@@ -541,13 +552,13 @@ export async function processAutoPresent(userId: string, batchName: string) {
 
   if (!pref || !pref.is_enabled || !pref.enabled_from) return;
 
-  // Fetch all classes since enabled_from to today
+  // Fetch all classes since enabled_from to STRICTLY BEFORE today
   const { data: classes } = await supabase
     .from("classes")
     .select("id")
     .in("batch_scope", ["ALL", batchName])
     .gte("date", pref.enabled_from)
-    .lte("date", todayStr);
+    .lt("date", todayStr);
 
   if (!classes || classes.length === 0) return;
 

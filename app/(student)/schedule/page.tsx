@@ -35,10 +35,10 @@ export default function SchedulePage() {
   const todayStr = getTodayDateString();
 
   const initialDate = searchParams.get("date") || todayStr;
-  const initialView = searchParams.get("view") || (initialDate !== todayStr ? "day" : "today");
+  const initialView = searchParams.get("view") || "day";
 
   const [selectedDate, setSelectedDate] = useState(initialDate);
-  const [currentView, setCurrentView] = useState<"today" | "day" | "week" | "month">(initialView as any);
+  const [currentView, setCurrentView] = useState<"day" | "week" | "month">(initialView as any);
 
   // Sync state if URL changes (e.g. back button)
   useEffect(() => {
@@ -58,9 +58,7 @@ export default function SchedulePage() {
       attendanceMap[r.class_id] = r.status;
     });
 
-    if (currentView === "today") {
-      classes = classes.filter((c: any) => c.date === todayStr);
-    } else if (currentView === "day") {
+    if (currentView === "day") {
       classes = classes.filter((c: any) => c.date === selectedDate);
     } else if (currentView === "week") {
       const { startOfWeek, endOfWeek } = getWeekRange(selectedDate);
@@ -191,9 +189,7 @@ export default function SchedulePage() {
           <div className="p-10 text-center bg-white rounded-2xl border border-dashed border-slate-300 space-y-2">
             <CalendarIcon className="w-8 h-8 text-slate-300 mx-auto" />
             <p className="text-sm font-semibold text-slate-700">
-              {currentView === "today"
-                ? `No classes scheduled for today (${formatReadableDate(todayStr, true)})`
-                : currentView === "day"
+              {currentView === "day"
                 ? `No classes scheduled for ${formatReadableDate(selectedDate, true)}`
                 : `No classes found for this timeframe`}
             </p>

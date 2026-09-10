@@ -17,7 +17,10 @@ export function AttendanceToggle({ classId, initialStatus, compact = false }: At
   const [status, setStatus] = useState<AttendanceStatus | null>(initialStatus);
   const { updateAttendanceLocally } = useStudentData();
 
-  const handleToggle = (newStatus: AttendanceStatus) => {
+  const handleToggle = (clickedStatus: AttendanceStatus) => {
+    // If clicking the currently selected status, deselect it (send null)
+    const newStatus = status === clickedStatus ? null : clickedStatus;
+
     // 1. Optimistic UI update locally (component level)
     setStatus(newStatus);
     
@@ -28,9 +31,7 @@ export function AttendanceToggle({ classId, initialStatus, compact = false }: At
     toggleAttendance(classId, newStatus).catch((err) => {
       // 4. Rollback on network/permission error
       setStatus(initialStatus);
-      if (initialStatus) {
-         updateAttendanceLocally(classId, initialStatus);
-      }
+      updateAttendanceLocally(classId, initialStatus);
       alert("Failed to save attendance, please try again");
       console.error("Failed to mark attendance", err);
     });

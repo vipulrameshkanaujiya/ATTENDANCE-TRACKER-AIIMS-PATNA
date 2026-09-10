@@ -9,7 +9,7 @@ interface StudentDataContextType {
   deferredData: any;
   isLoading: boolean;
   refresh: () => Promise<void>;
-  updateAttendanceLocally: (classId: string, newStatus: "PRESENT" | "ABSENT") => void;
+  updateAttendanceLocally: (classId: string, newStatus: "PRESENT" | "ABSENT" | null) => void;
 }
 
 const StudentDataContext = createContext<StudentDataContextType | null>(null);
@@ -35,7 +35,7 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
     }
   };
 
-  const updateAttendanceLocally = (classId: string, newStatus: "PRESENT" | "ABSENT") => {
+  const updateAttendanceLocally = (classId: string, newStatus: "PRESENT" | "ABSENT" | null) => {
     setDashboardData((prevDash: any) => {
       if (!prevDash) return prevDash;
       

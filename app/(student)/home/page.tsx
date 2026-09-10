@@ -26,16 +26,26 @@ function AutoPresentCard({ initialPref }: { initialPref: any }) {
   };
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-4 mt-4 transition-colors">
+    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 mt-4 transition-colors">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-start gap-3">
-          <div className="p-2 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-lg shrink-0">
+          <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg shrink-0">
             <Bot className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm">Auto-Present Mode</h3>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 max-w-[240px]">
-              {isEnabled ? "🟢 Active • You are marked Present for all classes. Mark Absent manually if needed." : "⚪ Inactive • Tap to enable auto-marking of all classes."}
+            <h3 className="font-bold text-slate-900 text-sm">Auto-Present Mode</h3>
+            <p className="text-[11px] text-slate-500 mt-0.5 max-w-[240px] flex items-center gap-1">
+              {isEnabled ? (
+                <>
+                  <span className="text-emerald-500 text-[8px]">●</span>
+                  <span>Active • You are marked Present for all past classes.</span>
+                </>
+              ) : (
+                <>
+                  <span className="text-slate-400 text-[8px]">●</span>
+                  <span>Inactive • Tap to enable auto-marking of past classes.</span>
+                </>
+              )}
             </p>
           </div>
         </div>
@@ -43,7 +53,7 @@ function AutoPresentCard({ initialPref }: { initialPref: any }) {
           onClick={handleToggle}
           disabled={isPending}
           className={`relative shrink-0 w-11 h-6 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
-            isEnabled ? 'bg-indigo-600' : 'bg-slate-300 dark:bg-slate-600'
+            isEnabled ? 'bg-indigo-600' : 'bg-slate-300'
           }`}
         >
           {isPending && <Loader2 className="absolute top-1 left-[14px] w-4 h-4 text-white animate-spin z-10" />}

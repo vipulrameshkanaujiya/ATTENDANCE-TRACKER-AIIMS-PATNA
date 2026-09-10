@@ -13,10 +13,10 @@ import {
 } from "@/lib/utils/date";
 
 interface ScheduleDateNavProps {
-  currentView: "today" | "day" | "week" | "month";
+  currentView: "day" | "week" | "month";
   selectedDate: string;
   todayStr: string;
-  onChangeView: (view: "today" | "day" | "week" | "month") => void;
+  onChangeView: (view: "day" | "week" | "month") => void;
   onChangeDate: (date: string) => void;
 }
 
@@ -27,16 +27,13 @@ export function ScheduleDateNav({
   onChangeView,
   onChangeDate
 }: ScheduleDateNavProps) {
-  const handleViewChange = (newView: "today" | "day" | "week" | "month") => {
-    const targetDate = newView === "today" ? todayStr : selectedDate;
-    onChangeDate(targetDate);
+  const handleViewChange = (newView: "day" | "week" | "month") => {
     onChangeView(newView);
   };
 
   const handleDateChange = (newDate: string) => {
     if (!newDate) return;
-    const view = currentView === "today" ? "day" : currentView;
-    onChangeView(view);
+    onChangeView(currentView);
     onChangeDate(newDate);
   };
 
@@ -48,8 +45,7 @@ export function ScheduleDateNav({
       delta = direction * 30;
     }
     const nextDate = shiftDateString(selectedDate, delta);
-    const view = currentView === "today" ? "day" : currentView;
-    onChangeView(view);
+    onChangeView(currentView);
     onChangeDate(nextDate);
   };
 
@@ -71,7 +67,7 @@ export function ScheduleDateNav({
 
         {/* View Switcher Tabs */}
         <div className="flex items-center gap-1 p-1 bg-slate-200/70 rounded-xl self-start sm:self-auto">
-          {(["today", "day", "week", "month"] as const).map((view) => (
+          {(["day", "week", "month"] as const).map((view) => (
             <button
               key={view}
               type="button"
@@ -137,7 +133,10 @@ export function ScheduleDateNav({
             {!isSelectedToday && (
               <button
                 type="button"
-                onClick={() => handleViewChange("today")}
+                onClick={() => {
+                  onChangeDate(todayStr);
+                  onChangeView("day");
+                }}
                 className="px-2.5 py-1 rounded-lg text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-200 hover:bg-blue-100 flex items-center gap-1 transition"
               >
                 <RotateCcw className="w-3 h-3" />
