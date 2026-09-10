@@ -39,9 +39,9 @@ export function TopicStatusPill({ topicId, initialStatus }: TopicStatusPillProps
       disabled={isPending}
       className={clsx(
         "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition select-none min-h-[36px]",
-        status === "COMPLETED" && "bg-emerald-50 text-emerald-700 border border-emerald-300 hover:bg-emerald-100",
-        status === "LEARNING" && "bg-amber-50 text-amber-700 border border-amber-300 hover:bg-amber-100",
-        status === "NOT_STARTED" && "bg-slate-100 text-slate-600 border border-slate-200 hover:bg-slate-200"
+        status === "COMPLETED" && "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 border border-emerald-300 hover:bg-emerald-100",
+        status === "LEARNING" && "bg-amber-50 dark:bg-amber-900/20 text-amber-700 border border-amber-300 hover:bg-amber-100",
+        status === "NOT_STARTED" && "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-slate-200"
       )}
       title="Tap to change status"
     >
@@ -52,7 +52,7 @@ export function TopicStatusPill({ topicId, initialStatus }: TopicStatusPillProps
       ) : status === "LEARNING" ? (
         <Clock className="w-3.5 h-3.5 text-amber-600" />
       ) : (
-        <Circle className="w-3.5 h-3.5 text-slate-400" />
+        <Circle className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
       )}
       <span>
         {status === "COMPLETED" ? "Completed" : status === "LEARNING" ? "Learning" : "Not Started"}

@@ -12,7 +12,7 @@ export default async function StudentLayout({
 
   return (
     <StudentDataProvider>
-      <div className="min-h-screen flex flex-col md:flex-row bg-slate-50">
+      <div className="min-h-screen flex flex-col md:flex-row bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
         <BottomNav />
         <div className="flex-1 min-w-0 flex flex-col">
           <TopHeader profile={profile} />

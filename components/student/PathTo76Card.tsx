@@ -35,21 +35,21 @@ export function PathTo76Card({ subjectName, stat }: { subjectName: string; stat:
   };
 
   return (
-    <div className="p-4 rounded-xl border border-slate-200 bg-white shadow-xs space-y-3">
-      <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider">{subjectName}</h3>
+    <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs space-y-3">
+      <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">{subjectName}</h3>
       <div className="space-y-2">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-slate-500 w-16">Theory:</span>
+          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 w-16">Theory:</span>
           {getStatusDisplay("Theory", stat.theory)}
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-slate-500 w-16">Practical:</span>
+          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 w-16">Practical:</span>
           {getStatusDisplay("Practical", stat.practical)}
         </div>
       </div>
       {subjectName.toUpperCase().includes("PHARMA") && (
-        <div className="mt-2 pt-2 border-t border-slate-100">
-          <p className="text-[10px] text-slate-400 italic">
+        <div className="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+          <p className="text-[10px] text-slate-400 dark:text-slate-500 italic">
             ℹ️ PHARMA Integration counts as 2 units + SDL as 1 unit (total 3 per Saturday)
           </p>
         </div>

@@ -57,10 +57,10 @@ export function ScheduleDateNav({
       {/* 1. Header & View Tabs */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
             Class Schedule
           </h1>
-          <p className="text-xs text-slate-500 font-medium">
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
             AIIMS Patna MBBS Batch 2024 (Phase-2)
           </p>
         </div>
@@ -74,8 +74,8 @@ export function ScheduleDateNav({
               onClick={() => handleViewChange(view)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition ${
                 currentView === view
-                  ? "bg-white text-blue-700 shadow-xs"
-                  : "text-slate-600 hover:text-slate-900"
+                  ? "bg-white dark:bg-slate-900 text-blue-700 shadow-xs"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
               }`}
             >
               {view}
@@ -85,7 +85,7 @@ export function ScheduleDateNav({
       </div>
 
       {/* 2. Interactive Date Navigation Bar */}
-      <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-xs space-y-3">
+      <div className="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
           {/* Stepper buttons & date display */}
           <div className="flex items-center gap-2">
@@ -93,7 +93,7 @@ export function ScheduleDateNav({
               <button
                 type="button"
                 onClick={() => handleStepDate(-1)}
-                className="w-8 h-8 rounded-lg border border-slate-200 hover:bg-slate-50 flex items-center justify-center text-slate-600 transition focus:outline-none"
+                className="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 transition focus:outline-none"
                 title="Previous"
               >
                 <ChevronLeft className="w-4 h-4" />
@@ -101,7 +101,7 @@ export function ScheduleDateNav({
               <button
                 type="button"
                 onClick={() => handleStepDate(1)}
-                className="w-8 h-8 rounded-lg border border-slate-200 hover:bg-slate-50 flex items-center justify-center text-slate-600 transition focus:outline-none"
+                className="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 transition focus:outline-none"
                 title="Next"
               >
                 <ChevronRight className="w-4 h-4" />
@@ -109,7 +109,7 @@ export function ScheduleDateNav({
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-1.5">
+              <span className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
                 <CalendarIcon className="w-4 h-4 text-blue-600 flex-shrink-0" />
                 <span>
                   {currentView === "month"
@@ -121,7 +121,7 @@ export function ScheduleDateNav({
               </span>
 
               {isSelectedToday && (
-                <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 border border-emerald-200 dark:border-emerald-900/30">
                   Today
                 </span>
               )}
@@ -137,7 +137,7 @@ export function ScheduleDateNav({
                   onChangeDate(todayStr);
                   onChangeView("day");
                 }}
-                className="px-2.5 py-1 rounded-lg text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-200 hover:bg-blue-100 flex items-center gap-1 transition"
+                className="px-2.5 py-1 rounded-lg text-xs font-semibold text-blue-700 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-900/30 hover:bg-blue-100 flex items-center gap-1 transition"
               >
                 <RotateCcw className="w-3 h-3" />
                 <span>Jump to Today</span>
@@ -149,14 +149,14 @@ export function ScheduleDateNav({
               type="date"
               value={selectedDate}
               onChange={(e) => handleDateChange(e.target.value)}
-              className="text-xs font-medium text-slate-700 bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+              className="text-xs font-medium text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
               title="Pick a specific date"
             />
           </div>
         </div>
 
         {/* 3. Quick-Click Weekday Pills (Mon - Sun) */}
-        <div className="pt-2 border-t border-slate-100">
+        <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
           <div className="grid grid-cols-7 gap-1 sm:gap-2">
             {weekDays.map((dStr) => {
               const d = parseDateString(dStr);
@@ -174,11 +174,11 @@ export function ScheduleDateNav({
                     isSelected
                       ? "bg-blue-600 text-white shadow-xs"
                       : isToday
-                      ? "bg-blue-50 text-blue-800 border border-blue-200 hover:bg-blue-100"
-                      : "bg-slate-50 text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                      ? "bg-blue-50 dark:bg-blue-900/20 text-blue-800 border border-blue-200 dark:border-blue-900/30 hover:bg-blue-100"
+                      : "bg-slate-50 dark:bg-slate-950 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100"
                   }`}
                 >
-                  <span className={`text-[10px] uppercase font-bold tracking-wider ${isSelected ? "text-blue-100" : "text-slate-400"}`}>
+                  <span className={`text-[10px] uppercase font-bold tracking-wider ${isSelected ? "text-blue-100" : "text-slate-400 dark:text-slate-500"}`}>
                     {weekday}
                   </span>
                   <span className="text-xs sm:text-sm font-extrabold leading-tight">

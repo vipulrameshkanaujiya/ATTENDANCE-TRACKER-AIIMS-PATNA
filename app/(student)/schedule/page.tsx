@@ -82,8 +82,8 @@ export default function SchedulePage() {
 
   if (isLoading || !filteredData) {
     return (
-      <div className="p-8 text-center bg-white rounded-2xl border border-slate-200 shadow-sm animate-pulse">
-        <p className="text-sm text-slate-500">Loading schedule...</p>
+      <div className="p-8 text-center bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm animate-pulse">
+        <p className="text-sm text-slate-500 dark:text-slate-400">Loading schedule...</p>
       </div>
     );
   }
@@ -116,7 +116,7 @@ export default function SchedulePage() {
                 <span className="text-xs font-bold uppercase tracking-wider text-blue-700 bg-blue-100/70 px-2.5 py-0.5 rounded-md">
                   {parseDateString(date).toLocaleDateString("en-US", { weekday: "short" })}
                 </span>
-                <span className="text-sm font-bold text-slate-800">
+                <span className="text-sm font-bold text-slate-800 dark:text-slate-200">
                   {formatReadableDate(date, false)}
                 </span>
                 {date === todayStr && (
@@ -124,7 +124,7 @@ export default function SchedulePage() {
                     Today
                   </span>
                 )}
-                <span className="text-[11px] text-slate-400 font-medium">
+                <span className="text-[11px] text-slate-400 dark:text-slate-500 font-medium">
                   ({dayClasses.length} {dayClasses.length === 1 ? "class" : "classes"})
                 </span>
               </div>
@@ -133,40 +133,40 @@ export default function SchedulePage() {
                 {dayClasses.map((c) => (
                   <div
                     key={c.id}
-                    className="bg-white rounded-xl border border-slate-200 shadow-xs p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-slate-300 transition"
+                    className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-slate-300 transition"
                   >
                     <div className="flex items-start gap-3">
                       <div className="w-14 text-center flex-shrink-0 pt-0.5">
-                        <p className="text-xs font-bold text-slate-900">{c.start_time.slice(0, 5)}</p>
-                        <p className="text-[11px] text-slate-400">{c.end_time.slice(0, 5)}</p>
+                        <p className="text-xs font-bold text-slate-900 dark:text-slate-100">{c.start_time.slice(0, 5)}</p>
+                        <p className="text-[11px] text-slate-400 dark:text-slate-500">{c.end_time.slice(0, 5)}</p>
                       </div>
 
-                      <div className="border-l-2 border-slate-200 pl-3 space-y-1">
+                      <div className="border-l-2 border-slate-200 dark:border-slate-800 pl-3 space-y-1">
                         <div className="flex flex-wrap items-center gap-1.5">
                           <span className="text-xs font-bold text-blue-700">
                             {c.subject?.code || "MBBS"}
                           </span>
-                          <span className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-slate-100 text-slate-600">
+                          <span className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
                             {c.class_type}
                           </span>
-                          <span className="text-[11px] font-semibold text-slate-500">
+                          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">
                             {c.batch_scope}
                           </span>
                         </div>
 
-                        <p className="text-sm font-semibold text-slate-900 leading-snug">
+                        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 leading-snug">
                           {c.topic || c.subject?.name}
                         </p>
 
-                        <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 pt-0.5">
+                        <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 dark:text-slate-400 pt-0.5">
                           {c.faculty && (
                             <span className="flex items-center gap-1">
-                              <User className="w-3.5 h-3.5 text-slate-400" />
+                              <User className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
                               <span>{c.faculty}</span>
                             </span>
                           )}
                           <span className="flex items-center gap-1">
-                            <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                            <MapPin className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
                             <span>{c.venue || "Lecture Hall"}</span>
                           </span>
                         </div>
@@ -186,14 +186,14 @@ export default function SchedulePage() {
             </div>
           ))
         ) : (
-          <div className="p-10 text-center bg-white rounded-2xl border border-dashed border-slate-300 space-y-2">
+          <div className="p-10 text-center bg-white dark:bg-slate-900 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 space-y-2">
             <CalendarIcon className="w-8 h-8 text-slate-300 mx-auto" />
-            <p className="text-sm font-semibold text-slate-700">
+            <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
               {currentView === "day"
                 ? `No classes scheduled for ${formatReadableDate(selectedDate, true)}`
                 : `No classes found for this timeframe`}
             </p>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-400 dark:text-slate-500">
               Classes will appear once published by the batch administrator.
             </p>
           </div>

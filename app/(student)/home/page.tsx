@@ -26,39 +26,24 @@ function AutoPresentCard({ initialPref }: { initialPref: any }) {
   };
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 mt-4 transition-colors">
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-start gap-3">
-          <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg shrink-0">
-            <Bot className="w-5 h-5" />
-          </div>
-          <div>
-            <h3 className="font-bold text-slate-900 text-sm">Auto-Present Mode</h3>
-            <p className="text-[11px] text-slate-500 mt-0.5 max-w-[240px] flex items-center gap-1">
-              {isEnabled ? (
-                <>
-                  <span className="text-emerald-500 text-[8px]">●</span>
-                  <span>Active • You are marked Present for all past classes.</span>
-                </>
-              ) : (
-                <>
-                  <span className="text-slate-400 text-[8px]">●</span>
-                  <span>Inactive • Tap to enable auto-marking of past classes.</span>
-                </>
-              )}
-            </p>
-          </div>
+    <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-4 mt-4 transition-colors">
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className="font-medium text-slate-900 dark:text-slate-100 text-sm">Auto-Present</h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            Marked present for past classes.
+          </p>
         </div>
         <button
           onClick={handleToggle}
           disabled={isPending}
-          className={`relative shrink-0 w-11 h-6 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
-            isEnabled ? 'bg-indigo-600' : 'bg-slate-300'
+          className={`relative shrink-0 w-11 h-6 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 ${
+            isEnabled ? 'bg-indigo-600' : 'bg-slate-300 dark:bg-slate-700'
           }`}
         >
           {isPending && <Loader2 className="absolute top-1 left-[14px] w-4 h-4 text-white animate-spin z-10" />}
           <span
-            className={`inline-block w-4 h-4 bg-white rounded-full transition-transform transform ${
+            className={`inline-block w-4 h-4 bg-white dark:bg-slate-900 rounded-full transition-transform transform ${
               isEnabled ? 'translate-x-6' : 'translate-x-1'
             } mt-1`}
           />
@@ -73,8 +58,8 @@ export default function StudentHomePage() {
 
   if (isLoading || !data) {
     return (
-      <div className="p-8 text-center bg-white rounded-2xl border border-slate-200 shadow-sm animate-pulse">
-        <p className="text-sm text-slate-500">Loading student profile and daily schedule...</p>
+      <div className="p-8 text-center bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm animate-pulse">
+        <p className="text-sm text-slate-500 dark:text-slate-400">Loading student profile and daily schedule...</p>
       </div>
     );
   }
@@ -108,11 +93,11 @@ export default function StudentHomePage() {
           <p className="text-xs font-semibold uppercase tracking-wider text-blue-600">
             MBBS Phase-2 Utility
           </p>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2">
             <span>Good Morning</span>
             <span className="text-2xl">👋</span>
           </h1>
-          <p className="text-sm text-slate-500 font-medium pt-0.5">
+          <p className="text-sm text-slate-500 dark:text-slate-400 font-medium pt-0.5">
             {dateStr}
           </p>
         </div>
@@ -141,7 +126,7 @@ export default function StudentHomePage() {
 
       {/* 2. NEXT CLASS Hero Card */}
       {nextClass ? (
-        <div className="bg-white rounded-2xl border-2 border-blue-600/20 shadow-sm p-5 sm:p-6 relative overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border-2 border-blue-600/20 shadow-sm p-5 sm:p-6 relative overflow-hidden">
           <div className="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-bold tracking-wider uppercase px-3 py-1 rounded-bl-xl">
             {isNextClassFutureDay ? "Upcoming Session" : "Next Session"}
           </div>
@@ -151,36 +136,36 @@ export default function StudentHomePage() {
               <span className="px-2.5 py-0.5 rounded-md text-xs font-bold bg-blue-100 text-blue-800">
                 {nextClass.subject?.code || "CLASS"}
               </span>
-              <span className="text-xs font-semibold text-slate-600">
+              <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">
                 {nextClass.class_type} · {nextClass.batch_scope}
               </span>
               {isNextClassFutureDay && (
-                <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-50 dark:bg-amber-900/20 text-amber-800 border border-amber-200 dark:border-amber-900/30">
                   {formatReadableDate(nextClass.date, true)}
                 </span>
               )}
             </div>
 
             <div>
-              <h3 className="text-lg font-bold text-slate-900 leading-snug">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 leading-snug">
                 {nextClass.topic || nextClass.subject?.name || "Scheduled Class"}
               </h3>
               {nextClass.faculty && (
-                <p className="text-xs text-slate-500 flex items-center gap-1.5 mt-1">
-                  <User className="w-3.5 h-3.5 text-slate-400" />
+                <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5 mt-1">
+                  <User className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
                   <span>{nextClass.faculty}</span>
                 </p>
               )}
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100">
-              <div className="flex items-center gap-4 text-xs font-medium text-slate-600">
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100 dark:border-slate-800">
+              <div className="flex items-center gap-4 text-xs font-medium text-slate-600 dark:text-slate-400">
                 <span className="flex items-center gap-1.5">
                   <Clock className="w-4 h-4 text-blue-600" />
                   <span>{nextClass.start_time.slice(0, 5)} – {nextClass.end_time.slice(0, 5)}</span>
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <MapPin className="w-4 h-4 text-slate-400" />
+                  <MapPin className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                   <span>{nextClass.venue || "Lecture Hall 2"}</span>
                 </span>
               </div>
@@ -194,18 +179,18 @@ export default function StudentHomePage() {
           </div>
         </div>
       ) : (
-        <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm text-center space-y-1">
-          <p className="text-sm font-semibold text-slate-800">No more upcoming classes scheduled</p>
-          <p className="text-xs text-slate-500">Enjoy your self-directed learning time!</p>
+        <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm text-center space-y-1">
+          <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">No more upcoming classes scheduled</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">Enjoy your self-directed learning time!</p>
         </div>
       )}
 
       {/* 3. TODAY'S SESSIONS TIMELINE */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-base font-bold text-slate-900 tracking-tight flex items-center gap-2">
+          <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2">
             <span>Today's Sessions</span>
-            <span className="text-xs font-semibold px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full">
+            <span className="text-xs font-semibold px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full">
               {todayClasses.length}
             </span>
           </h2>
@@ -223,27 +208,27 @@ export default function StudentHomePage() {
             {todayClasses.map((c: any) => (
               <div
                 key={c.id}
-                className="bg-white rounded-xl border border-slate-200 shadow-xs p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-slate-300 transition"
+                className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-slate-300 transition"
               >
                 <div className="flex items-start gap-3">
                   <div className="w-14 text-center flex-shrink-0 pt-0.5">
-                    <p className="text-xs font-bold text-slate-900">{c.start_time.slice(0, 5)}</p>
-                    <p className="text-[11px] text-slate-400">{c.end_time.slice(0, 5)}</p>
+                    <p className="text-xs font-bold text-slate-900 dark:text-slate-100">{c.start_time.slice(0, 5)}</p>
+                    <p className="text-[11px] text-slate-400 dark:text-slate-500">{c.end_time.slice(0, 5)}</p>
                   </div>
-                  <div className="border-l-2 border-slate-200 pl-3 space-y-0.5">
+                  <div className="border-l-2 border-slate-200 dark:border-slate-800 pl-3 space-y-0.5">
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-bold text-blue-700">
                         {c.subject?.code || "MBBS"}
                       </span>
-                      <span className="text-[11px] font-medium text-slate-500">
+                      <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
                         {c.class_type} · {c.batch_scope}
                       </span>
                     </div>
-                    <p className="text-sm font-semibold text-slate-900 leading-tight">
+                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 leading-tight">
                       {c.topic || c.subject?.name}
                     </p>
                     {c.faculty && (
-                      <p className="text-xs text-slate-500">{c.faculty}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">{c.faculty}</p>
                     )}
                   </div>
                 </div>
@@ -259,20 +244,20 @@ export default function StudentHomePage() {
             ))}
           </div>
         ) : (
-          <div className="p-6 text-center bg-white rounded-xl border border-dashed border-slate-300">
-            <p className="text-xs text-slate-500">No classes listed for today.</p>
+          <div className="p-6 text-center bg-white dark:bg-slate-900 rounded-xl border border-dashed border-slate-300 dark:border-slate-700">
+            <p className="text-xs text-slate-500 dark:text-slate-400">No classes listed for today.</p>
           </div>
         )}
       </div>
 
       {/* 4. MY ATTENDANCE SUMMARY */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-base font-bold text-slate-900 tracking-tight">
+            <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight">
               My Attendance Summary
             </h2>
-            <p className="text-xs text-slate-500">Official NMC minimum requirement is 75%</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Official NMC minimum requirement is 75%</p>
           </div>
           <Link
             href="/attendance"
@@ -292,13 +277,13 @@ export default function StudentHomePage() {
                 return (
                   <div
                     key={sub.subject_id}
-                    className="p-3.5 rounded-xl border border-slate-100 bg-slate-50/50 space-y-2.5"
+                    className="p-3.5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 space-y-2.5"
                   >
-                    <div className="flex items-center justify-between border-b border-slate-200/50 pb-1.5">
-                      <span className="text-xs font-bold text-slate-800">
+                    <div className="flex items-center justify-between border-b border-slate-200/50 dark:border-slate-800/50 pb-1.5">
+                      <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
                         {sub.subject_name}
                       </span>
-                      <span className="text-[10px] font-semibold text-slate-400">
+                      <span className="text-[10px] font-semibold text-slate-400 dark:text-slate-500">
                         Combined: {sub.percentage}%
                       </span>
                     </div>
@@ -306,12 +291,12 @@ export default function StudentHomePage() {
                     {/* Theory Breakdown */}
                     <div className="space-y-1">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-semibold text-slate-700">
+                        <span className="font-semibold text-slate-700 dark:text-slate-300">
                           Theory:{" "}
-                          <span className="font-bold text-slate-900">
+                          <span className="font-bold text-slate-900 dark:text-slate-100">
                             {sub.theory?.total ? `${theoryPct}%` : "—"}
                           </span>{" "}
-                          <span className="text-[11px] font-normal text-slate-500">
+                          <span className="text-[11px] font-normal text-slate-500 dark:text-slate-400">
                             ({sub.theory?.attended || 0}/{sub.theory?.total || 0})
                           </span>
                         </span>
@@ -346,12 +331,12 @@ export default function StudentHomePage() {
                     {/* Practical Breakdown */}
                     <div className="space-y-1">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-semibold text-slate-700">
+                        <span className="font-semibold text-slate-700 dark:text-slate-300">
                           Practical:{" "}
-                          <span className="font-bold text-slate-900">
+                          <span className="font-bold text-slate-900 dark:text-slate-100">
                             {sub.practical?.total ? `${practicalPct}%` : "—"}
                           </span>{" "}
-                          <span className="text-[11px] font-normal text-slate-500">
+                          <span className="text-[11px] font-normal text-slate-500 dark:text-slate-400">
                             ({sub.practical?.attended || 0}/{sub.practical?.total || 0})
                           </span>
                         </span>
@@ -389,10 +374,10 @@ export default function StudentHomePage() {
               return (
                 <div
                   key={sub.subject_id}
-                  className="p-3.5 rounded-xl border border-slate-100 bg-slate-50/50 space-y-2"
+                  className="p-3.5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 space-y-2"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-800">
+                    <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
                       {sub.subject_name}
                     </span>
                     <span
@@ -419,7 +404,7 @@ export default function StudentHomePage() {
                       style={{ width: `${Math.min(100, sub.percentage)}%` }}
                     />
                   </div>
-                  <p className="text-[11px] text-slate-400">
+                  <p className="text-[11px] text-slate-400 dark:text-slate-500">
                     {sub.attended} attended / {sub.total} sessions
                   </p>
                 </div>
@@ -427,7 +412,7 @@ export default function StudentHomePage() {
             })}
           </div>
         ) : (
-          <p className="text-xs text-slate-400 italic">
+          <p className="text-xs text-slate-400 dark:text-slate-500 italic">
             Attendance percentages will calculate automatically once classes are marked.
           </p>
         )}

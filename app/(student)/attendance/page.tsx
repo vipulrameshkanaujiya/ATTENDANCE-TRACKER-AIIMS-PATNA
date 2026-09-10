@@ -46,8 +46,8 @@ export default function AttendancePage() {
 
   if (isLoading || !metrics || !dashboardData) {
     return (
-      <div className="p-8 text-center bg-white rounded-2xl border border-slate-200 shadow-sm animate-pulse">
-        <p className="text-sm text-slate-500">Loading attendance records...</p>
+      <div className="p-8 text-center bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm animate-pulse">
+        <p className="text-sm text-slate-500 dark:text-slate-400">Loading attendance records...</p>
       </div>
     );
   }
@@ -59,47 +59,12 @@ export default function AttendancePage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
           Attendance Tracker
         </h1>
-        <p className="text-xs text-slate-500 font-medium">
+        <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
           Personal attendance record for MBBS 2nd Professional
         </p>
-      </div>
-
-      {/* Overall Attendance Metric Card */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-6">
-        <div className="space-y-1 text-center sm:text-left">
-          <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
-            Overall Attendance
-          </p>
-          <div className="flex items-baseline justify-center sm:justify-start gap-2">
-            <span className={`text-4xl font-extrabold ${overallPercentage >= 75 ? "text-emerald-600" : overallPercentage >= 65 ? "text-amber-600" : "text-rose-600"}`}>
-              {overallPercentage}%
-            </span>
-            <span className="text-xs font-semibold text-slate-500">
-              ({totalAttended} / {totalMarked} sessions)
-            </span>
-          </div>
-          <p className="text-xs text-slate-500 pt-1">
-            {overallPercentage >= 75
-              ? "✓ Currently meeting NMC 75% exam eligibility threshold."
-              : "⚠️ Below NMC 75% requirement. Prioritize upcoming clinical postings."}
-          </p>
-          {histTotal > 0 && (
-            <p className="text-[11px] text-slate-400">
-              Includes pre-September historical attendance ({histAttended}/{histTotal}) + September sessions ({septAttended}/{septTotal})
-            </p>
-          )}
-        </div>
-
-        <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full flex items-center justify-center border-8 border-slate-100 relative">
-          <div
-            className={`text-xl font-black ${overallPercentage >= 75 ? "text-emerald-700" : overallPercentage >= 65 ? "text-amber-700" : "text-rose-700"}`}
-          >
-            {overallPercentage}%
-          </div>
-        </div>
       </div>
 
       {/* Pre-September Historical Attendance Entry / Locked View */}
@@ -107,7 +72,7 @@ export default function AttendancePage() {
 
       {/* Subject Breakdown Cards */}
       <div className="space-y-3">
-        <h2 className="text-sm font-bold uppercase tracking-wider text-slate-700">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
           Subject-Wise Breakdown
         </h2>
 
@@ -128,9 +93,9 @@ export default function AttendancePage() {
 
       {/* Path to 76% Section */}
       {dashboardData?.pathTo76 && Object.keys(dashboardData.pathTo76).length > 0 && (
-        <div className="space-y-3 pt-4 border-t border-slate-100">
+        <div className="space-y-3 pt-4 border-t border-slate-100 dark:border-slate-800">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-700">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
               📅 Path to 76% ({new Date(dashboardData.examDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })})
             </h2>
           </div>
