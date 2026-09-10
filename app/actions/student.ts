@@ -272,8 +272,8 @@ export async function getStudentDashboardData() {
     const currentPracticalTotal = (breakdown as any).practical?.total || 0;
     const currentPracticalAttended = (breakdown as any).practical?.attended || 0;
     
-    const predictedFutureTheory = futureTheoryClasses.length;
-    const predictedFuturePractical = futurePracticalClasses.length;
+    const predictedFutureTheory = futureTheoryClasses.reduce((sum: number, c: any) => sum + (c.units || 1), 0);
+    const predictedFuturePractical = futurePracticalClasses.reduce((sum: number, c: any) => sum + (c.units || 1), 0);
     
     const totalTheoryByExam = currentTheoryTotal + predictedFutureTheory;
     const totalPracticalByExam = currentPracticalTotal + predictedFuturePractical;

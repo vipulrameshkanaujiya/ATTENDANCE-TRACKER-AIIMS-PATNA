@@ -1,5 +1,4 @@
-
-export function generateFutureClasses(
+﻿export function generateFutureClasses(
   startDate: string,
   endDate: string,
   batch: "Batch A" | "Batch B" | "Batch C" | string
@@ -10,6 +9,7 @@ export function generateFutureClasses(
   subject_code: string;
   class_type: "Lecture" | "Practical" | "Tutorial" | "Integration" | "SDL";
   batch_scope: string;
+  units: number;
 }> {
   const classes: Array<{
     date: string;
@@ -18,6 +18,7 @@ export function generateFutureClasses(
     subject_code: string;
     class_type: "Lecture" | "Practical" | "Tutorial" | "Integration" | "SDL";
     batch_scope: string;
+    units: number;
   }> = [];
 
   const start = new Date(startDate);
@@ -43,6 +44,29 @@ export function generateFutureClasses(
     return Math.floor((d.getDate() - firstDateWithThisWeekday) / 7) + 1;
   };
 
+  const addClass = (
+    dateStr: string,
+    start_time: string,
+    end_time: string,
+    subject_code: string,
+    class_type: "Lecture" | "Practical" | "Tutorial" | "Integration" | "SDL",
+    batch_scope: string
+  ) => {
+    let units = 1;
+    if (subject_code === "PHARMA" && class_type === "Integration") {
+      units = 2;
+    }
+    classes.push({
+      date: dateStr,
+      start_time,
+      end_time,
+      subject_code,
+      class_type,
+      batch_scope,
+      units,
+    });
+  };
+
   let currentDate = new Date(start);
   while (currentDate <= end) {
     if (isHoliday(currentDate)) {
@@ -55,43 +79,38 @@ export function generateFutureClasses(
     const occurrence = getOccurrenceOfWeekday(currentDate);
 
     if (dayOfWeek === 1) { // Monday
-      // Lectures (Mon-Thu, 8-10 AM)
-      classes.push({ date: dateStr, start_time: "08:00:00", end_time: "09:00:00", subject_code: "PATH", class_type: "Lecture", batch_scope: "ALL" });
-      classes.push({ date: dateStr, start_time: "09:00:00", end_time: "10:00:00", subject_code: "PHARMA", class_type: "Lecture", batch_scope: "ALL" });
+      addClass(dateStr, "08:00:00", "09:00:00", "PATH", "Lecture", "ALL");
+      addClass(dateStr, "09:00:00", "10:00:00", "PHARMA", "Lecture", "ALL");
       
-      // Tutorials (Mondays, 2-4 PM)
       const tutSubject = (occurrence === 1 || occurrence === 4) ? "PATH" : (occurrence === 2 || occurrence === 5) ? "PHARMA" : "MICRO";
-      classes.push({ date: dateStr, start_time: "14:00:00", end_time: "16:00:00", subject_code: tutSubject, class_type: "Tutorial", batch_scope: "ALL" });
+      addClass(dateStr, "14:00:00", "16:00:00", tutSubject, "Tutorial", "ALL");
     }
     else if (dayOfWeek === 2) { // Tuesday
-      classes.push({ date: dateStr, start_time: "08:00:00", end_time: "09:00:00", subject_code: "PHARMA", class_type: "Lecture", batch_scope: "ALL" });
-      classes.push({ date: dateStr, start_time: "09:00:00", end_time: "10:00:00", subject_code: "MICRO", class_type: "Lecture", batch_scope: "ALL" });
+      addClass(dateStr, "08:00:00", "09:00:00", "PHARMA", "Lecture", "ALL");
+      addClass(dateStr, "09:00:00", "10:00:00", "MICRO", "Lecture", "ALL");
       
-      // Practicals
       const pracSubject = batchStr === "Batch A" ? "PATH" : batchStr === "Batch B" ? "PHARMA" : "MICRO";
-      classes.push({ date: dateStr, start_time: "14:00:00", end_time: "16:00:00", subject_code: pracSubject, class_type: "Practical", batch_scope: batchStr });
+      addClass(dateStr, "14:00:00", "16:00:00", pracSubject, "Practical", batchStr);
     }
     else if (dayOfWeek === 3) { // Wednesday
-      classes.push({ date: dateStr, start_time: "08:00:00", end_time: "09:00:00", subject_code: "MICRO", class_type: "Lecture", batch_scope: "ALL" });
-      classes.push({ date: dateStr, start_time: "09:00:00", end_time: "10:00:00", subject_code: "PATH", class_type: "Lecture", batch_scope: "ALL" });
+      addClass(dateStr, "08:00:00", "09:00:00", "MICRO", "Lecture", "ALL");
+      addClass(dateStr, "09:00:00", "10:00:00", "PATH", "Lecture", "ALL");
       
-      // Practicals
       const pracSubject = batchStr === "Batch A" ? "PHARMA" : batchStr === "Batch B" ? "MICRO" : "PATH";
-      classes.push({ date: dateStr, start_time: "14:00:00", end_time: "16:00:00", subject_code: pracSubject, class_type: "Practical", batch_scope: batchStr });
+      addClass(dateStr, "14:00:00", "16:00:00", pracSubject, "Practical", batchStr);
     }
     else if (dayOfWeek === 4) { // Thursday
-      classes.push({ date: dateStr, start_time: "08:00:00", end_time: "09:00:00", subject_code: "PATH", class_type: "Lecture", batch_scope: "ALL" });
-      classes.push({ date: dateStr, start_time: "09:00:00", end_time: "10:00:00", subject_code: "PHARMA", class_type: "Lecture", batch_scope: "ALL" });
+      addClass(dateStr, "08:00:00", "09:00:00", "PATH", "Lecture", "ALL");
+      addClass(dateStr, "09:00:00", "10:00:00", "PHARMA", "Lecture", "ALL");
       
-      // Practicals
       const pracSubject = batchStr === "Batch A" ? "MICRO" : batchStr === "Batch B" ? "PATH" : "PHARMA";
-      classes.push({ date: dateStr, start_time: "14:00:00", end_time: "16:00:00", subject_code: pracSubject, class_type: "Practical", batch_scope: batchStr });
+      addClass(dateStr, "14:00:00", "16:00:00", pracSubject, "Practical", batchStr);
     }
     else if (dayOfWeek === 6) { // Saturday
       if (occurrence >= 1 && occurrence <= 3) {
         const satSubject = occurrence === 1 ? "PATH" : occurrence === 2 ? "PHARMA" : "MICRO";
-        classes.push({ date: dateStr, start_time: "10:00:00", end_time: "12:00:00", subject_code: satSubject, class_type: "Integration", batch_scope: "ALL" });
-        classes.push({ date: dateStr, start_time: "12:00:00", end_time: "13:00:00", subject_code: satSubject, class_type: "SDL", batch_scope: "ALL" });
+        addClass(dateStr, "10:00:00", "12:00:00", satSubject, "Integration", "ALL");
+        addClass(dateStr, "12:00:00", "13:00:00", satSubject, "SDL", "ALL");
       }
     }
 

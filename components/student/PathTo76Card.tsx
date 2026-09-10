@@ -47,6 +47,13 @@ export function PathTo76Card({ subjectName, stat }: { subjectName: string; stat:
           {getStatusDisplay("Practical", stat.practical)}
         </div>
       </div>
+      {subjectName.toUpperCase().includes("PHARMA") && (
+        <div className="mt-2 pt-2 border-t border-slate-100">
+          <p className="text-[10px] text-slate-400 italic">
+            ℹ️ PHARMA Integration counts as 2 units + SDL as 1 unit (total 3 per Saturday)
+          </p>
+        </div>
+      )}
     </div>
   );
 }
