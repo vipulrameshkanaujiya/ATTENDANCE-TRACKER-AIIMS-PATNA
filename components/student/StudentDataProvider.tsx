@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getStudentDashboardData, getDeferredStudentData } from "@/app/actions/student";
-import { buildSubjectAttendanceBreakdown } from "@/lib/utils/attendance";
+import { buildSubjectAttendanceBreakdown, computePathTo76 } from "@/lib/utils/attendance";
 
 interface StudentDataContextType {
   dashboardData: any;
@@ -52,10 +52,11 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
       if (existingIdx !== -1) {
         allAtt[existingIdx] = { ...allAtt[existingIdx], status: newStatus };
       } else {
+        const enrichedClassObj = classObj ? { ...classObj, subject_id: classObj.subject?.id } : { id: classId };
         allAtt.push({
           status: newStatus,
           class_id: classId,
-          class: classObj || { id: classId }
+          class: enrichedClassObj
         });
       }
 
@@ -82,10 +83,29 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
           practical: data.practical,
         }));
 
+      // 4. Rebuild pathTo76
+      const newPathTo76 = { ...prevDash.pathTo76 };
+      const targetSubjects = ["PATH", "PHARMA", "MICRO"];
+      for (const subCode of targetSubjects) {
+        if (!newPathTo76[subCode]) continue;
+        const breakdown = Object.values(breakdownMap).find((b: any) => b.code === subCode);
+        if (!breakdown) continue;
+        
+        const predictedFutureTheory = newPathTo76[subCode].theory.predicted_future || 0;
+        const predictedFuturePractical = newPathTo76[subCode].practical.predicted_future || 0;
+        
+        newPathTo76[subCode] = computePathTo76(
+          breakdown,
+          { theory: predictedFutureTheory, practical: predictedFuturePractical },
+          0.76
+        );
+      }
+
       return {
         ...prevDash,
         allStudentAttendance: allAtt,
-        subjectAttendance: subjectAttendanceList
+        subjectAttendance: subjectAttendanceList,
+        pathTo76: newPathTo76
       };
     });
   };

@@ -256,3 +256,31 @@ export function buildSubjectAttendanceBreakdown(
   return map;
 }
 
+
+export function computePathTo76(
+  currentStats: any,
+  predictedFuture: { theory: number; practical: number },
+  target: number = 0.76
+) {
+  const currentTheoryTotal = currentStats?.theory?.total || 0;
+  const currentTheoryAttended = currentStats?.theory?.attended || 0;
+  const currentPracticalTotal = currentStats?.practical?.total || 0;
+  const currentPracticalAttended = currentStats?.practical?.attended || 0;
+
+  const totalTheoryByExam = currentTheoryTotal + predictedFuture.theory;
+  const totalPracticalByExam = currentPracticalTotal + predictedFuture.practical;
+
+  const targetTheory = Math.ceil(target * totalTheoryByExam);
+  const targetPractical = Math.ceil(target * totalPracticalByExam);
+
+  const needTheory = Math.max(0, targetTheory - currentTheoryAttended);
+  const needPractical = Math.max(0, targetPractical - currentPracticalAttended);
+
+  const canSkipTheory = predictedFuture.theory - needTheory;
+  const canSkipPractical = predictedFuture.practical - needPractical;
+
+  return {
+    theory: { predicted_future: predictedFuture.theory, need: needTheory, can_skip: canSkipTheory },
+    practical: { predicted_future: predictedFuture.practical, need: needPractical, can_skip: canSkipPractical }
+  };
+}

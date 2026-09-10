@@ -14,7 +14,7 @@ import {
   StudentHistoricalAttendance,
 } from "@/types/database";
 import { revalidatePath } from "next/cache";
-import { buildSubjectAttendanceBreakdown } from "@/lib/utils/attendance";
+import { buildSubjectAttendanceBreakdown, computePathTo76 } from "@/lib/utils/attendance";
 import { generateFutureClasses } from "@/lib/utils/schedule-predictor";
 
 export async function toggleAttendance(classId: string, status: AttendanceStatus | null) {
@@ -267,30 +267,14 @@ export async function getStudentDashboardData() {
     const futureTheoryClasses = futureClasses.filter((c: any) => c.subject_code === subCode && (c.class_type === "Lecture" || c.class_type === "Tutorial" || c.class_type === "Integration" || c.class_type === "SDL"));
     const futurePracticalClasses = futureClasses.filter((c: any) => c.subject_code === subCode && c.class_type === "Practical");
     
-    const currentTheoryTotal = (breakdown as any).theory?.total || 0;
-    const currentTheoryAttended = (breakdown as any).theory?.attended || 0;
-    const currentPracticalTotal = (breakdown as any).practical?.total || 0;
-    const currentPracticalAttended = (breakdown as any).practical?.attended || 0;
-    
     const predictedFutureTheory = futureTheoryClasses.reduce((sum: number, c: any) => sum + (c.units || 1), 0);
     const predictedFuturePractical = futurePracticalClasses.reduce((sum: number, c: any) => sum + (c.units || 1), 0);
     
-    const totalTheoryByExam = currentTheoryTotal + predictedFutureTheory;
-    const totalPracticalByExam = currentPracticalTotal + predictedFuturePractical;
-    
-    const targetTheory = Math.ceil(0.76 * totalTheoryByExam);
-    const targetPractical = Math.ceil(0.76 * totalPracticalByExam);
-    
-    const needTheory = Math.max(0, targetTheory - currentTheoryAttended);
-    const needPractical = Math.max(0, targetPractical - currentPracticalAttended);
-    
-    const canSkipTheory = predictedFutureTheory - needTheory;
-    const canSkipPractical = predictedFuturePractical - needPractical;
-    
-    pathTo76[subCode] = {
-      theory: { predicted_future: predictedFutureTheory, need: needTheory, can_skip: canSkipTheory },
-      practical: { predicted_future: predictedFuturePractical, need: needPractical, can_skip: canSkipPractical }
-    };
+    pathTo76[subCode] = computePathTo76(
+      breakdown,
+      { theory: predictedFutureTheory, practical: predictedFuturePractical },
+      0.76
+    );
   }
 
   return {

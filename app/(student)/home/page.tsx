@@ -64,7 +64,7 @@ export default function StudentHomePage() {
     );
   }
 
-  const { profile, todayClasses, nextClass, activeExam, subjectAttendance, autoPresentPref } = data;
+  const { profile, todayClasses, activeExam, subjectAttendance, autoPresentPref } = data;
 
   const todayStr = getTodayDateString();
   const dateObj = parseDateString(todayStr);
@@ -83,7 +83,7 @@ export default function StudentHomePage() {
     countdownDays = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
   }
 
-  const isNextClassFutureDay = nextClass && nextClass.date !== todayStr;
+  
 
   return (
     <div className="space-y-6">
@@ -123,67 +123,6 @@ export default function StudentHomePage() {
 
       {/* Auto-Present Toggle Card */}
       <AutoPresentCard initialPref={autoPresentPref} />
-
-      {/* 2. NEXT CLASS Hero Card */}
-      {nextClass ? (
-        <div className="bg-white dark:bg-slate-900 rounded-2xl border-2 border-blue-600/20 shadow-sm p-5 sm:p-6 relative overflow-hidden">
-          <div className="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-bold tracking-wider uppercase px-3 py-1 rounded-bl-xl">
-            {isNextClassFutureDay ? "Upcoming Session" : "Next Session"}
-          </div>
-
-          <div className="space-y-3">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-md text-xs font-bold bg-blue-100 text-blue-800">
-                {nextClass.subject?.code || "CLASS"}
-              </span>
-              <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">
-                {nextClass.class_type} · {nextClass.batch_scope}
-              </span>
-              {isNextClassFutureDay && (
-                <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-50 dark:bg-amber-900/20 text-amber-800 border border-amber-200 dark:border-amber-900/30">
-                  {formatReadableDate(nextClass.date, true)}
-                </span>
-              )}
-            </div>
-
-            <div>
-              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 leading-snug">
-                {nextClass.topic || nextClass.subject?.name || "Scheduled Class"}
-              </h3>
-              {nextClass.faculty && (
-                <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5 mt-1">
-                  <User className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
-                  <span>{nextClass.faculty}</span>
-                </p>
-              )}
-            </div>
-
-            <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100 dark:border-slate-800">
-              <div className="flex items-center gap-4 text-xs font-medium text-slate-600 dark:text-slate-400">
-                <span className="flex items-center gap-1.5">
-                  <Clock className="w-4 h-4 text-blue-600" />
-                  <span>{nextClass.start_time.slice(0, 5)} – {nextClass.end_time.slice(0, 5)}</span>
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <MapPin className="w-4 h-4 text-slate-400 dark:text-slate-500" />
-                  <span>{nextClass.venue || "Lecture Hall 2"}</span>
-                </span>
-              </div>
-
-              {/* 1-Tap Attendance */}
-              <AttendanceToggle
-                classId={nextClass.id}
-                initialStatus={nextClass.attendance_status || null}
-              />
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm text-center space-y-1">
-          <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">No more upcoming classes scheduled</p>
-          <p className="text-xs text-slate-500 dark:text-slate-400">Enjoy your self-directed learning time!</p>
-        </div>
-      )}
 
       {/* 3. TODAY'S SESSIONS TIMELINE */}
       <div className="space-y-3">
