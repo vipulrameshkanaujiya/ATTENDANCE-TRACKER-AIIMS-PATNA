@@ -239,7 +239,13 @@ export async function getStudentDashboardData() {
     }));
 
   const examDate = activeExam?.exam_date || "2026-11-02";
-  const futureClasses = generateFutureClasses(todayStr, examDate, batchName);
+  
+  // Predict up to the day BEFORE the exam
+  const examDateObj = new Date(examDate);
+  examDateObj.setDate(examDateObj.getDate() - 1);
+  const adjustedEndDate = examDateObj.toISOString().split("T")[0];
+  
+  const futureClasses = generateFutureClasses(todayStr, adjustedEndDate, batchName);
 
   const pathTo76: Record<string, any> = {};
   const targetSubjects = ["PATH", "PHARMA", "MICRO"];
