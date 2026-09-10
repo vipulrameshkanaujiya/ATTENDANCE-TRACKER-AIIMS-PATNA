@@ -2,9 +2,9 @@
 
 import { useSearchParams } from "next/navigation";
 import { useStudentData } from "@/components/student/StudentDataProvider";
-import { AttendanceToggle } from "@/components/student/AttendanceToggle";
 import { PreSeptemberAttendanceCard } from "@/components/student/PreSeptemberAttendanceCard";
 import { SubjectAttendanceCard } from "@/components/student/SubjectAttendanceCard";
+import { PathTo76Card } from "@/components/student/PathTo76Card";
 import { buildSubjectAttendanceBreakdown } from "@/lib/utils/attendance";
 import Link from "next/link";
 import { useMemo } from "react";
@@ -12,7 +12,6 @@ import { useMemo } from "react";
 export default function AttendancePage() {
   const searchParams = useSearchParams();
   const selectedSubjectId = searchParams.get("subject") || "ALL";
-  const selectedMonth = searchParams.get("month") || "";
 
   const { dashboardData, isLoading } = useStudentData();
 
@@ -40,18 +39,10 @@ export default function AttendancePage() {
       historicalRecords
     );
 
-    let filteredHistory = attendanceRecords || [];
-    if (selectedSubjectId !== "ALL") {
-      filteredHistory = filteredHistory.filter((r: any) => r.class?.subject_id === selectedSubjectId);
-    }
-    if (selectedMonth) {
-      filteredHistory = filteredHistory.filter((r: any) => r.class?.date?.startsWith(selectedMonth));
-    }
-
     return {
-      septAttended, septTotal, histAttended, histTotal, totalAttended, totalMarked, overallPercentage, subjectBreakdown, filteredHistory
+      septAttended, septTotal, histAttended, histTotal, totalAttended, totalMarked, overallPercentage, subjectBreakdown
     };
-  }, [dashboardData, selectedSubjectId, selectedMonth]);
+  }, [dashboardData, selectedSubjectId]);
 
   if (isLoading || !metrics || !dashboardData) {
     return (
@@ -61,7 +52,7 @@ export default function AttendancePage() {
     );
   }
 
-  const { septAttended, septTotal, histAttended, histTotal, totalAttended, totalMarked, overallPercentage, subjectBreakdown, filteredHistory } = metrics;
+  const { septAttended, septTotal, histAttended, histTotal, totalAttended, totalMarked, overallPercentage, subjectBreakdown } = metrics;
   const historicalRecords = dashboardData.historicalAttendance;
 
   return (
@@ -135,73 +126,28 @@ export default function AttendancePage() {
         </div>
       </div>
 
-      {/* Attendance History Section with 1-Tap Modifiers */}
-      <div className="space-y-3 pt-2">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-700">
-            Attendance History ({filteredHistory.length})
-          </h2>
-          {selectedSubjectId !== "ALL" && (
-            <Link
-              href="/attendance"
-              className="text-xs font-semibold text-blue-600 hover:underline"
-            >
-              Clear filter
-            </Link>
-          )}
-        </div>
-
-        {filteredHistory.length > 0 ? (
-          <div className="space-y-2.5">
-            {filteredHistory.map((rec: any) => (
-              <div
-                key={rec.id}
-                className="p-3.5 bg-white rounded-xl border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-              >
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-blue-700">
-                      {rec.class?.subject?.code || "MBBS"}
-                    </span>
-                    <span className="text-[11px] text-slate-400">
-                      {new Date(rec.class?.date || rec.marked_at).toLocaleDateString("en-US", { weekday: "short", day: "numeric", month: "short" })}
-                    </span>
-                    <span className="text-[11px] text-slate-400">
-                      {rec.class?.start_time?.slice(0, 5)} - {rec.class?.end_time?.slice(0, 5)}
-                    </span>
-                  </div>
-                  <p className="text-sm font-semibold text-slate-900 leading-snug">
-                    {rec.class?.topic || rec.class?.subject?.name || "MBBS Session"}
-                  </p>
-                  <p className="text-[11px] text-slate-500 flex items-center gap-1.5">
-                    <span>{rec.class?.class_type} · {rec.class?.batch_scope}</span>
-                    {rec.class?.class_type === "Practical" ? (
-                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200/60">
-                        Practical
-                      </span>
-                    ) : ["Lecture", "SDL", "Integration", "Tutorial"].includes(rec.class?.class_type) ? (
-                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200/60">
-                        Theory
-                      </span>
-                    ) : null}
-                  </p>
-                </div>
-
-                {/* 1-Tap Instant Modifier (no midnight restriction!) */}
-                <AttendanceToggle
-                  classId={rec.class_id}
-                  initialStatus={rec.status}
-                  compact
+      {/* Path to 76% Section */}
+      {dashboardData?.pathTo76 && Object.keys(dashboardData.pathTo76).length > 0 && (
+        <div className="space-y-3 pt-4 border-t border-slate-100">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-700">
+              📅 Path to 76% ({new Date(dashboardData.examDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })})
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {Object.entries(dashboardData.pathTo76).map(([subCode, stat]: [string, any]) => {
+              const subjectName = dashboardData.allSubjects?.find((s: any) => s.code === subCode)?.name || subCode;
+              return (
+                <PathTo76Card
+                  key={subCode}
+                  subjectName={subjectName}
+                  stat={stat}
                 />
-              </div>
-            ))}
+              );
+            })}
           </div>
-        ) : (
-          <div className="p-8 text-center bg-white rounded-xl border border-dashed border-slate-300">
-            <p className="text-xs text-slate-500">No attendance records found for this selection.</p>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

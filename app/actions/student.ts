@@ -15,6 +15,7 @@ import {
 } from "@/types/database";
 import { revalidatePath } from "next/cache";
 import { buildSubjectAttendanceBreakdown } from "@/lib/utils/attendance";
+import { generateFutureClasses } from "@/lib/utils/schedule-predictor";
 
 export async function toggleAttendance(classId: string, status: AttendanceStatus) {
   const user = await getCurrentUser();
@@ -237,6 +238,44 @@ export async function getStudentDashboardData() {
       practical: data.practical,
     }));
 
+  const examDate = activeExam?.exam_date || "2026-11-02";
+  const futureClasses = generateFutureClasses(todayStr, examDate, batchName);
+
+  const pathTo76: Record<string, any> = {};
+  const targetSubjects = ["PATH", "PHARMA", "MICRO"];
+  for (const subCode of targetSubjects) {
+    const breakdown = Object.values(breakdownMap).find((b: any) => b.code === subCode);
+    if (!breakdown) continue;
+    
+    const futureTheoryClasses = futureClasses.filter((c: any) => c.subject_code === subCode && (c.class_type === "Lecture" || c.class_type === "Tutorial" || c.class_type === "Integration" || c.class_type === "SDL"));
+    const futurePracticalClasses = futureClasses.filter((c: any) => c.subject_code === subCode && c.class_type === "Practical");
+    
+    const currentTheoryTotal = (breakdown as any).theory?.total || 0;
+    const currentTheoryAttended = (breakdown as any).theory?.attended || 0;
+    const currentPracticalTotal = (breakdown as any).practical?.total || 0;
+    const currentPracticalAttended = (breakdown as any).practical?.attended || 0;
+    
+    const predictedFutureTheory = futureTheoryClasses.length;
+    const predictedFuturePractical = futurePracticalClasses.length;
+    
+    const totalTheoryByExam = currentTheoryTotal + predictedFutureTheory;
+    const totalPracticalByExam = currentPracticalTotal + predictedFuturePractical;
+    
+    const targetTheory = Math.ceil(0.76 * totalTheoryByExam);
+    const targetPractical = Math.ceil(0.76 * totalPracticalByExam);
+    
+    const needTheory = Math.max(0, targetTheory - currentTheoryAttended);
+    const needPractical = Math.max(0, targetPractical - currentPracticalAttended);
+    
+    const canSkipTheory = predictedFutureTheory - needTheory;
+    const canSkipPractical = predictedFuturePractical - needPractical;
+    
+    pathTo76[subCode] = {
+      theory: { predicted_future: predictedFutureTheory, need: needTheory, can_skip: canSkipTheory },
+      practical: { predicted_future: predictedFuturePractical, need: needPractical, can_skip: canSkipPractical }
+    };
+  }
+
   return {
     profile,
     todayClasses: enrichedTodayClasses,
@@ -247,6 +286,8 @@ export async function getStudentDashboardData() {
     historicalAttendance: historicalAttendance || [],
     allSubjects: allSubjects || [],
     autoPresentPref: autoPresentPref || null,
+    pathTo76,
+    examDate,
   };
 }
 
