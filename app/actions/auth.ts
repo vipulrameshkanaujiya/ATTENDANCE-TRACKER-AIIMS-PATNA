@@ -34,6 +34,17 @@ export async function completeOnboarding(formData: FormData): Promise<Onboarding
   const supabase = await createClient();
   const adminSupabase = createAdminClient();
 
+  // 0. Check block status
+  const { data: isBlocked } = await adminSupabase.rpc("is_user_blocked", {
+    p_user_id: user.id,
+    p_email: user.email || ""
+  });
+
+  if (isBlocked) {
+    await supabase.auth.signOut();
+    redirect("/blocked");
+  }
+
   // 1. Guard against tampering: Check if current account is already onboarded
   const { data: userProfile } = await supabase
     .from("users")

@@ -1,4 +1,4 @@
-﻿import { requireAdmin } from "@/lib/auth/session";
+import { requireAdmin } from "@/lib/auth/session";
 import Link from "next/link";
 import { 
   Shield, 
@@ -9,7 +9,8 @@ import {
   BookOpen, 
   Clock, 
   Layers, 
-  ArrowLeft 
+  ArrowLeft,
+  ShieldAlert
 } from "lucide-react";
 
 const adminNavItems = [
@@ -17,6 +18,7 @@ const adminNavItems = [
   { label: "Schedule", href: "/admin/schedule", icon: Calendar },
   { label: "Import PDF", href: "/admin/import", icon: FileUp },
   { label: "Students", href: "/admin/students", icon: Users },
+  { label: "Access Control", href: "/admin/access-control", icon: ShieldAlert },
   { label: "Attendance", href: "/admin/attendance", icon: CheckSquare },
   { label: "Curriculum", href: "/admin/curriculum", icon: BookOpen },
   { label: "Exams", href: "/admin/exams", icon: Clock },

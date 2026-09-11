@@ -1,4 +1,4 @@
-import { createServerClient, type CookieOptions } from "@supabase/ssr";
+﻿import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { getAdminEmail } from "@/lib/auth/constants";
 
@@ -34,6 +34,37 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser();
   const pathname = request.nextUrl.pathname;
+
+  // Block enforcement check
+  const isExempt = pathname === "/login" || pathname === "/blocked" || pathname.startsWith("/api/auth/");
+  
+  if (user && !isExempt) {
+    const verifiedCookie = request.cookies.get("access_verified");
+    if (!verifiedCookie) {
+      // Verify block status via RPC
+      const { data: isBlocked } = await supabase.rpc("is_user_blocked", { 
+        p_user_id: user.id, 
+        p_email: user.email || "" 
+      });
+
+      if (isBlocked) {
+        await supabase.auth.signOut();
+        const blockRedirect = NextResponse.redirect(new URL("/blocked", request.url));
+        blockRedirect.cookies.delete("access_verified");
+        
+        // Ensure auth cookies cleared on redirect response too
+        request.cookies.getAll().forEach(cookie => {
+          if (cookie.name.startsWith("sb-")) {
+            blockRedirect.cookies.delete(cookie.name);
+          }
+        });
+
+        return blockRedirect;
+      } else {
+        response.cookies.set("access_verified", "1", { maxAge: 30 });
+      }
+    }
+  }
 
   const adminEmail = getAdminEmail();
   const isAdminUser = user?.email?.trim().toLowerCase() === adminEmail;
@@ -80,4 +111,3 @@ export const config = {
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
-

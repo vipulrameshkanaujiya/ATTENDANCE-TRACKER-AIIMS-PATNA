@@ -23,6 +23,18 @@ export async function GET(request: Request) {
 
     // Use admin client to reliably create and synchronize public.users
     const adminSupabase = createAdminClient();
+    
+    // Verify block status immediately
+    const { data: isBlocked } = await adminSupabase.rpc("is_user_blocked", { 
+      p_user_id: user.id, 
+      p_email: email
+    });
+    
+    if (isBlocked) {
+      await supabase.auth.signOut();
+      return NextResponse.redirect(`${requestUrl.origin}/blocked`);
+    }
+
     const { data: existingUser } = await adminSupabase
       .from("users")
       .select("id, is_onboarded, role")

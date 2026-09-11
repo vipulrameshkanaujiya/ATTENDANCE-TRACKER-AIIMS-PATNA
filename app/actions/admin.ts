@@ -522,3 +522,121 @@ export async function adminToggleAutoPresentAction(studentId: string, isEnabled:
   return { success: true };
 }
 
+
+// --- ACCESS CONTROL ACTIONS ---
+
+export async function blockUserAction(input: { email?: string; rollNumber?: string; reason?: string }) {
+  const { user: adminUser } = await requireAdmin();
+  const supabase = createAdminClient();
+
+  let targetUserId: string | null = null;
+  const emailLower = input.email?.trim().toLowerCase() || null;
+  const roll = input.rollNumber?.trim() || null;
+
+  if (!emailLower && !roll) {
+    throw new Error("Must provide either email or roll number to block.");
+  }
+
+  // If email provided, look up in users table
+  if (emailLower) {
+    const { data: userRow } = await supabase
+      .from("users")
+      .select("id")
+      .eq("email", emailLower)
+      .maybeSingle();
+    if (userRow) {
+      targetUserId = userRow.id;
+    }
+  }
+
+  const { error } = await supabase.from("access_control").upsert(
+    {
+      user_id: targetUserId,
+      email: emailLower,
+      roll_number: roll,
+      is_blocked: true,
+      reason: input.reason || null,
+      blocked_by: adminUser.id,
+      blocked_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "id" }
+  );
+
+  if (error) throw new Error("Failed to block user: " + error.message);
+  revalidatePath("/admin/access-control");
+}
+
+export async function unblockUserAction(id: string) {
+  await requireAdmin();
+  const supabase = createAdminClient();
+  
+  const { error } = await supabase
+    .from("access_control")
+    .update({
+      is_blocked: false,
+      unblocked_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    })
+    .eq("id", id);
+    
+  if (error) throw new Error("Failed to unblock user: " + error.message);
+  revalidatePath("/admin/access-control");
+}
+
+export async function forceLogoutUserAction(userId: string) {
+  await requireAdmin();
+  const adminSupabase = createAdminClient();
+  
+  const { error } = await adminSupabase.auth.admin.signOut(userId);
+  if (error) throw new Error("Failed to force logout user: " + error.message);
+  
+  revalidatePath("/admin/access-control");
+  revalidatePath("/admin/students");
+}
+
+export async function removeUserAction(userId: string) {
+  const { user: adminUser } = await requireAdmin();
+  const supabase = createAdminClient();
+
+  // 1. Fetch user to log the removal
+  const { data: userRow } = await supabase
+    .from("users")
+    .select("email, roll_number")
+    .eq("id", userId)
+    .single();
+
+  if (userRow) {
+    await supabase.from("access_control").insert({
+      email: userRow.email,
+      roll_number: userRow.roll_number,
+      is_blocked: true,
+      reason: "Account permanently removed by admin",
+      blocked_by: adminUser.id
+    });
+  }
+
+  // 2. Clear student roster claim
+  if (userRow?.roll_number) {
+    await supabase
+      .from("student_roster")
+      .update({ claimed_by_user_id: null, status: "UNCLAIMED", claimed_at: null })
+      .eq("roll_number", userRow.roll_number);
+  }
+
+  // 3. Delete attendance & progress
+  await supabase.from("attendance").delete().eq("student_id", userId);
+  await supabase.from("student_topic_progress").delete().eq("student_id", userId);
+  await supabase.from("student_historical_attendance").delete().eq("student_id", userId);
+  await supabase.from("student_auto_present_preferences").delete().eq("student_id", userId);
+
+  // 4. Delete from public.users
+  await supabase.from("users").delete().eq("id", userId);
+
+  // 5. Delete auth user
+  const { error: authError } = await supabase.auth.admin.deleteUser(userId);
+  if (authError) throw new Error("Failed to delete auth user: " + authError.message);
+
+  revalidatePath("/admin/access-control");
+  revalidatePath("/admin/students");
+}
