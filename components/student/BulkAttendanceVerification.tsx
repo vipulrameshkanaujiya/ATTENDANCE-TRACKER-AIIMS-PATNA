@@ -1,13 +1,19 @@
-﻿"use client";
+"use client";
 
 import { useState, useTransition } from "react";
 import { confirmBulkHistoricalAttendanceAction } from "@/app/actions/student";
 import { FileSpreadsheet, CheckCircle2, AlertTriangle, Loader2 } from "lucide-react";
 
 export function BulkAttendanceVerification({ bulkData, rollNumber }: { bulkData: any[], rollNumber: string }) {
+  const isLegacyStudent = !rollNumber?.startsWith("24");
+  const nameFromBulk = bulkData[0]?.name || "";
+  
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [isIssueReported, setIsIssueReported] = useState(false);
+  
+  const [nameConfirmed, setNameConfirmed] = useState(!isLegacyStudent);
+  const [enteredName, setEnteredName] = useState("");
 
   const handleConfirm = () => {
     setError(null);
@@ -98,6 +104,39 @@ export function BulkAttendanceVerification({ bulkData, rollNumber }: { bulkData:
           </p>
         </div>
 
+        {isLegacyStudent && (
+          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-300 dark:border-amber-900/40 rounded-xl p-4 mb-4">
+            <h4 className="text-sm font-bold text-amber-900 dark:text-amber-300 mb-2">
+              ⚠️ Legacy Roll Number Detected
+            </h4>
+            <p className="text-xs text-amber-800 dark:text-amber-400 mb-3">
+              Because your roll number is from a previous batch, please confirm your full name (as per college records) to verify your identity.
+            </p>
+            <input
+              type="text"
+              placeholder="Type your full name (e.g., NOOR ALAM)"
+              value={enteredName}
+              onChange={(e) => {
+                setEnteredName(e.target.value);
+                setNameConfirmed(
+                  e.target.value.trim().toUpperCase() === nameFromBulk?.toUpperCase()
+                );
+              }}
+              className="w-full text-sm rounded-lg border border-amber-300 dark:border-amber-900/50 bg-white dark:bg-slate-950 px-3 py-2 text-slate-900 dark:text-slate-100 uppercase"
+            />
+            {enteredName && !nameConfirmed && (
+              <p className="text-xs text-red-600 dark:text-red-400 mt-2">
+                Name doesn't match our records. Please enter your exact name from the CSV data above.
+              </p>
+            )}
+            {nameConfirmed && (
+              <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-2">
+                ✓ Name verified. You can now confirm your data.
+              </p>
+            )}
+          </div>
+        )}
+
         {error && (
           <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-xs rounded-lg border border-red-200 dark:border-red-900/50">
             {error}
@@ -107,10 +146,10 @@ export function BulkAttendanceVerification({ bulkData, rollNumber }: { bulkData:
         <div className="flex flex-col sm:flex-row gap-3">
           <button
             onClick={handleConfirm}
-            disabled={isPending}
-            className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-xs transition flex items-center justify-center gap-2 disabled:opacity-50"
+            disabled={isPending || (isLegacyStudent && !nameConfirmed)}
+            className="w-full sm:w-auto px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white text-sm font-bold rounded-xl transition flex items-center justify-center gap-2"
           >
-            {isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <CheckCircle2 className="w-5 h-5" />}
+            {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
             Confirm & Lock Data
           </button>
           

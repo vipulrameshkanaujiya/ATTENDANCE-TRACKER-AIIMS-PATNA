@@ -49,9 +49,24 @@ export function BulkAttendanceClient({ currentData }: { currentData: any[] }) {
     for (let i = 0; i < dataLines.length; i++) {
       const separator = dataLines[i].includes(";") ? ";" : ",";
       const cols = dataLines[i].split(separator).map(c => c.trim());
-      if (cols.length < 6) continue;
+      if (cols.length < 7) {
+        // Fallback for old format without name (6 columns)
+        if (cols.length === 6) {
+          const [roll_number, subject_code, theory_attended, theory_total, practical_attended, practical_total] = cols;
+          rows.push({
+            roll_number,
+            name: "",
+            subject_code: subject_code.toUpperCase(),
+            theory_attended: parseInt(theory_attended) || 0,
+            theory_total: parseInt(theory_total) || 0,
+            practical_attended: parseInt(practical_attended) || 0,
+            practical_total: parseInt(practical_total) || 0,
+          });
+        }
+        continue;
+      }
 
-      const [roll_number, subject_code, theory_attended, theory_total, practical_attended, practical_total] = cols;
+      const [roll_number, name, subject_code, theory_attended, theory_total, practical_attended, practical_total] = cols;
       
       const tA = parseInt(theory_attended) || 0;
       const tT = parseInt(theory_total) || 0;
@@ -60,6 +75,7 @@ export function BulkAttendanceClient({ currentData }: { currentData: any[] }) {
 
       rows.push({
         roll_number,
+        name,
         subject_code: subject_code.toUpperCase(),
         theory_attended: tA,
         theory_total: tT,

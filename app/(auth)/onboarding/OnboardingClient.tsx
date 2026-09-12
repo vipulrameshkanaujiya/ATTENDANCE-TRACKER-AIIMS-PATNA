@@ -19,20 +19,24 @@ export default function OnboardingClient() {
 
   // Dynamic preview for user feedback
   let previewBatch = "";
-  if (rollSuffix !== null) {
-    if (rollSuffix >= 1 && rollSuffix <= 40) {
-      previewBatch = "Batch A (Roll 01–40)";
-    } else if (rollSuffix >= 41 && rollSuffix <= 80) {
-      previewBatch = "Batch B (Roll 41–80)";
-    } else {
-      previewBatch = "Batch C (Roll 81 onwards + Old Students)";
+  if (isValid) {
+    if (trimmedRoll.startsWith("21") || trimmedRoll.startsWith("22") || trimmedRoll.startsWith("23")) {
+      previewBatch = "Batch C (Old Students)";
+    } else if (rollSuffix !== null) {
+      if (rollSuffix >= 1 && rollSuffix <= 40) {
+        previewBatch = "Batch A (Roll 01–40)";
+      } else if (rollSuffix >= 41 && rollSuffix <= 80) {
+        previewBatch = "Batch B (Roll 41–80)";
+      } else {
+        previewBatch = "Batch C (Roll 81 onwards)";
+      }
     }
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isValid) {
-      setError("Please enter a valid 5-digit roll number starting with 24 (e.g. 24042)");
+      setError("Please enter a valid 5-digit roll number (e.g. 24042 or 22064)");
       return;
     }
     setError(null);
@@ -98,7 +102,7 @@ export default function OnboardingClient() {
               )}
             </div>
             <p className="text-[11px] text-slate-400">
-              Format: Exactly 5 digits starting with 24 (e.g. 24001, 24040, 24080, 24123)
+              Format: 5 digits (e.g., 24001, 24040, 22064)
             </p>
           </div>
 

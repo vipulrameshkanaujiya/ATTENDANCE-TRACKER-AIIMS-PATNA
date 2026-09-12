@@ -1,12 +1,12 @@
-﻿import type { Batch } from "../../types/database.ts";
+import type { Batch } from "../../types/database.ts";
 
 /**
- * Validates whether a roll number conforms to the strict 5-digit format "24___".
- * Example: 24001, 24040, 24080, 24123 are valid.
+ * Validates whether a roll number conforms to the strict 5-digit format "2[1-4]___".
+ * Example: 24001, 24040, 24080, 24123, 21114, 22064, 23033 are valid.
  */
 export function isValidRollNumber(rollNumber: string): boolean {
   if (!rollNumber || typeof rollNumber !== "string") return false;
-  return /^24[0-9]{3}$/.test(rollNumber.trim());
+  return /^2[1-4]\d{3}$/.test(rollNumber.trim());
 }
 
 /**
@@ -15,6 +15,7 @@ export function isValidRollNumber(rollNumber: string): boolean {
  */
 export function getRollNumberSuffix(rollNumber: string): number | null {
   if (!isValidRollNumber(rollNumber)) return null;
+  // Note: Only makes sense for 24xxx for range checking.
   const suffixStr = rollNumber.trim().substring(2);
   const parsed = parseInt(suffixStr, 10);
   return isNaN(parsed) ? null : parsed;
@@ -23,13 +24,24 @@ export function getRollNumberSuffix(rollNumber: string): number | null {
 /**
  * Determines which batch a roll number belongs to based on the dynamic batches list.
  * Default standard batch mapping:
- * - Batch A: 1 to 40
- * - Batch B: 41 to 80
+ * - Legacy (21xxx, 22xxx, 23xxx): Batch C
+ * - Batch A: 1 to 40 (for 24xxx)
+ * - Batch B: 41 to 80 (for 24xxx)
  * - Batch C: 81+ (or fallback)
  */
 export function resolveBatchForRoll(rollNumber: string, batches: Batch[]): Batch | null {
-  const suffix = getRollNumberSuffix(rollNumber);
-  if (suffix === null || !batches || batches.length === 0) return null;
+  if (!isValidRollNumber(rollNumber) || !batches || batches.length === 0) return null;
+  
+  const roll = rollNumber.trim();
+  
+  // Legacy rolls -> Batch C
+  if (roll.startsWith("21") || roll.startsWith("22") || roll.startsWith("23")) {
+    const fallback = batches.find((b) => b.is_default_fallback);
+    return fallback || null;
+  }
+
+  const suffix = getRollNumberSuffix(roll);
+  if (suffix === null) return null;
 
   // Find explicit range match
   const matchedBatch = batches.find(

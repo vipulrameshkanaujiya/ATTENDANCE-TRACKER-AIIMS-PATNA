@@ -16,11 +16,11 @@ export async function completeOnboarding(formData: FormData): Promise<Onboarding
   const rollNumber = formData.get("roll_number")?.toString().trim() || "";
   console.log(`[Onboarding] Initiating roll claim for roll: "${rollNumber}"`);
 
-  if (!isValidRollNumber(rollNumber)) {
+  if (!/^2[1-4]\d{3}$/.test(rollNumber)) {
     console.warn(`[Onboarding] Invalid roll number format rejected: "${rollNumber}"`);
     return {
       success: false,
-      error: "Roll number must be exactly 5 digits in the format '24___' (e.g. 24040).",
+      error: "Invalid roll number format. Must be 5 digits (e.g., 24001, 22064).",
     };
   }
 
