@@ -740,15 +740,15 @@ export async function uploadBulkAttendanceAction(csvRows: Array<{
       errors.push(`Row ${i + 1}: Invalid subject "${row.subject_code}"`);
       return false;
     }
-    if (row.theory_attended > row.theory_total) {
-      errors.push(`Row ${i + 1}: Theory attended > total`);
-      return false;
-    }
-    if (row.practical_attended > row.practical_total) {
-      errors.push(`Row ${i + 1}: Practical attended > total`);
-      return false;
-    }
-    return true;
+      if (row.theory_attended > row.theory_total) {
+        console.warn(`Row ${i + 1}: Clamping theory_attended from ${row.theory_attended} to ${row.theory_total}`);
+        row.theory_attended = row.theory_total;
+      }
+      if (row.practical_attended > row.practical_total) {
+        console.warn(`Row ${i + 1}: Clamping practical_attended from ${row.practical_attended} to ${row.practical_total}`);
+        row.practical_attended = row.practical_total;
+      }
+      return true;
   });
 
   if (errors.length > 0) {

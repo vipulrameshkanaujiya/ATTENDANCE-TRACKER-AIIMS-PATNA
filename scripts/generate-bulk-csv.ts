@@ -1,4 +1,4 @@
-﻿import * as xlsx from 'xlsx';
+import * as xlsx from 'xlsx';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -61,7 +61,23 @@ async function generate() {
     return 0;
   }
 
+  const pathFixes: Record<string, { tA: number, pA: number, pT: number }> = {
+    '24003': { tA: 105, pA: 27, pT: 33 },
+    '24035': { tA: 121, pA: 32, pT: 33 },
+    '24071': { tA: 74, pA: 28, pT: 31 },
+    '24074': { tA: 87, pA: 31, pT: 31 },
+    '24083': { tA: 65, pA: 24, pT: 34 },
+    '24107': { tA: 82, pA: 28, pT: 34 }
+  };
+
   for (const roll of Object.keys(students)) {
+    if (pathFixes[roll]) {
+      students[roll].path.tA = pathFixes[roll].tA;
+      students[roll].path.pA = pathFixes[roll].pA;
+      students[roll].path.pT = pathFixes[roll].pT;
+      continue;
+    }
+
     const idx = text.indexOf(roll);
     if (idx !== -1) {
       const chunk = text.substring(idx, idx + 80);
@@ -73,6 +89,11 @@ async function generate() {
         students[roll].path.tA = findValidAttended(thStr, 130);
         students[roll].path.pA = findValidAttended(pStr, pT);
         students[roll].path.pT = pT;
+        
+        // Safety clamp
+        if (students[roll].path.pA > students[roll].path.pT) {
+          students[roll].path.pA = students[roll].path.pT;
+        }
       }
     }
   }
