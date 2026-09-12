@@ -644,7 +644,7 @@ export async function removeUserAction(userId: string) {
 export async function changeUserRollNumberAction(
   userId: string,
   newRollNumber: string
-) {
+): Promise<{ success: boolean; error?: string }> {
   try {
     const { user: adminUser } = await requireAdmin();
     const supabaseAdmin = createAdminClient();
@@ -653,8 +653,8 @@ export async function changeUserRollNumberAction(
     const cleanRoll = newRollNumber.trim();
 
     // 1. Validate roll format
-    if (!/^24\d{3}$/.test(cleanRoll)) {
-      throw new Error("Invalid roll number format. Must be 5 digits starting with 24 (e.g., 24001).");
+    if (!/^2[1-4]\d{3}$/.test(cleanRoll)) {
+      throw new Error("Invalid roll number format. Must be 5 digits starting with 21, 22, 23, or 24 (e.g., 24001, 22064).");
     }
 
     // 2. Fetch current user
@@ -719,6 +719,7 @@ export async function changeUserRollNumberAction(
 
 export async function uploadBulkAttendanceAction(csvRows: Array<{
   roll_number: string;
+  name?: string;
   subject_code: string;
   theory_attended: number;
   theory_total: number;
@@ -731,7 +732,7 @@ export async function uploadBulkAttendanceAction(csvRows: Array<{
   // Validate every row
   const errors: string[] = [];
   const validRows = csvRows.filter((row, i) => {
-    if (!/^24\d{3}$/.test(row.roll_number)) {
+    if (!/^2[1-4]\d{3}$/.test(row.roll_number)) {
       errors.push(`Row ${i + 1}: Invalid roll format "${row.roll_number}"`);
       return false;
     }

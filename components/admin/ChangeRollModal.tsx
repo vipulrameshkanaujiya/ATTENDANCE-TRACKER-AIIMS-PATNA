@@ -23,7 +23,7 @@ export function ChangeRollModal({ studentId, currentRoll }: ChangeRollModalProps
       try {
         const result = await changeUserRollNumberAction(studentId, newRoll);
         if (!result.success) {
-          setError(result.error);
+          setError(result.error || "An unknown error occurred");
           return;
         }
         setIsOpen(false);
