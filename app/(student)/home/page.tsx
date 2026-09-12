@@ -26,29 +26,57 @@ function AutoPresentCard({ initialPref }: { initialPref: any }) {
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-4 mt-4 transition-colors">
-      <div className="flex items-center justify-between">
-        <div>
-          <h3 className="font-medium text-slate-900 dark:text-slate-100 text-sm">Auto-Present</h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-            Marked present for past classes.
-          </p>
-        </div>
-        <button
-          onClick={handleToggle}
-          disabled={isPending}
-          className={`relative shrink-0 w-11 h-6 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 ${
-            isEnabled ? 'bg-indigo-600' : 'bg-slate-300 dark:bg-slate-700'
+    <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 mt-4 flex items-center justify-between transition-colors">
+      <div>
+        <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">Auto-Present</h3>
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          {isEnabled
+            ? "Active — marking all past classes present."
+            : "Inactive — tap to enable auto-marking."}
+        </p>
+      </div>
+
+      <button
+        onClick={handleToggle}
+        disabled={isPending}
+        className="flex items-center gap-3 group focus:outline-none"
+        aria-label={isEnabled ? "Turn off auto-present" : "Turn on auto-present"}
+      >
+        {/* Toggle pill */}
+        <div
+          className={`relative w-14 h-7 rounded-full transition-all duration-300 ${
+            isEnabled
+              ? "bg-emerald-500/10 border-2 border-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.4)]"
+              : "bg-slate-200 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700"
           }`}
         >
-          {isPending && <Loader2 className="absolute top-1 left-[14px] w-4 h-4 text-white animate-spin z-10" />}
-          <span
-            className={`inline-block w-4 h-4 bg-white dark:bg-slate-900 rounded-full transition-transform transform ${
-              isEnabled ? 'translate-x-6' : 'translate-x-1'
-            } mt-1`}
-          />
-        </button>
-      </div>
+          {/* Loading spinner */}
+          {isPending && (
+            <Loader2 className="absolute inset-0 m-auto w-4 h-4 text-slate-400 animate-spin z-10" />
+          )}
+          {/* Circle knob */}
+          {!isPending && (
+            <div
+              className={`absolute top-0.5 w-5 h-5 rounded-full transition-all duration-300 ${
+                isEnabled
+                  ? "translate-x-7 bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.8)]"
+                  : "translate-x-0.5 bg-slate-400 dark:bg-slate-600"
+              }`}
+            />
+          )}
+        </div>
+
+        {/* ON/OFF Label */}
+        <span
+          className={`text-sm font-black uppercase tracking-wider transition-colors duration-300 ${
+            isEnabled
+              ? "text-emerald-500"
+              : "text-slate-400 dark:text-slate-500"
+          }`}
+        >
+          {isEnabled ? "ON" : "OFF"}
+        </span>
+      </button>
     </div>
   );
 }
