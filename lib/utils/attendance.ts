@@ -190,17 +190,23 @@ export function buildSubjectAttendanceBreakdown(
     const sub = map[subId];
     const isPresent = r.status === "PRESENT";
     const classType = r.class?.class_type;
+    const subjectCode = sub.code;
 
-    sub.total += 1;
-    if (isPresent) sub.attended += 1;
+    // PHARMA Integration = 2 units (2-hour class)
+    // PHARMA SDL = 1 unit
+    // Everything else = 1 unit
+    const units = (subjectCode === 'PHARMA' && classType === 'Integration') ? 2 : 1;
+
+    sub.total += units;
+    if (isPresent) sub.attended += units;
 
     if (sub.is_split) {
       if (isTheoryClass(classType) && sub.theory) {
-        sub.theory.total += 1;
-        if (isPresent) sub.theory.attended += 1;
+        sub.theory.total += units;
+        if (isPresent) sub.theory.attended += units;
       } else if (isPracticalClass(classType) && sub.practical) {
-        sub.practical.total += 1;
-        if (isPresent) sub.practical.attended += 1;
+        sub.practical.total += units;
+        if (isPresent) sub.practical.attended += units;
       }
     }
   });
