@@ -2,6 +2,7 @@ import { requireOnboarded } from "@/lib/auth/session";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { TopHeader } from "@/components/layout/TopHeader";
 import { StudentDataProvider } from "@/components/student/StudentDataProvider";
+import { InstallPrompt } from "@/components/ui/InstallPrompt";
 
 export default async function StudentLayout({
   children,
@@ -20,6 +21,7 @@ export default async function StudentLayout({
             {children}
           </main>
         </div>
+        <InstallPrompt />
       </div>
     </StudentDataProvider>
   );
