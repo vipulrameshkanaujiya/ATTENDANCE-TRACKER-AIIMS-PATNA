@@ -1,4 +1,4 @@
-# Attendance Tracker by Vipul K
+# BunkBuddy
 
 > **MBBS Utility Portal for Batch 2024 (Phase-2) · AIIMS Patna**  
 > Simple, ultra-reliable, zero-maintenance student schedule, attendance tracker, and syllabus manager.

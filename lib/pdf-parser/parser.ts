@@ -1,4 +1,5 @@
-﻿import { PDFParse } from "pdf-parse";
+﻿// @ts-ignore
+import { PDFParse } from "pdf-parse";
 import type { ClassType, BatchScope, TimetableImportRow } from "../../types/database.ts";
 
 export interface ParsedScheduleRow {

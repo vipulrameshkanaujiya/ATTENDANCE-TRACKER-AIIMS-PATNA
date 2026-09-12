@@ -852,3 +852,68 @@ export async function wipeUserAccountAction(userId: string) {
     return { success: false, error: err.message || "Unknown error" };
   }
 }
+
+export async function uploadBatchPhotoAction(formData: FormData) {
+  try {
+    const { user: adminUser } = await requireAdmin();
+    const supabase = createAdminClient();
+    
+    const file = formData.get("photo") as File | null;
+    const caption = formData.get("caption") as string | null;
+    
+    if (!file) return { success: false, error: "No file provided" };
+    if (file.size > 5 * 1024 * 1024) return { success: false, error: "File exceeds 5MB limit" };
+    
+    const ext = file.name.split('.').pop();
+    const fileName = `batch_photo_${Date.now()}.${ext}`;
+    
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from("batch-photos")
+      .upload(fileName, file);
+      
+    if (uploadError) return { success: false, error: uploadError.message };
+    
+    const { data: { publicUrl } } = supabase.storage
+      .from("batch-photos")
+      .getPublicUrl(fileName);
+      
+    const { error: dbError } = await supabase
+      .from("app_settings")
+      .upsert({
+        key: "batch_photo",
+        value: { url: publicUrl, caption: caption || "" },
+        updated_by: adminUser.id,
+        updated_at: new Date().toISOString()
+      });
+      
+    if (dbError) return { success: false, error: dbError.message };
+    
+    revalidatePath("/home");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message || "Unknown error" };
+  }
+}
+
+export async function deleteBatchPhotoAction() {
+  try {
+    const { user: adminUser } = await requireAdmin();
+    const supabase = createAdminClient();
+    
+    const { error: dbError } = await supabase
+      .from("app_settings")
+      .upsert({
+        key: "batch_photo",
+        value: { url: "/batch-photo.jpg", caption: "MBBS Batch 2024 — AIIMS Patna" },
+        updated_by: adminUser.id,
+        updated_at: new Date().toISOString()
+      });
+      
+    if (dbError) return { success: false, error: dbError.message };
+    
+    revalidatePath("/home");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message || "Unknown error" };
+  }
+}

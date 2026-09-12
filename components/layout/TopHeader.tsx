@@ -22,16 +22,20 @@ export function TopHeader({ profile }: TopHeaderProps) {
     <header className="sticky top-0 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-3 sm:px-6">
       <div className="w-full max-w-5xl mx-auto flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5 min-w-0 flex-1 overflow-hidden">
-          <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse flex-shrink-0" />
+          <img 
+            src="/logo.png" 
+            alt="BunkBuddy" 
+            className="w-10 h-10 rounded-xl object-cover flex-shrink-0"
+          />
           <div className="min-w-0 flex-1 overflow-hidden">
             <h1 
               className="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 leading-tight truncate whitespace-nowrap overflow-hidden text-ellipsis tracking-tight"
-              title="Attendance Tracker by Vipul K"
+              title="BunkBuddy"
             >
-              Attendance Tracker by Vipul K
+              BunkBuddy
             </h1>
             <p className="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate whitespace-nowrap">
-              AIIMS Patna A Phase-2
+              AIIMS Patna
             </p>
           </div>
         </div>

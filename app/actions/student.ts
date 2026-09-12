@@ -282,20 +282,29 @@ export async function getStudentDashboardData() {
     );
   }
 
-  return {
-    profile,
-    todayClasses: enrichedTodayClasses,
-    nextClass: nextClass || null,
-    activeExam: (activeExam as Exam) || null,
-    subjectAttendance: subjectAttendanceList,
-    allStudentAttendance: allStudentAttendance || [],
-    historicalAttendance: historicalAttendance || [],
-    bulkData: bulkData || [],
-    allSubjects: allSubjects || [],
-    autoPresentPref: autoPresentPref || null,
-    pathTo76,
-    examDate,
-  };
+    const { data: photoRow } = await supabase
+      .from("app_settings")
+      .select("value")
+      .eq("key", "batch_photo")
+      .maybeSingle();
+      
+    const batchPhoto = photoRow?.value as { url: string | null; caption: string | null } | null;
+
+    return {
+      profile,
+      todayClasses: enrichedTodayClasses,
+      nextClass: nextClass || null,
+      activeExam: (activeExam as Exam) || null,
+      subjectAttendance: subjectAttendanceList,
+      allStudentAttendance: allStudentAttendance || [],
+      historicalAttendance: historicalAttendance || [],
+      bulkData: bulkData || [],
+      allSubjects: allSubjects || [],
+      autoPresentPref: autoPresentPref || null,
+      batchPhoto: batchPhoto || { url: "/batch-photo.jpg", caption: "MBBS Batch 2024 — AIIMS Patna" },
+      pathTo76,
+      examDate,
+    };
 }
 
 export async function getDeferredStudentData() {
@@ -336,10 +345,19 @@ export async function getDeferredStudentData() {
     supabase.rpc("get_batch_aggregate_stats")
   ]);
 
+  const { data: photoRow } = await supabase
+    .from("app_settings")
+    .select("value")
+    .eq("key", "batch_photo")
+    .maybeSingle();
+
+  const batchPhoto = photoRow?.value as { url: string | null; caption: string | null } | null;
+
   return {
     scheduleClasses: scheduleClasses || [],
     units: units || [],
     progressRecords: progressRecords || [],
+    batchPhoto: batchPhoto || { url: "/batch-photo.jpg", caption: "MBBS Batch 2024 — AIIMS Patna" },
     stats: rawStats || {
       active_students_30d: 0,
       batch_average_attendance_pct: 0,

@@ -39,10 +39,10 @@ export default function LoginPage() {
             <Stethoscope className="w-7 h-7" />
           </div>
           <h1 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight leading-snug">
-            Attendance Tracker by Vipul K
+            BunkBuddy
           </h1>
           <p className="text-xs font-semibold tracking-wider text-blue-600 uppercase">
-            AIIMS Patna · MBBS Batch 2024 (Phase-2)
+            AIIMS Patna
           </p>
           <p className="text-sm text-slate-500 pt-1">
             Student daily utility portal: schedule, 1-tap attendance, and syllabus tracking.
@@ -103,7 +103,7 @@ export default function LoginPage() {
         {/* Footer */}
         <div className="text-center">
           <p className="text-xs text-slate-400">
-            Attendance Tracker by Vipul K
+            BunkBuddy
           </p>
         </div>
       </div>

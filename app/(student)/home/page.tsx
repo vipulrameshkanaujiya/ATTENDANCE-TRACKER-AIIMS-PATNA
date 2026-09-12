@@ -90,10 +90,7 @@ export default function StudentHomePage() {
       {/* 1. Header Greeting */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-blue-600">
-            MBBS Phase-2 Utility
-          </p>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2">
             <span>Good Morning</span>
             <span className="text-2xl">👋</span>
           </h1>
@@ -123,6 +120,21 @@ export default function StudentHomePage() {
 
       {/* Auto-Present Toggle Card */}
       <AutoPresentCard initialPref={autoPresentPref} />
+
+      {data?.batchPhoto && (
+        <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs">
+          <img 
+            src={data.batchPhoto.url} 
+            alt="MBBS 2024 Batch" 
+            className="w-full h-auto object-cover"
+          />
+          {data.batchPhoto.caption && (
+            <p className="text-xs text-slate-500 dark:text-slate-400 px-4 py-3 text-center">
+              {data.batchPhoto.caption}
+            </p>
+          )}
+        </div>
+      )}
 
       {/* 3. TODAY'S SESSIONS TIMELINE */}
       <div className="space-y-3">

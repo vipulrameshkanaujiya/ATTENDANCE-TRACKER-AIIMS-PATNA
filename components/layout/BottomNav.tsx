@@ -49,18 +49,20 @@ export function BottomNav() {
       <aside className="hidden md:flex flex-col flex-shrink-0 w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 sticky top-0 h-screen z-40">
         <div className="flex flex-col flex-grow pt-6 px-4 pb-4">
           <div className="flex items-center gap-2.5 px-1 mb-8 min-w-0 overflow-hidden whitespace-nowrap">
-            <div className="w-9 h-9 rounded-xl bg-blue-600 dark:bg-blue-500 text-white flex items-center justify-center font-bold text-xs shadow-sm flex-shrink-0">
-              VK
-            </div>
+            <img 
+              src="/logo.png" 
+              alt="BunkBuddy" 
+              className="w-10 h-10 rounded-xl object-cover flex-shrink-0"
+            />
             <div className="min-w-0 flex-1 overflow-hidden whitespace-nowrap">
               <h2 
-                className="text-[11px] font-bold text-slate-900 dark:text-slate-100 leading-tight truncate whitespace-nowrap overflow-hidden text-ellipsis tracking-tight max-w-[165px] block"
-                title="Attendance Tracker by Vipul K"
+                className="text-[13px] font-bold text-slate-900 dark:text-slate-100 leading-tight truncate whitespace-nowrap overflow-hidden text-ellipsis tracking-tight max-w-[165px] block"
+                title="BunkBuddy"
               >
-                Attendance Tracker by Vipul K
+                BunkBuddy
               </h2>
               <p className="text-[10px] font-semibold text-blue-600 dark:text-blue-400 tracking-wider uppercase truncate whitespace-nowrap">
-                AIIMS Patna A MBBS 2024
+                AIIMS Patna
               </p>
             </div>
           </div>

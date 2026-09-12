@@ -10,7 +10,8 @@ import {
   Clock, 
   Layers, 
   ArrowLeft,
-  ShieldAlert
+  ShieldAlert,
+  Camera
 } from "lucide-react";
 
 const adminNavItems = [
@@ -20,6 +21,7 @@ const adminNavItems = [
   { label: "Students", href: "/admin/students", icon: Users },
   { label: "Bulk Attendance", href: "/admin/bulk-attendance", icon: FileUp },
   { label: "Access Control", href: "/admin/access-control", icon: ShieldAlert },
+  { label: "Batch Photo", href: "/admin/batch-photo", icon: Camera },
   { label: "Attendance", href: "/admin/attendance", icon: CheckSquare },
   { label: "Curriculum", href: "/admin/curriculum", icon: BookOpen },
   { label: "Exams", href: "/admin/exams", icon: Clock },

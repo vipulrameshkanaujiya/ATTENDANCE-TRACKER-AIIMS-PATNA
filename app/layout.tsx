@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Attendance Tracker by Vipul K | AIIMS Patna",
-  description: "Student-focused utility portal for MBBS Batch 2024 (Phase-2) · Schedule & Attendance Tracker",
+  title: "BunkBuddy | AIIMS Patna",
+  description: "Student-focused utility portal for MBBS Batch",
 };
 
 export const viewport: Viewport = {
