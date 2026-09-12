@@ -6,6 +6,7 @@ import { PreSeptemberAttendanceCard } from "@/components/student/PreSeptemberAtt
 import { SubjectAttendanceCard } from "@/components/student/SubjectAttendanceCard";
 import { PathTo76Card } from "@/components/student/PathTo76Card";
 import { BulkAttendanceVerification } from "@/components/student/BulkAttendanceVerification";
+import { AttendanceSkeleton } from "@/components/student/AttendanceSkeleton";
 import { buildSubjectAttendanceBreakdown } from "@/lib/utils/attendance";
 import Link from "next/link";
 import { useMemo } from "react";
@@ -46,11 +47,7 @@ export default function AttendancePage() {
   }, [dashboardData, selectedSubjectId]);
 
   if (isLoading || !metrics || !dashboardData) {
-    return (
-      <div className="p-8 text-center bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm animate-pulse">
-        <p className="text-sm text-slate-500 dark:text-slate-400">Loading attendance records...</p>
-      </div>
-    );
+    return <AttendanceSkeleton />;
   }
 
   const { septAttended, septTotal, histAttended, histTotal, totalAttended, totalMarked, overallPercentage, subjectBreakdown } = metrics;

@@ -2,26 +2,43 @@
 
 import { useStudentData } from "@/components/student/StudentDataProvider";
 import { AttendanceToggle } from "@/components/student/AttendanceToggle";
-import { Clock, MapPin, User, ChevronRight, Loader2, Bot } from "lucide-react";
+import { HomeSkeleton } from "@/components/student/HomeSkeleton";
+import { Clock, MapPin, User, ChevronRight, Bot } from "lucide-react";
 import Link from "next/link";
 import { getTodayDateString, parseDateString, formatReadableDate } from "@/lib/utils/date";
-import { useState, useTransition } from "react";
+import { useState, useEffect } from "react";
 import { toggleAutoPresent } from "@/app/actions/student";
 
 function AutoPresentCard({ initialPref }: { initialPref: any }) {
-  const [isEnabled, setIsEnabled] = useState(initialPref?.is_enabled || false);
-  const [isPending, startTransition] = useTransition();
+  const { updateAutoPresentLocally } = useStudentData();
+  const [optimisticAutoPresent, setOptimisticAutoPresent] = useState(initialPref?.is_enabled || false);
+
+  useEffect(() => {
+    setOptimisticAutoPresent(initialPref?.is_enabled || false);
+  }, [initialPref?.is_enabled]);
 
   const handleToggle = () => {
-    const newValue = !isEnabled;
-    setIsEnabled(newValue);
-    startTransition(async () => {
-      const result = await toggleAutoPresent(newValue);
-      if (!result.success) {
-        setIsEnabled(!newValue); // revert
-        alert("Failed to update Auto-Present mode:\n" + (result.error || "Unknown error"));
-      }
-    });
+    const nextVal = !optimisticAutoPresent;
+    // 1. Immediately update optimistic state
+    setOptimisticAutoPresent(nextVal);
+    updateAutoPresentLocally(nextVal);
+
+    // 2. Fire server action in the background
+    toggleAutoPresent(nextVal)
+      .then((result) => {
+        if (!result.success) {
+          // Revert on error
+          setOptimisticAutoPresent(!nextVal);
+          updateAutoPresentLocally(!nextVal);
+          alert("Failed to update Auto-Present mode:\n" + (result.error || "Unknown error"));
+        }
+      })
+      .catch((err) => {
+        // Revert on exception
+        setOptimisticAutoPresent(!nextVal);
+        updateAutoPresentLocally(!nextVal);
+        alert("Failed to update Auto-Present mode:\n" + (err?.message || "Unknown error"));
+      });
   };
 
   return (
@@ -29,7 +46,7 @@ function AutoPresentCard({ initialPref }: { initialPref: any }) {
       <div>
         <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">Auto-Present</h3>
         <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-          {isEnabled
+          {optimisticAutoPresent
             ? "Active — marking all past classes present."
             : "Inactive — tap to enable auto-marking."}
         </p>
@@ -37,43 +54,36 @@ function AutoPresentCard({ initialPref }: { initialPref: any }) {
 
       <button
         onClick={handleToggle}
-        disabled={isPending}
-        className="flex items-center gap-3 group focus:outline-none"
-        aria-label={isEnabled ? "Turn off auto-present" : "Turn on auto-present"}
+        className="flex items-center gap-3 group focus:outline-none cursor-pointer"
+        aria-label={optimisticAutoPresent ? "Turn off auto-present" : "Turn on auto-present"}
       >
         {/* Toggle pill */}
         <div
           className={`relative w-14 h-7 rounded-full transition-all duration-300 ${
-            isEnabled
+            optimisticAutoPresent
               ? "bg-emerald-500/10 border-2 border-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.4)]"
               : "bg-slate-200 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700"
           }`}
         >
-          {/* Loading spinner */}
-          {isPending && (
-            <Loader2 className="absolute inset-0 m-auto w-4 h-4 text-slate-400 animate-spin z-10" />
-          )}
           {/* Circle knob */}
-          {!isPending && (
-            <div
-              className={`absolute top-0.5 w-5 h-5 rounded-full transition-all duration-300 ${
-                isEnabled
-                  ? "translate-x-7 bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.8)]"
-                  : "translate-x-0.5 bg-slate-400 dark:bg-slate-600"
-              }`}
-            />
-          )}
+          <div
+            className={`absolute top-0.5 w-5 h-5 rounded-full transition-all duration-300 ${
+              optimisticAutoPresent
+                ? "translate-x-7 bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.8)]"
+                : "translate-x-0.5 bg-slate-400 dark:bg-slate-600"
+            }`}
+          />
         </div>
 
         {/* ON/OFF Label */}
         <span
-          className={`text-sm font-black uppercase tracking-wider transition-colors duration-300 ${
-            isEnabled
+          className={`text-lg font-black uppercase tracking-wider transition-colors duration-300 ${
+            optimisticAutoPresent
               ? "text-emerald-500"
               : "text-slate-400 dark:text-slate-500"
           }`}
         >
-          {isEnabled ? "ON" : "OFF"}
+          {optimisticAutoPresent ? "ON" : "OFF"}
         </span>
       </button>
     </div>
@@ -84,11 +94,7 @@ export default function StudentHomePage() {
   const { dashboardData: data, isLoading } = useStudentData();
 
   if (isLoading || !data) {
-    return (
-      <div className="p-8 text-center bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm animate-pulse">
-        <p className="text-sm text-slate-500 dark:text-slate-400">Loading student profile and daily schedule...</p>
-      </div>
-    );
+    return <HomeSkeleton />;
   }
 
   const { profile, todayClasses, activeExam, subjectAttendance, autoPresentPref } = data;

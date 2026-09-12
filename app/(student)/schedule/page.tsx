@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useStudentData } from "@/components/student/StudentDataProvider";
 import { AttendanceToggle } from "@/components/student/AttendanceToggle";
 import { ScheduleDateNav } from "@/components/student/ScheduleDateNav";
+import { ScheduleSkeleton } from "@/components/student/ScheduleSkeleton";
 import { Calendar as CalendarIcon, MapPin, User } from "lucide-react";
 import { getTodayDateString, parseDateString, formatReadableDate } from "@/lib/utils/date";
 import { useMemo, useState, useEffect } from "react";
@@ -81,11 +82,7 @@ export default function SchedulePage() {
   }, [dashboardData, deferredData, currentView, selectedDate, todayStr]);
 
   if (isLoading || !filteredData) {
-    return (
-      <div className="p-8 text-center bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm animate-pulse">
-        <p className="text-sm text-slate-500 dark:text-slate-400">Loading schedule...</p>
-      </div>
-    );
+    return <ScheduleSkeleton />;
   }
 
   const { groupedByDate, hasClasses } = filteredData;

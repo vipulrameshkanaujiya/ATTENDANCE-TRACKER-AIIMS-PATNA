@@ -75,6 +75,7 @@ export function BottomNav() {
                 <Link
                   key={item.href}
                   href={item.href}
+                  prefetch={true}
                   className={clsx(
                     "flex items-center gap-3.5 px-3.5 py-3 rounded-xl text-sm font-medium transition",
                     isActive

@@ -1,17 +1,14 @@
 "use client";
 
 import { useStudentData } from "@/components/student/StudentDataProvider";
+import { StatsSkeleton } from "@/components/student/StatsSkeleton";
 import { Users, BarChart2, ShieldCheck, Award } from "lucide-react";
 
 export default function StatsPage() {
   const { deferredData, isLoading } = useStudentData();
 
   if (isLoading || !deferredData) {
-    return (
-      <div className="p-8 text-center bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm animate-pulse">
-        <p className="text-sm text-slate-500 dark:text-slate-400">Loading statistics...</p>
-      </div>
-    );
+    return <StatsSkeleton />;
   }
 
   const stats = deferredData.stats;

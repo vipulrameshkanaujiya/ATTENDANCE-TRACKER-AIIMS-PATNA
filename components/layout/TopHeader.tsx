@@ -60,6 +60,7 @@ export function TopHeader({ profile }: TopHeaderProps) {
           {profile?.role === "admin" && (
             <Link
               href="/admin"
+              prefetch={true}
               className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-amber-50 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-200/80 dark:border-amber-800/80 hover:bg-amber-100 dark:hover:bg-amber-900/60 transition"
             >
               <Shield className="w-3.5 h-3.5" />
@@ -70,6 +71,7 @@ export function TopHeader({ profile }: TopHeaderProps) {
           {/* Avatar Profile Link */}
           <Link
             href="/profile"
+            prefetch={true}
             className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500"
             title="My Profile"
           >
