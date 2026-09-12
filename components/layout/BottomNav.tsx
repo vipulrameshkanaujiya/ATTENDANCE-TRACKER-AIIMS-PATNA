@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Calendar, CheckSquare, BookOpen, BarChart3 } from "lucide-react";
+import { Home, Calendar, CheckSquare, BookOpen, BarChart3, HelpCircle } from "lucide-react";
 import clsx from "clsx";
 
 const navItems = [
@@ -10,6 +10,7 @@ const navItems = [
   { label: "Schedule", href: "/schedule", icon: Calendar },
   { label: "Attendance", href: "/attendance", icon: CheckSquare },
   { label: "Stats", href: "/stats", icon: BarChart3 },
+  { label: "Help", href: "/help", icon: HelpCircle },
 ];
 
 export function BottomNav() {

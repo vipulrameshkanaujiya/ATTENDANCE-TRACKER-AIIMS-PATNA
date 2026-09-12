@@ -917,3 +917,61 @@ export async function deleteBatchPhotoAction() {
     return { success: false, error: err.message || "Unknown error" };
   }
 }
+
+export async function getFeedbackListAction() {
+  try {
+    await requireAdmin();
+    const supabase = createAdminClient();
+    const { data, error } = await supabase
+      .from("feedback")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) return { success: false, error: error.message, data: [] };
+    return { success: true, data: data || [] };
+  } catch (err: any) {
+    return { success: false, error: err.message, data: [] };
+  }
+}
+
+export async function updateFeedbackStatusAction(id: string, status: string, adminNotes?: string) {
+  try {
+    await requireAdmin();
+    const supabase = createAdminClient();
+    const updatePayload: any = {
+      status,
+      updated_at: new Date().toISOString(),
+    };
+    if (adminNotes !== undefined) {
+      updatePayload.admin_notes = adminNotes;
+    }
+
+    const { error } = await supabase
+      .from("feedback")
+      .update(updatePayload)
+      .eq("id", id);
+
+    if (error) return { success: false, error: error.message };
+    revalidatePath("/admin/feedback");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+export async function deleteFeedbackAction(id: string) {
+  try {
+    await requireAdmin();
+    const supabase = createAdminClient();
+    const { error } = await supabase
+      .from("feedback")
+      .delete()
+      .eq("id", id);
+
+    if (error) return { success: false, error: error.message };
+    revalidatePath("/admin/feedback");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}

@@ -11,7 +11,8 @@ import {
   Layers, 
   ArrowLeft,
   ShieldAlert,
-  Camera
+  Camera,
+  MessageSquare
 } from "lucide-react";
 
 const adminNavItems = [
@@ -23,6 +24,7 @@ const adminNavItems = [
   { label: "Access Control", href: "/admin/access-control", icon: ShieldAlert },
   { label: "Batch Photo", href: "/admin/batch-photo", icon: Camera },
   { label: "Attendance", href: "/admin/attendance", icon: CheckSquare },
+  { label: "Feedback", href: "/admin/feedback", icon: MessageSquare },
   { label: "Curriculum", href: "/admin/curriculum", icon: BookOpen },
   { label: "Exams", href: "/admin/exams", icon: Clock },
   { label: "Batches", href: "/admin/batches", icon: Layers },

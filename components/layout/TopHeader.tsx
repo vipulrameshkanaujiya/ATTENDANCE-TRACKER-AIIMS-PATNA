@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { UserProfile } from "@/types/database";
-import { User, Shield, Sun, Moon } from "lucide-react";
+import { User, Shield, Sun, Moon, HelpCircle } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
@@ -25,22 +25,29 @@ export function TopHeader({ profile }: TopHeaderProps) {
           <img 
             src="/logo.png" 
             alt="BunkBuddy" 
-            className="w-10 h-10 rounded-xl object-cover flex-shrink-0"
+            className="w-8 h-8 rounded-lg object-cover flex-shrink-0"
           />
           <div className="min-w-0 flex-1 overflow-hidden">
-            <h1 
-              className="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 leading-tight truncate whitespace-nowrap overflow-hidden text-ellipsis tracking-tight"
-              title="BunkBuddy"
-            >
+            <h1 className="text-sm font-bold text-slate-900 dark:text-slate-100 leading-none truncate">
               BunkBuddy
             </h1>
-            <p className="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate whitespace-nowrap">
+            <p className="text-[10px] font-semibold text-blue-600 dark:text-blue-400 tracking-wider uppercase truncate mt-0.5">
               AIIMS Patna
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          {/* Help & About */}
+          <Link
+            href="/help"
+            prefetch={true}
+            className="w-8 h-8 rounded-full flex items-center justify-center text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition focus:outline-none"
+            title="Help & About"
+          >
+            <HelpCircle className="w-4 h-4" />
+          </Link>
+
           {/* Theme Toggle */}
           {mounted && (
             <button

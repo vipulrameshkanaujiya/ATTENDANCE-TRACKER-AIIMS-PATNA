@@ -663,3 +663,39 @@ export async function confirmBulkHistoricalAttendanceAction(): Promise<{ success
     return { success: false, error: err?.message || "Failed to confirm historical attendance." };
   }
 }
+
+export async function submitFeedbackAction(formData: FormData): Promise<{ success: boolean; error?: string }> {
+  try {
+    const supabase = await createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) return { success: false, error: "Not authenticated. Please log in to submit feedback." };
+
+    const message = formData.get("message") as string;
+    const category = (formData.get("category") as string) || "general";
+
+    if (!message || message.trim().length < 5) {
+      return { success: false, error: "Message must be at least 5 characters." };
+    }
+
+    const { data: profile } = await supabase
+      .from("users")
+      .select("roll_number, email")
+      .eq("id", user.id)
+      .single();
+
+    const { error } = await supabase.from("feedback").insert({
+      user_id: user.id,
+      roll_number: profile?.roll_number,
+      email: profile?.email || user.email,
+      category,
+      message: message.trim(),
+      status: "NEW",
+    });
+
+    if (error) return { success: false, error: error.message };
+    return { success: true };
+  } catch (err: any) {
+    console.error("Error in submitFeedbackAction:", err);
+    return { success: false, error: err?.message || "Failed to submit feedback." };
+  }
+}
