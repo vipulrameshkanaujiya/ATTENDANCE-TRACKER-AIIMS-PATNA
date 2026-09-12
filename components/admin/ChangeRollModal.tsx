@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useTransition } from "react";
 import { changeUserRollNumberAction } from "@/app/actions/admin";
@@ -21,7 +21,11 @@ export function ChangeRollModal({ studentId, currentRoll }: ChangeRollModalProps
 
     startTransition(async () => {
       try {
-        await changeUserRollNumberAction(studentId, newRoll);
+        const result = await changeUserRollNumberAction(studentId, newRoll);
+        if (!result.success) {
+          setError(result.error);
+          return;
+        }
         setIsOpen(false);
         setNewRoll("");
       } catch (err: any) {

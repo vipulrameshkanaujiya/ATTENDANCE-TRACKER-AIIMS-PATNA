@@ -645,67 +645,76 @@ export async function changeUserRollNumberAction(
   userId: string,
   newRollNumber: string
 ) {
-  const { user: adminUser } = await requireAdmin();
-  const supabase = createAdminClient();
+  try {
+    const { user: adminUser } = await requireAdmin();
+    const supabaseAdmin = createAdminClient();
+    const supabaseUser = await createClient();
 
-  const cleanRoll = newRollNumber.trim();
+    const cleanRoll = newRollNumber.trim();
 
-  // 1. Validate roll format
-  if (!/^24\d{3}$/.test(cleanRoll)) {
-    throw new Error("Invalid roll number format. Must be 5 digits starting with 24 (e.g., 24001).");
+    // 1. Validate roll format
+    if (!/^24\d{3}$/.test(cleanRoll)) {
+      throw new Error("Invalid roll number format. Must be 5 digits starting with 24 (e.g., 24001).");
+    }
+
+    // 2. Fetch current user
+    const { data: currentUser } = await supabaseAdmin
+      .from("users")
+      .select("id, roll_number, email, batch_id")
+      .eq("id", userId)
+      .single();
+
+    if (!currentUser) throw new Error("User not found.");
+
+    const oldRoll = currentUser.roll_number;
+
+    // 3. Check if new roll exists in roster and is claimable
+    const { data: rosterEntry } = await supabaseAdmin
+      .from("student_roster")
+      .select("roll_number, status, claimed_by_user_id, batch_id")
+      .eq("roll_number", cleanRoll)
+      .maybeSingle();
+
+    if (!rosterEntry) {
+      throw new Error("Roll number not found in official roster. Contact admin to add it first.");
+    }
+
+    if (rosterEntry.status === "CLAIMED" && rosterEntry.claimed_by_user_id !== userId) {
+      throw new Error("Roll number is already claimed by another student.");
+    }
+
+    // 4. Call RPC to update roll number securely USING THE USER CLIENT
+    // The RPC uses auth.uid() which needs the user's session JWT, not the admin service role
+    const { error } = await supabaseUser.rpc("admin_change_roll_number", {
+      p_user_id: userId,
+      p_new_roll: cleanRoll,
+      p_new_batch_id: rosterEntry.batch_id,
+    });
+
+    if (error) throw new Error("Failed to update roll number: " + error.message);
+
+    // 5. Audit log
+    await supabaseAdmin.from("access_control").insert({
+      user_id: userId,
+      email: currentUser.email,
+      roll_number: cleanRoll,
+      is_blocked: false,
+      reason: `Roll number changed from ${oldRoll || "(none)"} to ${cleanRoll} by admin`,
+      blocked_by: adminUser.id,
+    });
+
+    // 6. Invalidate caches
+    revalidatePath("/admin/students");
+    revalidatePath("/admin/access-control");
+    revalidatePath("/home");
+    revalidatePath("/attendance");
+    revalidatePath("/schedule");
+
+    return { success: true };
+  } catch (err: any) {
+    console.error("changeUserRollNumberAction error:", err);
+    return { success: false, error: err.message || "An unexpected error occurred." };
   }
-
-  // 2. Fetch current user
-  const { data: currentUser } = await supabase
-    .from("users")
-    .select("id, roll_number, email, batch_id")
-    .eq("id", userId)
-    .single();
-
-  if (!currentUser) throw new Error("User not found.");
-
-  const oldRoll = currentUser.roll_number;
-
-  // 3. Check if new roll exists in roster and is claimable
-  const { data: rosterEntry } = await supabase
-    .from("student_roster")
-    .select("roll_number, status, claimed_by_user_id, batch_id")
-    .eq("roll_number", cleanRoll)
-    .maybeSingle();
-
-  if (!rosterEntry) {
-    throw new Error("Roll number not found in official roster. Contact admin to add it first.");
-  }
-
-  if (rosterEntry.status === "CLAIMED" && rosterEntry.claimed_by_user_id !== userId) {
-    throw new Error("Roll number is already claimed by another student.");
-  }
-
-  // 4. Call RPC to update roll number securely
-  const { error } = await supabase.rpc("admin_change_roll_number", {
-    p_user_id: userId,
-    p_new_roll: cleanRoll,
-    p_new_batch_id: rosterEntry.batch_id,
-  });
-
-  if (error) throw new Error("Failed to update roll number: " + error.message);
-
-  // 5. Audit log
-  await supabase.from("access_control").insert({
-    user_id: userId,
-    email: currentUser.email,
-    roll_number: cleanRoll,
-    is_blocked: false,
-    reason: `Roll number changed from ${oldRoll || "(none)"} to ${cleanRoll} by admin`,
-    blocked_by: adminUser.id,
-  });
-
-  // 6. Invalidate caches
-  revalidatePath("/admin/students");
-  revalidatePath("/admin/access-control");
-  revalidatePath("/home");
-  revalidatePath("/attendance");
-  revalidatePath("/schedule");
 }
 
 export async function uploadBulkAttendanceAction(csvRows: Array<{
