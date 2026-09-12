@@ -791,3 +791,64 @@ export async function clearAllBulkAction() {
   revalidatePath("/admin/bulk-attendance");
   revalidatePath("/attendance");
 }
+
+export async function wipeUserAccountAction(userId: string) {
+  try {
+    const { user: adminUser } = await requireAdmin();
+    const supabase = createAdminClient();
+
+    // 1. Fetch user info for audit log
+    const { data: userRow } = await supabase
+      .from("users")
+      .select("id, email, roll_number, batch_id")
+      .eq("id", userId)
+      .maybeSingle();
+
+    if (!userRow) {
+      return { success: false, error: "User not found." };
+    }
+
+    // 2. Delete all related data
+    await supabase.from("attendance").delete().eq("student_id", userId);
+    await supabase.from("student_topic_progress").delete().eq("student_id", userId);
+    await supabase.from("student_historical_attendance").delete().eq("student_id", userId);
+    await supabase.from("student_auto_present_preferences").delete().eq("student_id", userId);
+
+    // 3. Reset roster entry if roll exists
+    if (userRow.roll_number) {
+      await supabase
+        .from("student_roster")
+        .update({
+          status: "UNCLAIMED",
+          claimed_by_user_id: null,
+          claimed_at: null,
+        })
+        .eq("roll_number", userRow.roll_number);
+    }
+
+    // 4. Delete public.users row
+    await supabase.from("users").delete().eq("id", userId);
+
+    // 5. Delete auth.users record
+    const { error: authErr } = await supabase.auth.admin.deleteUser(userId);
+    if (authErr) {
+      return { success: false, error: "Failed to delete auth user: " + authErr.message };
+    }
+
+    // 6. Audit log
+    await supabase.from("access_control").insert({
+      email: userRow.email,
+      roll_number: userRow.roll_number,
+      is_blocked: false,
+      reason: "Test account wiped by admin — all data removed, roll freed",
+      blocked_by: adminUser.id,
+    });
+
+    revalidatePath("/admin/students");
+    revalidatePath("/admin/access-control");
+
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message || "Unknown error" };
+  }
+}

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { blockUserAction, unblockUserAction, forceLogoutUserAction, removeUserAction } from "@/app/actions/admin";
-import { ShieldAlert, ShieldX, LogOut, UserX, UserCheck, Search, Trash2 } from "lucide-react";
+import { blockUserAction, unblockUserAction, forceLogoutUserAction, removeUserAction, wipeUserAccountAction } from "@/app/actions/admin";
+import { ShieldAlert, ShieldX, LogOut, UserX, UserCheck, Search, Trash2, Eraser } from "lucide-react";
 import { ChangeRollModal } from "./ChangeRollModal";
 
 export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocked: any[], allUsers: any[] }) {
@@ -46,6 +46,30 @@ export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocke
       alert(err.message);
     } finally {
       setIsPending(false);
+    }
+  };
+
+  const handleWipeTest = async (userId: string, email: string) => {
+    const confirmed = prompt(
+      "This will PERMANENTLY delete:\n" +
+      "- The student's Gmail auth account\n" +
+      "- All their attendance data\n" +
+      "- Their profile\n" +
+      "- Their roll claim (roll becomes available again)\n\n" +
+      "Type their email to confirm:"
+    );
+    if (confirmed !== email) {
+      alert("Email did not match. Cancelled.");
+      return;
+    }
+    setIsPending(true);
+    const result = await wipeUserAccountAction(userId);
+    setIsPending(false);
+    if (!result.success) {
+      alert("Error: " + result.error);
+    } else {
+      alert("Test account wiped. Roll is now available for re-claim.");
+      window.location.reload();
     }
   };
 
@@ -234,6 +258,14 @@ export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocke
                           className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/40 rounded-lg transition"
                         >
                           <Trash2 className="w-3.5 h-3.5" /> Remove
+                        </button>
+                        <button 
+                          onClick={() => handleWipeTest(u.id, u.email)}
+                          disabled={isPending}
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-red-800 bg-red-100 hover:bg-red-200 dark:bg-red-950 dark:text-red-300 dark:hover:bg-red-900 rounded-lg transition"
+                          title="Wipe Test Account (deletes auth user, resets roll)"
+                        >
+                          <Eraser className="w-3.5 h-3.5" /> Wipe Test
                         </button>
                       </div>
                     </td>
