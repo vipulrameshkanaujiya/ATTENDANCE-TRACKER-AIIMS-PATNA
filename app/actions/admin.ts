@@ -279,8 +279,8 @@ export async function addRosterStudentAction(formData: FormData) {
   const fullName = formData.get("full_name")?.toString().trim() || null;
   const batchId = formData.get("batch_id")?.toString() || null;
 
-  if (!rollNumber.match(/^24[0-9]{3}$/)) {
-    throw new Error("Roll number must be exactly 5 digits starting with 24 (e.g. 24042)");
+  if (!rollNumber.match(/^2[1-4][0-9]{3}$/)) {
+    throw new Error("Roll number must be exactly 5 digits starting with 21, 22, 23, or 24 (e.g. 24042, 22064)");
   }
 
   const { error } = await supabase.from("student_roster").insert({
@@ -365,8 +365,8 @@ export async function bulkImportRosterAction(formData: FormData) {
     const name = parts[1] || null;
     const specifiedBatch = parts[2] || null;
 
-    if (!roll.match(/^24[0-9]{3}$/)) {
-      errors.push(`Line ${idx + 1}: Invalid roll "${roll}" (must be 5 digits starting with 24).`);
+    if (!roll.match(/^2[1-4][0-9]{3}$/)) {
+      errors.push(`Line ${idx + 1}: Invalid roll "${roll}" (must be 5 digits starting with 21, 22, 23, or 24).`);
       continue;
     }
 
