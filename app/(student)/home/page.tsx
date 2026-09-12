@@ -16,11 +16,10 @@ function AutoPresentCard({ initialPref }: { initialPref: any }) {
     const newValue = !isEnabled;
     setIsEnabled(newValue);
     startTransition(async () => {
-      try {
-        await toggleAutoPresent(newValue);
-      } catch (e) {
-        setIsEnabled(!newValue);
-        alert("Failed to update Auto-Present mode.");
+      const result = await toggleAutoPresent(newValue);
+      if (!result.success) {
+        setIsEnabled(!newValue); // revert
+        alert("Failed to update Auto-Present mode:\n" + (result.error || "Unknown error"));
       }
     });
   };

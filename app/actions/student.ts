@@ -527,25 +527,40 @@ export async function saveStudentHistoricalAttendanceAction(
     return { success: false, error: err?.message || "An unexpected error occurred while saving historical attendance." };
   }
 }
-export async function toggleAutoPresent(isEnabled: boolean) {
-  const user = await getCurrentUser();
-  if (!user) throw new Error("Authentication required");
-  const supabase = await createClient();
-  const todayStr = getTodayDateString();
+export async function toggleAutoPresent(isEnabled: boolean): Promise<{ success: boolean; error?: string }> {
+  try {
+    const supabase = await createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
 
-  const { error } = await supabase
-    .from("student_auto_present_preferences")
-    .upsert(
-      {
-        student_id: user.id,
-        is_enabled: isEnabled,
-        enabled_from: isEnabled ? todayStr : null,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: "student_id" }
-    );
-  if (error) throw new Error("Failed to update auto-present preference: " + error.message);
-  return { success: true };
+    if (authError || !user) {
+      return { success: false, error: "Not authenticated. Please log in." };
+    }
+
+    const todayStr = getTodayDateString();
+
+    const { error } = await supabase
+      .from("student_auto_present_preferences")
+      .upsert(
+        {
+          student_id: user.id,
+          is_enabled: isEnabled,
+          enabled_from: isEnabled ? todayStr : null,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "student_id" }
+      );
+
+    if (error) {
+      console.error("[toggleAutoPresent] Supabase error:", error.message, error.code);
+      return { success: false, error: error.message };
+    }
+
+    revalidatePath("/home");
+    return { success: true };
+  } catch (err: any) {
+    console.error("[toggleAutoPresent] Exception:", err);
+    return { success: false, error: err?.message || "Unexpected error toggling auto-present." };
+  }
 }
 
 export async function processAutoPresent(userId: string, batchName: string) {
