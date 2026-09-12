@@ -18,6 +18,7 @@ const adminNavItems = [
   { label: "Schedule", href: "/admin/schedule", icon: Calendar },
   { label: "Import PDF", href: "/admin/import", icon: FileUp },
   { label: "Students", href: "/admin/students", icon: Users },
+  { label: "Bulk Attendance", href: "/admin/bulk-attendance", icon: FileUp },
   { label: "Access Control", href: "/admin/access-control", icon: ShieldAlert },
   { label: "Attendance", href: "/admin/attendance", icon: CheckSquare },
   { label: "Curriculum", href: "/admin/curriculum", icon: BookOpen },

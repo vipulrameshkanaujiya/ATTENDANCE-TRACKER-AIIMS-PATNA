@@ -707,3 +707,77 @@ export async function changeUserRollNumberAction(
   revalidatePath("/attendance");
   revalidatePath("/schedule");
 }
+
+export async function uploadBulkAttendanceAction(csvRows: Array<{
+  roll_number: string;
+  subject_code: string;
+  theory_attended: number;
+  theory_total: number;
+  practical_attended: number;
+  practical_total: number;
+}>) {
+  const { user: adminUser } = await requireAdmin();
+  const supabase = createAdminClient();
+
+  // Validate every row
+  const errors: string[] = [];
+  const validRows = csvRows.filter((row, i) => {
+    if (!/^24\d{3}$/.test(row.roll_number)) {
+      errors.push(`Row ${i + 1}: Invalid roll format "${row.roll_number}"`);
+      return false;
+    }
+    if (!["PATH", "PHARMA", "MICRO", "FMT", "CFM"].includes(row.subject_code)) {
+      errors.push(`Row ${i + 1}: Invalid subject "${row.subject_code}"`);
+      return false;
+    }
+    if (row.theory_attended > row.theory_total) {
+      errors.push(`Row ${i + 1}: Theory attended > total`);
+      return false;
+    }
+    if (row.practical_attended > row.practical_total) {
+      errors.push(`Row ${i + 1}: Practical attended > total`);
+      return false;
+    }
+    return true;
+  });
+
+  if (errors.length > 0) {
+    return { success: false, errors, uploaded: 0 };
+  }
+
+  const batchId = crypto.randomUUID();
+  const rowsToInsert = validRows.map(r => ({
+    ...r,
+    uploaded_by: adminUser.id,
+    upload_batch_id: batchId,
+    updated_at: new Date().toISOString(),
+  }));
+
+  const { error } = await supabase
+    .from("bulk_historical_attendance")
+    .upsert(rowsToInsert, { onConflict: "roll_number,subject_code" });
+
+  if (error) throw new Error(error.message);
+
+  revalidatePath("/admin/bulk-attendance");
+  revalidatePath("/attendance");
+  return { success: true, uploaded: validRows.length };
+}
+
+export async function deleteBulkRowAction(roll_number: string) {
+  await requireAdmin();
+  const supabase = createAdminClient();
+  const { error } = await supabase.from("bulk_historical_attendance").delete().eq("roll_number", roll_number);
+  if (error) throw new Error(error.message);
+  revalidatePath("/admin/bulk-attendance");
+  revalidatePath("/attendance");
+}
+
+export async function clearAllBulkAction() {
+  await requireAdmin();
+  const supabase = createAdminClient();
+  const { error } = await supabase.from("bulk_historical_attendance").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+  if (error) throw new Error(error.message);
+  revalidatePath("/admin/bulk-attendance");
+  revalidatePath("/attendance");
+}

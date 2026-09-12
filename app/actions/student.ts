@@ -173,7 +173,8 @@ export async function getStudentDashboardData() {
     { data: allStudentAttendance },
     { data: allSubjects },
     { data: autoPresentPref },
-    historicalAttendance
+    historicalAttendance,
+    { data: bulkData }
   ] = await Promise.all([
     supabase
       .from("classes")
@@ -202,7 +203,11 @@ export async function getStudentDashboardData() {
       .select("*")
       .eq("student_id", user.id)
       .maybeSingle(),
-    getStudentHistoricalAttendance(user.id)
+    getStudentHistoricalAttendance(user.id),
+    supabase
+      .from("bulk_historical_attendance")
+      .select("*")
+      .eq("roll_number", profile.roll_number)
   ]);
 
   const classIds = (todayClasses || []).map((c: any) => c.id);
@@ -285,6 +290,7 @@ export async function getStudentDashboardData() {
     subjectAttendance: subjectAttendanceList,
     allStudentAttendance: allStudentAttendance || [],
     historicalAttendance: historicalAttendance || [],
+    bulkData: bulkData || [],
     allSubjects: allSubjects || [],
     autoPresentPref: autoPresentPref || null,
     pathTo76,
@@ -570,3 +576,50 @@ export async function processAutoPresent(userId: string, batchName: string) {
   await supabase.from("attendance").insert(toInsert);
 }
 
+
+export async function confirmBulkHistoricalAttendanceAction() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { success: false, error: "Not authenticated" };
+
+  const { data: profile } = await supabase
+    .from("users")
+    .select("roll_number")
+    .eq("id", user.id)
+    .single();
+
+  if (!profile?.roll_number) return { success: false, error: "No roll number." };
+
+  const { data: bulkRows } = await supabase
+    .from("bulk_historical_attendance")
+    .select("*")
+    .eq("roll_number", profile.roll_number);
+
+  if (!bulkRows || bulkRows.length === 0) {
+    return { success: false, error: "No bulk data found for your roll number." };
+  }
+
+  // Insert into student_historical_attendance
+  const rowsToInsert = bulkRows.map(r => ({
+    student_id: user.id,
+    subject_code: r.subject_code,
+    theory_attended: r.theory_attended,
+    theory_total: r.theory_total,
+    practical_attended: r.practical_attended,
+    practical_total: r.practical_total,
+    is_one_time_set: true,
+    source: "BULK_CSV",
+    verified_by_user: true,
+    updated_at: new Date().toISOString(),
+  }));
+
+  const { error } = await supabase
+    .from("student_historical_attendance")
+    .upsert(rowsToInsert, { onConflict: "student_id,subject_code" });
+
+  if (error) return { success: false, error: error.message };
+
+  revalidatePath("/attendance");
+  revalidatePath("/home");
+  return { success: true };
+}

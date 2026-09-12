@@ -5,6 +5,7 @@ import { useStudentData } from "@/components/student/StudentDataProvider";
 import { PreSeptemberAttendanceCard } from "@/components/student/PreSeptemberAttendanceCard";
 import { SubjectAttendanceCard } from "@/components/student/SubjectAttendanceCard";
 import { PathTo76Card } from "@/components/student/PathTo76Card";
+import { BulkAttendanceVerification } from "@/components/student/BulkAttendanceVerification";
 import { buildSubjectAttendanceBreakdown } from "@/lib/utils/attendance";
 import Link from "next/link";
 import { useMemo } from "react";
@@ -68,7 +69,11 @@ export default function AttendancePage() {
       </div>
 
       {/* Pre-September Historical Attendance Entry / Locked View */}
-      <PreSeptemberAttendanceCard initialRecords={historicalRecords} />
+      {dashboardData.bulkData && dashboardData.bulkData.length > 0 && (!historicalRecords || historicalRecords.length === 0) ? (
+        <BulkAttendanceVerification bulkData={dashboardData.bulkData} rollNumber={dashboardData.profile?.roll_number || ""} />
+      ) : (
+        <PreSeptemberAttendanceCard initialRecords={historicalRecords} />
+      )}
 
       {/* Subject Breakdown Cards */}
       <div className="space-y-3">
