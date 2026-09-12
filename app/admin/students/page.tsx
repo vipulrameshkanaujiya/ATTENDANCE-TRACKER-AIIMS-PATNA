@@ -4,6 +4,7 @@ import { addRosterStudentAction, resetStudentClaimAction, updateStudentBatchActi
 import { Users, Hash, ShieldCheck, UserPlus, RotateCcw, FileText, AlertTriangle } from "lucide-react";
 import { AdminHistoricalAttendanceModal } from "@/components/admin/AdminHistoricalAttendanceModal";
 import { AdminAutoPresentToggle } from "@/components/admin/AdminAutoPresentToggle";
+import { ChangeRollModal } from "@/components/admin/ChangeRollModal";
 
 export default async function AdminStudentsPage() {
   await requireAdmin();
@@ -244,6 +245,10 @@ export default async function AdminStudentsPage() {
                               studentId={r.claimed_user?.id || r.claimed_by_user_id}
                               isEnabled={!!prefsMap.get(r.claimed_user?.id || r.claimed_by_user_id)?.is_enabled}
                             />
+                            <ChangeRollModal
+                              studentId={r.claimed_user?.id || r.claimed_by_user_id}
+                              currentRoll={r.roll_number}
+                            />
                             <AdminHistoricalAttendanceModal
                               studentId={r.claimed_user?.id || r.claimed_by_user_id}
                               studentName={r.full_name || r.claimed_user?.full_name || "MBBS Student"}
@@ -290,6 +295,10 @@ export default async function AdminStudentsPage() {
                         <AdminAutoPresentToggle
                           studentId={s.id}
                           isEnabled={!!prefsMap.get(s.id)?.is_enabled}
+                        />
+                        <ChangeRollModal
+                          studentId={s.id}
+                          currentRoll={s.roll_number}
                         />
                         <AdminHistoricalAttendanceModal
                           studentId={s.id}

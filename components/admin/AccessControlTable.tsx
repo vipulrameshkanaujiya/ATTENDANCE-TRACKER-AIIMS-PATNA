@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { blockUserAction, unblockUserAction, forceLogoutUserAction, removeUserAction } from "@/app/actions/admin";
 import { ShieldAlert, ShieldX, LogOut, UserX, UserCheck, Search, Trash2 } from "lucide-react";
+import { ChangeRollModal } from "./ChangeRollModal";
 
 export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocked: any[], allUsers: any[] }) {
   const [isPending, setIsPending] = useState(false);
@@ -201,6 +202,7 @@ export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocke
                     <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{u.email}</td>
                     <td className="px-4 py-3 text-right">
                       <div className="flex items-center justify-end gap-2">
+                        <ChangeRollModal studentId={u.id} currentRoll={u.roll_number} />
                         {isBlocked ? (
                           <span className="px-2 py-1 text-[10px] font-bold uppercase bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 rounded">Blocked</span>
                         ) : (
