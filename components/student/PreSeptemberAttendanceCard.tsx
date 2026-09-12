@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { HistoricalSubjectCode, StudentHistoricalAttendance } from "@/types/database";
 import { saveStudentHistoricalAttendanceAction } from "@/app/actions/student";
+import { useStudentData } from "@/components/student/StudentDataProvider";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, Lock, AlertCircle, Save, Loader2, Info } from "lucide-react";
 
@@ -33,12 +34,12 @@ interface PreSeptemberAttendanceCardProps {
 
 export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAttendanceCardProps) {
   const router = useRouter();
+  const { refresh } = useStudentData();
   const [isPending, startTransition] = useTransition();
+  const [isLocked, setIsLocked] = useState(initialRecords.some((r) => r.is_one_time_set));
+  const [showSuccess, setShowSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-
-  // Check if historical data has been set and locked
-  const isLocked = initialRecords.some((r) => r.is_one_time_set);
 
   // Map initial records by subject code for easy lookup
   const initialMap: Record<string, StudentHistoricalAttendance> = {};
@@ -139,8 +140,11 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
       if (!res.success) {
         setErrorMessage(res.error || "Failed to record historical attendance.");
       } else {
-        setSuccessMessage("Historical attendance successfully recorded and locked!");
+        setIsLocked(true);
+        setShowSuccess(true);
+        await refresh();
         router.refresh();
+        setTimeout(() => setShowSuccess(false), 4000);
       }
     });
   };
@@ -148,8 +152,21 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
   // 1. READ-ONLY LOCKED VIEW
   if (isLocked) {
     return (
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 sm:p-6 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+      <div className="space-y-4">
+        {showSuccess && (
+          <div className="rounded-2xl border-2 border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 p-6 text-center animate-fade-in shadow-sm">
+            <CheckCircle2 className="w-12 h-12 text-emerald-600 dark:text-emerald-400 mx-auto mb-3" />
+            <h3 className="text-lg font-bold text-emerald-900 dark:text-emerald-100">
+              Historical Data Locked
+            </h3>
+            <p className="text-sm text-emerald-700 dark:text-emerald-300 mt-1">
+              Your pre-September attendance has been permanently recorded and verified.
+            </p>
+          </div>
+        )}
+
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 sm:p-6 space-y-4 animate-fade-in">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-900/30 flex items-center justify-center text-emerald-600">
               <Lock className="w-4 h-4" />
@@ -222,6 +239,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
             <strong>Note:</strong> Pre-September data is permanently locked to prevent accidental changes. If you notice a clerical error, please contact an Admin to request a correction.
           </p>
         </div>
+      </div>
       </div>
     );
   }

@@ -67,9 +67,13 @@ export default function AttendancePage() {
 
       {/* Pre-September Historical Attendance Entry / Locked View */}
       {dashboardData.bulkData && dashboardData.bulkData.length > 0 && (!historicalRecords || historicalRecords.length === 0) ? (
-        <BulkAttendanceVerification bulkData={dashboardData.bulkData} rollNumber={dashboardData.profile?.roll_number || ""} />
+        <BulkAttendanceVerification
+          bulkData={dashboardData.bulkData}
+          rollNumber={dashboardData.profile?.roll_number || ""}
+          initialLocked={Boolean(historicalRecords && historicalRecords.length > 0 && historicalRecords.some((r: any) => r.is_one_time_set))}
+        />
       ) : (
-        <PreSeptemberAttendanceCard initialRecords={historicalRecords} />
+        <PreSeptemberAttendanceCard initialRecords={historicalRecords || []} />
       )}
 
       {/* Subject Breakdown Cards */}
