@@ -69,6 +69,28 @@ export async function middleware(request: NextRequest) {
   const adminEmail = getAdminEmail();
   const isAdminUser = user?.email?.trim().toLowerCase() === adminEmail;
 
+  if (user) {
+    const { data: profile } = await supabase
+      .from("users")
+      .select("is_onboarded, role")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    const isOnboarded = profile?.is_onboarded === true;
+    const isOnboardingPath = pathname.startsWith("/onboarding");
+    const isAuthPath = pathname.startsWith("/api/auth") || pathname === "/login" || pathname === "/blocked";
+
+    // If user is authenticated but NOT onboarded AND not admin -> force /onboarding
+    if (!isAdminUser && !isOnboarded && !isOnboardingPath && !isAuthPath) {
+      return NextResponse.redirect(new URL("/onboarding", request.url));
+    }
+
+    // If user is onboarded and tries to visit /onboarding -> redirect to /home
+    if (isOnboarded && isOnboardingPath) {
+      return NextResponse.redirect(new URL("/home", request.url));
+    }
+  }
+
   // Protect /admin routes
   if (pathname.startsWith("/admin")) {
     if (!user) {

@@ -52,14 +52,10 @@ export async function completeOnboarding(formData: FormData): Promise<Onboarding
     .eq("id", user.id)
     .maybeSingle();
 
-  if (userProfile?.is_onboarded && userProfile?.roll_number) {
-    console.log(`[Onboarding] User ${user.id} is already onboarded with roll ${userProfile.roll_number}`);
-    if (userProfile.roll_number === rollNumber) {
-      redirect("/home");
-    }
+  if (userProfile?.is_onboarded) {
     return {
       success: false,
-      error: `Your account is already linked to roll number ${userProfile.roll_number}. Student identities cannot be modified.`,
+      error: "Already onboarded.",
     };
   }
 
