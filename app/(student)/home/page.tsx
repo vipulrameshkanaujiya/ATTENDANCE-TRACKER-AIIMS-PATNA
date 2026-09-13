@@ -7,12 +7,20 @@ import { Clock, MapPin, User, ChevronRight, Bot, Heart, AlertTriangle } from "lu
 import Link from "next/link";
 import Image from "next/image";
 import { getTodayDateString, parseDateString, formatReadableDate } from "@/lib/utils/date";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { toggleAutoPresent } from "@/app/actions/student";
 
 function AutoPresentCard({ initialPref }: { initialPref: any }) {
   const { updateAutoPresentLocally } = useStudentData();
   const [optimisticAutoPresent, setOptimisticAutoPresent] = useState(initialPref?.is_enabled || false);
+  const isMountedRef = useRef(true);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     setOptimisticAutoPresent(initialPref?.is_enabled || false);
@@ -27,6 +35,7 @@ function AutoPresentCard({ initialPref }: { initialPref: any }) {
     // 2. Fire server action in the background
     toggleAutoPresent(nextVal)
       .then((result) => {
+        if (!isMountedRef.current) return;
         if (!result.success) {
           // Revert on error
           setOptimisticAutoPresent(!nextVal);
@@ -35,6 +44,9 @@ function AutoPresentCard({ initialPref }: { initialPref: any }) {
         }
       })
       .catch((err) => {
+        if (!isMountedRef.current || err?.name === "AbortError" || err?.message?.includes("aborted")) {
+          return;
+        }
         // Revert on exception
         setOptimisticAutoPresent(!nextVal);
         updateAutoPresentLocally(!nextVal);

@@ -229,8 +229,28 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
   }, []);
 
   useEffect(() => {
-    // 1. Immediately hydrate from localStorage if memory cache is empty
-    if ((!globalCache.dashboardData || !globalCache.deferredData) && typeof window !== "undefined") {
+    // 1. Check if an attendance save was in-flight when user refreshed/navigated
+    let hasPendingSave = false;
+    if (typeof window !== "undefined") {
+      try {
+        hasPendingSave = Boolean(localStorage.getItem("bunkbuddy-pending-save"));
+        if (hasPendingSave) {
+          localStorage.removeItem("bunkbuddy-pending-save");
+          localStorage.removeItem(STORAGE_KEY); // Clear stale cache
+          globalCache = {
+            dashboardData: null,
+            deferredData: null,
+            timestamp: 0,
+            userId: null,
+          };
+        }
+      } catch (e) {
+        // ignore localStorage error
+      }
+    }
+
+    // 2. Immediately hydrate from localStorage if memory cache is empty (and no pending save was flagged)
+    if (!hasPendingSave && (!globalCache.dashboardData || !globalCache.deferredData) && typeof window !== "undefined") {
       try {
         const cached = localStorage.getItem(STORAGE_KEY);
         if (cached) {
@@ -256,8 +276,8 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
     }
 
     const isStale = Date.now() - globalCache.timestamp > STALE_TIME;
-    if (!globalCache.dashboardData) {
-      // First load without cache - blocking
+    if (!globalCache.dashboardData || hasPendingSave) {
+      // First load without cache OR fresh recovery after in-flight save — blocking
       fetchAllData(true);
     } else if (isStale) {
       // Stale revalidation - background (non-blocking)
