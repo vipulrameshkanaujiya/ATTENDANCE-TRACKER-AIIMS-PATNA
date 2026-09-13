@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { getStudentDashboardData, getDeferredStudentData } from "@/app/actions/student";
@@ -20,6 +20,7 @@ let globalCache: GlobalStudentCache = {
 };
 
 const STALE_TIME = 5 * 60 * 1000; // 5 minutes
+const STORAGE_KEY = "bunkbuddy-dashboard-cache";
 
 export function clearStudentDataCache() {
   globalCache = {
@@ -28,6 +29,11 @@ export function clearStudentDataCache() {
     timestamp: 0,
     userId: null,
   };
+  try {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+  } catch {}
 }
 
 interface StudentDataContextType {
@@ -50,8 +56,18 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
   // Only loading on first load if no cache is available
   const [isLoading, setIsLoading] = useState(!globalCache.dashboardData);
 
+  // When data is available, notify window and splash screen
+  useEffect(() => {
+    if (!isLoading && dashboardData) {
+      if (typeof window !== "undefined") {
+        (window as any).__BUNKBUDDY_DATA_READY__ = true;
+        window.dispatchEvent(new Event("bunkbuddy:data-ready"));
+      }
+    }
+  }, [isLoading, dashboardData]);
+
   const fetchAllData = useCallback(async (forceLoading = false) => {
-    if (forceLoading || !globalCache.dashboardData) {
+    if (forceLoading && !globalCache.dashboardData) {
       setIsLoading(true);
     }
     try {
@@ -60,20 +76,53 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
         getDeferredStudentData(),
       ]);
 
-      const currentUserId = dash?.profile?.id || null;
+      if (dash) {
+        const currentUserId = dash?.profile?.id || null;
 
-      // Update module-level cache
-      globalCache = {
-        dashboardData: dash,
-        deferredData: deferred,
-        timestamp: Date.now(),
-        userId: currentUserId,
-      };
+        // Update module-level cache
+        globalCache = {
+          dashboardData: dash,
+          deferredData: deferred,
+          timestamp: Date.now(),
+          userId: currentUserId,
+        };
 
-      setDashboardData(dash);
-      setDeferredData(deferred);
+        // Cache dashboard data in localStorage for offline access
+        try {
+          if (typeof window !== "undefined") {
+            localStorage.setItem(
+              STORAGE_KEY,
+              JSON.stringify({
+                data: dash,
+                timestamp: Date.now(),
+              })
+            );
+          }
+        } catch (e) {
+          // localStorage might be full or private browsing
+        }
+
+        setDashboardData(dash);
+        setDeferredData(deferred);
+      }
     } catch (err) {
       console.error("Failed to fetch student data:", err);
+      // Fall back to localStorage if offline
+      try {
+        if (typeof window !== "undefined") {
+          const cached = localStorage.getItem(STORAGE_KEY);
+          if (cached) {
+            const parsed = JSON.parse(cached);
+            if (parsed?.data) {
+              setDashboardData(parsed.data);
+              globalCache.dashboardData = parsed.data;
+              globalCache.timestamp = parsed.timestamp || Date.now();
+            }
+          }
+        }
+      } catch (e) {
+        console.error("Failed to read from localStorage:", e);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -173,9 +222,29 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
   }, []);
 
   useEffect(() => {
+    // 1. Immediately hydrate from localStorage if memory cache is empty
+    if (!globalCache.dashboardData && typeof window !== "undefined") {
+      try {
+        const cached = localStorage.getItem(STORAGE_KEY);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (parsed?.data) {
+            setDashboardData(parsed.data);
+            globalCache.dashboardData = parsed.data;
+            globalCache.timestamp = parsed.timestamp || 0;
+            setIsLoading(false);
+            (window as any).__BUNKBUDDY_DATA_READY__ = true;
+            window.dispatchEvent(new Event("bunkbuddy:data-ready"));
+          }
+        }
+      } catch (e) {
+        // ignore localStorage error
+      }
+    }
+
     const isStale = Date.now() - globalCache.timestamp > STALE_TIME;
     if (!globalCache.dashboardData) {
-      // First load - blocking
+      // First load without cache - blocking
       fetchAllData(true);
     } else if (isStale) {
       // Stale revalidation - background (non-blocking)

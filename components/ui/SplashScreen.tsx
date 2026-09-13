@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 export function SplashScreen() {
   const [isVisible, setIsVisible] = useState(true);
   const [isFading, setIsFading] = useState(false);
+  const [minTimeElapsed, setMinTimeElapsed] = useState(false);
 
   useEffect(() => {
     // Disable in development mode
@@ -27,18 +28,63 @@ export function SplashScreen() {
       return;
     }
 
-    // Animation timeline: 1.8s hold, 500ms fade out (total 2.3s)
-    const timer1 = setTimeout(() => setIsFading(true), 1800);
-    const timer2 = setTimeout(() => {
-      setIsVisible(false);
-      sessionStorage.setItem("splash-shown", "true");
-    }, 2300);
+    // Minimum splash time: 1.8s animation
+    const minTimer = setTimeout(() => {
+      setMinTimeElapsed(true);
+    }, 1800);
+
+    // Safety fallback: Never block user for more than 4.5s even if network is slow or on non-student route
+    const maxTimer = setTimeout(() => {
+      setIsFading(true);
+      setTimeout(() => {
+        setIsVisible(false);
+        sessionStorage.setItem("splash-shown", "true");
+      }, 500);
+    }, 4500);
 
     return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
+      clearTimeout(minTimer);
+      clearTimeout(maxTimer);
     };
   }, []);
+
+  // Hide when both: min time elapsed AND data ready
+  useEffect(() => {
+    if (!isVisible || isFading) return;
+
+    const dismissSplash = () => {
+      setIsFading(true);
+      setTimeout(() => {
+        setIsVisible(false);
+        sessionStorage.setItem("splash-shown", "true");
+      }, 500);
+    };
+
+    if (minTimeElapsed && (window as any).__BUNKBUDDY_DATA_READY__) {
+      dismissSplash();
+      return;
+    }
+
+    const handleDataReady = () => {
+      if (minTimeElapsed) {
+        dismissSplash();
+      }
+    };
+
+    window.addEventListener("bunkbuddy:data-ready", handleDataReady);
+
+    const checkData = setInterval(() => {
+      if ((window as any).__BUNKBUDDY_DATA_READY__ && minTimeElapsed) {
+        clearInterval(checkData);
+        dismissSplash();
+      }
+    }, 100);
+
+    return () => {
+      window.removeEventListener("bunkbuddy:data-ready", handleDataReady);
+      clearInterval(checkData);
+    };
+  }, [minTimeElapsed, isVisible, isFading]);
 
   if (!isVisible) return null;
 

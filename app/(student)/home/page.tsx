@@ -3,8 +3,9 @@
 import { useStudentData } from "@/components/student/StudentDataProvider";
 import { AttendanceToggle } from "@/components/student/AttendanceToggle";
 import { HomeSkeleton } from "@/components/student/HomeSkeleton";
-import { Clock, MapPin, User, ChevronRight, Bot } from "lucide-react";
+import { Clock, MapPin, User, ChevronRight, Bot, Heart } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { getTodayDateString, parseDateString, formatReadableDate } from "@/lib/utils/date";
 import { useState, useEffect } from "react";
 import { toggleAutoPresent } from "@/app/actions/student";
@@ -98,6 +99,8 @@ export default function StudentHomePage() {
   }
 
   const { profile, todayClasses, activeExam, subjectAttendance, autoPresentPref } = data;
+  const donations = data?.donations || [];
+  const donationCount = data?.donationCount || 0;
 
   const todayStr = getTodayDateString();
   const dateObj = parseDateString(todayStr);
@@ -116,14 +119,12 @@ export default function StudentHomePage() {
     countdownDays = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
   }
 
-  
-
   return (
     <div className="space-y-6">
       {/* 1. Header Greeting */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
         <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2">
             <span>Good Morning</span>
             <span className="text-2xl">👋</span>
           </h1>
@@ -151,15 +152,45 @@ export default function StudentHomePage() {
         )}
       </div>
 
+      {/* Supporter Recognition Banner (Only if donations exist) */}
+      {donationCount > 0 && (
+        <section className="rounded-2xl border border-pink-200/60 dark:border-pink-900/30 bg-gradient-to-br from-pink-50/60 via-white to-rose-50/40 dark:from-slate-900 dark:via-slate-900 dark:to-pink-950/20 p-4 shadow-xs">
+          <div className="flex items-start gap-3">
+            <div className="w-9 h-9 rounded-xl bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center shrink-0">
+              <Heart className="w-4 h-4 text-pink-600 dark:text-pink-400 fill-pink-600" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold text-slate-900 dark:text-slate-100">
+                Thank you to our {donationCount} supporter{donationCount > 1 ? "s" : ""}! 🎉
+              </p>
+              <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                {donations.slice(0, 3).map((d: any, i: number) => (
+                  <span key={i}>
+                    <strong>{d.donor_name}</strong>
+                    {d.amount ? ` (₹${d.amount})` : ""}
+                    {i < Math.min(2, donations.length - 1) ? " · " : ""}
+                  </span>
+                ))}
+                {donationCount > 3 && <span> and {donationCount - 3} more</span>}
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Auto-Present Toggle Card */}
       <AutoPresentCard initialPref={autoPresentPref} />
 
-      {data?.batchPhoto && (
+      {data?.batchPhoto?.url && (
         <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs">
-          <img 
+          <Image 
             src={data.batchPhoto.url} 
             alt="MBBS 2024 Batch" 
+            width={1200}
+            height={800}
             className="w-full h-auto object-cover"
+            priority
+            sizes="(max-width: 768px) 100vw, 800px"
           />
           {data.batchPhoto.caption && (
             <p className="text-xs text-slate-500 dark:text-slate-400 px-4 py-3 text-center">

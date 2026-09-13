@@ -41,7 +41,15 @@ function GithubIcon({ className = "w-5 h-5" }: { className?: string }) {
   );
 }
 
-export function HelpPageClient({ profile }: { profile: { roll_number?: string; email?: string } | null }) {
+export function HelpPageClient({
+  profile,
+  donations = [],
+  donationCount = 0,
+}: {
+  profile: { roll_number?: string; email?: string } | null;
+  donations?: any[];
+  donationCount?: number;
+}) {
   // Feedback form state
   const [category, setCategory] = useState("general");
   const [message, setMessage] = useState("");
@@ -372,7 +380,7 @@ export function HelpPageClient({ profile }: { profile: { roll_number?: string; e
             },
             {
               q: "Can I use BunkBuddy offline?",
-              a: "Yes! BunkBuddy is a Progressive Web App (PWA). If you install it to your device's home screen, cached schedules and statistics will open even when you don't have internet connectivity in the lecture theater or hospital ward.",
+              a: "Yes — partially. If you install BunkBuddy as a PWA (Add to Home Screen), you can: view your last-fetched attendance, schedule, and stats offline with an offline indicator. Note that marking new attendance while offline is not yet supported (V1 limitation) and Auto-Present runs on the server so it needs internet. When you reconnect, BunkBuddy automatically syncs fresh data.",
             },
             {
               q: "How do I install BunkBuddy on my phone?",
@@ -571,6 +579,39 @@ export function HelpPageClient({ profile }: { profile: { roll_number?: string; e
                   <span>Buy me a coffee ☕</span>
                 </a>
               </div>
+
+              {donationCount > 0 && (
+                <div className="pt-3 border-t border-slate-200 dark:border-slate-800 space-y-2">
+                  <p className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center justify-center sm:justify-start gap-1.5">
+                    <Heart className="w-3.5 h-3.5 text-pink-500 fill-pink-500" />
+                    <span>Recent Supporters ({donationCount})</span>
+                  </p>
+                  <div className="space-y-1.5">
+                    {donations.map((d: any, idx: number) => (
+                      <div
+                        key={idx}
+                        className="text-xs text-slate-600 dark:text-slate-400 flex items-center justify-between py-1.5 px-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800"
+                      >
+                        <span className="font-semibold text-slate-800 dark:text-slate-200">
+                          {d.donor_name}
+                        </span>
+                        <div className="flex items-center gap-2">
+                          {d.message && (
+                            <span className="text-[11px] italic text-slate-500 dark:text-slate-400">
+                              "{d.message}"
+                            </span>
+                          )}
+                          {d.amount && (
+                            <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">
+                              ₹{d.amount}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

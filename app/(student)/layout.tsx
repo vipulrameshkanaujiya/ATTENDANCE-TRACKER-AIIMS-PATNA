@@ -3,6 +3,7 @@ import { BottomNav } from "@/components/layout/BottomNav";
 import { TopHeader } from "@/components/layout/TopHeader";
 import { StudentDataProvider } from "@/components/student/StudentDataProvider";
 import { InstallPrompt } from "@/components/ui/InstallPrompt";
+import { OfflineBanner } from "@/components/layout/OfflineBanner";
 
 export default async function StudentLayout({
   children,
@@ -13,6 +14,7 @@ export default async function StudentLayout({
 
   return (
     <StudentDataProvider>
+      <OfflineBanner />
       <div className="min-h-screen flex flex-col md:flex-row bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
         <BottomNav />
         <div className="flex-1 min-w-0 flex flex-col">

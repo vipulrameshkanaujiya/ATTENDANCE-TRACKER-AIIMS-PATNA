@@ -290,6 +290,27 @@ export async function getStudentDashboardData() {
       
     const batchPhoto = photoRow?.value as { url: string | null; caption: string | null } | null;
 
+    let donations: any[] = [];
+    let donationCount = 0;
+    try {
+      const [{ data: donData }, { count }] = await Promise.all([
+        supabase
+          .from("donations")
+          .select("donor_name, amount, currency, message, created_at")
+          .eq("is_public", true)
+          .order("created_at", { ascending: false })
+          .limit(5),
+        supabase
+          .from("donations")
+          .select("*", { count: "exact", head: true })
+          .eq("is_public", true),
+      ]);
+      donations = donData || [];
+      donationCount = count || 0;
+    } catch {
+      // Graceful fallback if table does not exist yet
+    }
+
     return {
       profile,
       todayClasses: enrichedTodayClasses,
@@ -301,9 +322,11 @@ export async function getStudentDashboardData() {
       bulkData: bulkData || [],
       allSubjects: allSubjects || [],
       autoPresentPref: autoPresentPref || null,
-      batchPhoto: batchPhoto || { url: "/batch-photo.jpg", caption: "MBBS Batch 2024 — AIIMS Patna" },
+      batchPhoto: batchPhoto || { url: "/batch-photo.webp", caption: "MBBS Batch 2024 — AIIMS Patna" },
       pathTo76,
       examDate,
+      donations,
+      donationCount,
     };
 }
 

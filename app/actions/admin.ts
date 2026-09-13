@@ -975,3 +975,70 @@ export async function deleteFeedbackAction(id: string) {
     return { success: false, error: err.message };
   }
 }
+
+export async function getDonationsListAction() {
+  try {
+    await requireAdmin();
+    const supabase = createAdminClient();
+    const { data, error } = await supabase
+      .from("donations")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) return { success: false, error: error.message, data: [] };
+    return { success: true, data: data || [] };
+  } catch (err: any) {
+    return { success: false, error: err.message, data: [] };
+  }
+}
+
+export async function addDonationAction(formData: FormData) {
+  try {
+    const { user } = await requireAdmin();
+    const supabase = createAdminClient();
+
+    const donorName = (formData.get("donor_name") as string)?.trim();
+    const amountStr = (formData.get("amount") as string)?.trim();
+    const currency = (formData.get("currency") as string)?.trim() || "INR";
+    const message = (formData.get("message") as string)?.trim();
+    const isPublic = formData.get("is_public") === "on" || formData.get("is_public") === "true";
+
+    if (!donorName) return { success: false, error: "Donor name is required." };
+
+    const amount = amountStr ? parseFloat(amountStr) : null;
+
+    const { error } = await supabase.from("donations").insert({
+      donor_name: donorName,
+      amount: amount !== null && !isNaN(amount) ? amount : null,
+      currency,
+      message: message || null,
+      is_public: isPublic,
+      created_by: user.id,
+    });
+
+    if (error) return { success: false, error: error.message };
+    revalidatePath("/home");
+    revalidatePath("/help");
+    revalidatePath("/admin/donations");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+export async function deleteDonationAction(id: string) {
+  try {
+    await requireAdmin();
+    const supabase = createAdminClient();
+    const { error } = await supabase.from("donations").delete().eq("id", id);
+
+    if (error) return { success: false, error: error.message };
+    revalidatePath("/home");
+    revalidatePath("/help");
+    revalidatePath("/admin/donations");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
