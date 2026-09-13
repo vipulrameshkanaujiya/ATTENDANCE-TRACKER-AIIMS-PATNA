@@ -568,7 +568,8 @@ export function HelpPageClient({
                 </div>
               </div>
 
-              <div className="pt-2">
+              <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+                {/* Buy Me a Coffee button */}
                 <a
                   href="https://buymeacoffee.com/vipulk"
                   target="_blank"
@@ -578,7 +579,27 @@ export function HelpPageClient({
                   <Coffee className="w-4 h-4" />
                   <span>Buy me a coffee ☕</span>
                 </a>
+
+                {/* Get Me Chai button */}
+                <a
+                  href="https://getmechai.vercel.app/link.html?vpa=9825739419@NAVIAXIS&nm=Vipul&amt=10"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center transition hover:scale-105"
+                  title="Buy me a Chai (₹10)"
+                >
+                  <img
+                    src="https://i.ibb.co/Xkdj83y/image-2.png"
+                    alt="Buy me a Chai"
+                    className="h-12 w-auto rounded-2xl border-2 border-[#3e2e21]"
+                    style={{ borderRadius: "20px" }}
+                  />
+                </a>
               </div>
+
+              <p className="text-[10px] text-slate-500 dark:text-slate-400 text-center sm:text-left mt-2">
+                UPI · Buy Me a Coffee · Get Me Chai — choose whichever is easiest for you 💛
+              </p>
 
               {donationCount > 0 && (
                 <div className="pt-3 border-t border-slate-200 dark:border-slate-800 space-y-2">
