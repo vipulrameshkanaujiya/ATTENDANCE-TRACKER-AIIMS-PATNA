@@ -3,7 +3,7 @@
 import { useStudentData } from "@/components/student/StudentDataProvider";
 import { AttendanceToggle } from "@/components/student/AttendanceToggle";
 import { HomeSkeleton } from "@/components/student/HomeSkeleton";
-import { Clock, MapPin, User, ChevronRight, Bot, Heart } from "lucide-react";
+import { Clock, MapPin, User, ChevronRight, Bot, Heart, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { getTodayDateString, parseDateString, formatReadableDate } from "@/lib/utils/date";
@@ -101,6 +101,8 @@ export default function StudentHomePage() {
   const { profile, todayClasses, activeExam, subjectAttendance, autoPresentPref } = data;
   const donations = data?.donations || [];
   const donationCount = data?.donationCount || 0;
+  const septemberDataComplete = data?.septemberDataComplete ?? true;
+  const unmarkedCount = data?.unmarkedCount || 0;
 
   const todayStr = getTodayDateString();
   const dateObj = parseDateString(todayStr);
@@ -264,6 +266,16 @@ export default function StudentHomePage() {
           </div>
         )}
       </div>
+
+      {/* September Completeness Warning Banner */}
+      {!septemberDataComplete && (
+        <div className="p-3.5 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 text-xs text-amber-800 dark:text-amber-300 flex items-center gap-2.5 shadow-xs">
+          <AlertTriangle className="w-4 h-4 shrink-0 text-amber-600 dark:text-amber-400" />
+          <span>
+            Attendance percentages may be inaccurate — you have <strong>{unmarkedCount} unmarked classes</strong> since Sep 1.
+          </span>
+        </div>
+      )}
 
       {/* 4. MY ATTENDANCE SUMMARY */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 space-y-4">

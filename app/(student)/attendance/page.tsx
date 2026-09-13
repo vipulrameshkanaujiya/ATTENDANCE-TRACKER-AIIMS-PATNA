@@ -8,6 +8,7 @@ import { PathTo76Card } from "@/components/student/PathTo76Card";
 import { BulkAttendanceVerification } from "@/components/student/BulkAttendanceVerification";
 import { AttendanceSkeleton } from "@/components/student/AttendanceSkeleton";
 import { buildSubjectAttendanceBreakdown } from "@/lib/utils/attendance";
+import { AlertTriangle, Calendar, Zap } from "lucide-react";
 import Link from "next/link";
 import { useMemo } from "react";
 
@@ -97,26 +98,67 @@ export default function AttendancePage() {
         </div>
       </div>
 
-      {/* Path to 76% Section */}
+      {/* Path to 76% Section — gated behind September attendance completeness */}
       {dashboardData?.pathTo76 && Object.keys(dashboardData.pathTo76).length > 0 && (
         <div className="space-y-3 pt-4 border-t border-slate-100 dark:border-slate-800">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-              📅 Path to 76% ({new Date(dashboardData.examDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })})
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {Object.entries(dashboardData.pathTo76).map(([subCode, stat]: [string, any]) => {
-              const subjectName = dashboardData.allSubjects?.find((s: any) => s.code === subCode)?.name || subCode;
-              return (
-                <PathTo76Card
-                  key={subCode}
-                  subjectName={subjectName}
-                  stat={stat}
-                />
-              );
-            })}
-          </div>
+          {(dashboardData.septemberDataComplete ?? true) ? (
+            <>
+              <div className="flex items-center justify-between">
+                <h2 className="text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                  📅 Path to 76% ({new Date(dashboardData.examDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })})
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {Object.entries(dashboardData.pathTo76).map(([subCode, stat]: [string, any]) => {
+                  const subjectName = dashboardData.allSubjects?.find((s: any) => s.code === subCode)?.name || subCode;
+                  return (
+                    <PathTo76Card
+                      key={subCode}
+                      subjectName={subjectName}
+                      stat={stat}
+                    />
+                  );
+                })}
+              </div>
+            </>
+          ) : (
+            <div className="rounded-2xl border-2 border-amber-300 dark:border-amber-900/50 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-slate-900 dark:to-amber-950/20 p-5 sm:p-6 shadow-xs">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center shrink-0">
+                  <AlertTriangle className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-base font-bold text-amber-900 dark:text-amber-200">
+                    Fill your September attendance first
+                  </h3>
+                  <p className="text-xs sm:text-sm text-amber-800 dark:text-amber-300 mt-1 leading-relaxed">
+                    We noticed you have <strong>{dashboardData.unmarkedCount || 0} unmarked classes</strong> since September 1st.
+                    The Path to 76% predictor needs complete data to give accurate recommendations.
+                  </p>
+                  <p className="text-xs text-amber-700 dark:text-amber-400 mt-2 leading-relaxed">
+                    👉 Go to the <strong>Schedule</strong> page and mark your Present/Absent for all past September classes.
+                    Or enable <strong>Auto-Present</strong> on the Home page to mark all past classes as Present automatically.
+                  </p>
+                  <div className="flex flex-wrap gap-2.5 mt-4">
+                    <Link
+                      href="/schedule"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition shadow-xs cursor-pointer"
+                    >
+                      <Calendar className="w-4 h-4" />
+                      <span>Go to Schedule</span>
+                    </Link>
+                    <Link
+                      href="/home"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-slate-900 border border-amber-300 dark:border-amber-900/50 text-amber-800 dark:text-amber-300 text-xs font-bold hover:bg-amber-50 dark:hover:bg-amber-950/40 transition cursor-pointer"
+                    >
+                      <Zap className="w-4 h-4" />
+                      <span>Enable Auto-Present</span>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -51,8 +51,15 @@ export default function SchedulePage() {
 
   const { dashboardData, deferredData, isLoading } = useStudentData();
 
+  useEffect(() => {
+    if (dashboardData && deferredData) {
+      console.log("⏱️ [Schedule data ready]: Data loaded and available");
+    }
+  }, [dashboardData, deferredData]);
+
   const filteredData = useMemo(() => {
     if (!dashboardData || !deferredData) return null;
+    const t0 = typeof performance !== "undefined" ? performance.now() : Date.now();
     let classes = deferredData.scheduleClasses || [];
     const attendanceMap: Record<string, string> = {};
     (dashboardData.allStudentAttendance || []).forEach((r: any) => {
@@ -78,10 +85,13 @@ export default function SchedulePage() {
       });
     });
 
+    const elapsed = typeof performance !== "undefined" ? performance.now() - t0 : Date.now() - t0;
+    console.log(`⏱️ [Schedule filter]: ${elapsed.toFixed(2)}ms (${classes.length} classes)`);
+
     return { groupedByDate, hasClasses: classes.length > 0 };
   }, [dashboardData, deferredData, currentView, selectedDate, todayStr]);
 
-  if (isLoading || !filteredData) {
+  if (!filteredData) {
     return <ScheduleSkeleton />;
   }
 

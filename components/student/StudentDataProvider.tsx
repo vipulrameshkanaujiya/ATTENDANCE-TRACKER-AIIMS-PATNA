@@ -87,13 +87,14 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
           userId: currentUserId,
         };
 
-        // Cache dashboard data in localStorage for offline access
+        // Cache dashboard and deferred data in localStorage for offline access & instant loads
         try {
           if (typeof window !== "undefined") {
             localStorage.setItem(
               STORAGE_KEY,
               JSON.stringify({
-                data: dash,
+                dashboardData: dash,
+                deferredData: deferred,
                 timestamp: Date.now(),
               })
             );
@@ -113,9 +114,15 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
           const cached = localStorage.getItem(STORAGE_KEY);
           if (cached) {
             const parsed = JSON.parse(cached);
-            if (parsed?.data) {
-              setDashboardData(parsed.data);
-              globalCache.dashboardData = parsed.data;
+            const cachedDash = parsed?.dashboardData || parsed?.data;
+            const cachedDeferred = parsed?.deferredData;
+            if (cachedDash) {
+              setDashboardData(cachedDash);
+              globalCache.dashboardData = cachedDash;
+              if (cachedDeferred) {
+                setDeferredData(cachedDeferred);
+                globalCache.deferredData = cachedDeferred;
+              }
               globalCache.timestamp = parsed.timestamp || Date.now();
             }
           }
@@ -223,14 +230,20 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
 
   useEffect(() => {
     // 1. Immediately hydrate from localStorage if memory cache is empty
-    if (!globalCache.dashboardData && typeof window !== "undefined") {
+    if ((!globalCache.dashboardData || !globalCache.deferredData) && typeof window !== "undefined") {
       try {
         const cached = localStorage.getItem(STORAGE_KEY);
         if (cached) {
           const parsed = JSON.parse(cached);
-          if (parsed?.data) {
-            setDashboardData(parsed.data);
-            globalCache.dashboardData = parsed.data;
+          const cachedDash = parsed?.dashboardData || parsed?.data;
+          const cachedDeferred = parsed?.deferredData;
+          if (cachedDash) {
+            setDashboardData(cachedDash);
+            globalCache.dashboardData = cachedDash;
+            if (cachedDeferred) {
+              setDeferredData(cachedDeferred);
+              globalCache.deferredData = cachedDeferred;
+            }
             globalCache.timestamp = parsed.timestamp || 0;
             setIsLoading(false);
             (window as any).__BUNKBUDDY_DATA_READY__ = true;

@@ -174,7 +174,8 @@ export async function getStudentDashboardData() {
     { data: allSubjects },
     { data: autoPresentPref },
     historicalAttendance,
-    { data: bulkData }
+    { data: bulkData },
+    { data: pastSeptClasses }
   ] = await Promise.all([
     supabase
       .from("classes")
@@ -207,7 +208,13 @@ export async function getStudentDashboardData() {
     supabase
       .from("bulk_historical_attendance")
       .select("*")
-      .eq("roll_number", profile.roll_number)
+      .eq("roll_number", profile.roll_number),
+    supabase
+      .from("classes")
+      .select("id")
+      .gte("date", "2026-09-01")
+      .lt("date", todayStr)
+      .in("batch_scope", ["ALL", batchName])
   ]);
 
   const classIds = (todayClasses || []).map((c: any) => c.id);
@@ -228,6 +235,41 @@ export async function getStudentDashboardData() {
     ...c,
     attendance_status: attendanceMap[c.id] || null,
   }));
+
+  // Compute September attendance data completeness for Path to 76% gating
+  const pastSeptClassIds = (pastSeptClasses || []).map((c: any) => c.id);
+  const totalPastSeptClasses = pastSeptClassIds.length;
+
+  const markedClassIdSet = new Set(
+    (allStudentAttendance || [])
+      .filter((a: any) => a.status !== null)
+      .map((a: any) => a.class_id)
+  );
+
+  let markedSeptCount = 0;
+  for (const cid of pastSeptClassIds) {
+    if (markedClassIdSet.has(cid)) {
+      markedSeptCount++;
+    }
+  }
+
+  const unmarkedCount = Math.max(0, totalPastSeptClasses - markedSeptCount);
+  const septemberMarkedPercent = totalPastSeptClasses > 0 
+    ? markedSeptCount / totalPastSeptClasses 
+    : 1;
+
+  const septemberDataComplete = 
+    totalPastSeptClasses === 0 || 
+    septemberMarkedPercent >= 0.8 || 
+    unmarkedCount <= 3;
+
+  console.log('🔍 [Sept Data]', {
+    totalPastSeptClasses,
+    markedSeptCount,
+    unmarkedCount,
+    septemberMarkedPercent,
+    septemberDataComplete,
+  });
 
   // Determine "Next Class" strictly comparing current system date/time
   const nextClass = await getNextSession(batchName, user.id, todayStr, currentTimeStr);
@@ -327,6 +369,8 @@ export async function getStudentDashboardData() {
       examDate,
       donations,
       donationCount,
+      septemberDataComplete,
+      unmarkedCount,
     };
 }
 
@@ -343,6 +387,7 @@ export async function getDeferredStudentData() {
   const startOfMonth = new Date(d.getFullYear(), d.getMonth(), 1).toISOString().split("T")[0];
   const endOfNextMonth = new Date(d.getFullYear(), d.getMonth() + 2, 0).toISOString().split("T")[0];
 
+  const t0 = Date.now();
   const [
     { data: scheduleClasses },
     { data: units },
@@ -351,7 +396,7 @@ export async function getDeferredStudentData() {
   ] = await Promise.all([
     supabase
       .from("classes")
-      .select("id, date, start_time, end_time, topic, class_type, batch_scope, venue, faculty, subject:subjects(id, code, name)")
+      .select("id, date, start_time, end_time, topic, class_type, batch_scope, venue, faculty, subject:subjects(id, code, name, color_code)")
       .in("batch_scope", ["ALL", batchName])
       .gte("date", startOfMonth)
       .lte("date", endOfNextMonth)
@@ -368,19 +413,13 @@ export async function getDeferredStudentData() {
     supabase.rpc("get_batch_aggregate_stats")
   ]);
 
-  const { data: photoRow } = await supabase
-    .from("app_settings")
-    .select("value")
-    .eq("key", "batch_photo")
-    .maybeSingle();
-
-  const batchPhoto = photoRow?.value as { url: string | null; caption: string | null } | null;
+  console.log(`🔍 Schedule fetch: ${Date.now() - t0}ms, ${scheduleClasses?.length || 0} rows`);
 
   return {
     scheduleClasses: scheduleClasses || [],
     units: units || [],
     progressRecords: progressRecords || [],
-    batchPhoto: batchPhoto || { url: "/batch-photo.jpg", caption: "MBBS Batch 2024 — AIIMS Patna" },
+    batchPhoto: { url: "/batch-photo.webp", caption: "MBBS Batch 2024 — AIIMS Patna" },
     stats: rawStats || {
       active_students_30d: 0,
       batch_average_attendance_pct: 0,
