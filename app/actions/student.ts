@@ -17,43 +17,76 @@ import { revalidatePath } from "next/cache";
 import { buildSubjectAttendanceBreakdown, computePathTo76 } from "@/lib/utils/attendance";
 import { generateFutureClasses } from "@/lib/utils/schedule-predictor";
 
-export async function toggleAttendance(classId: string, status: AttendanceStatus | null) {
-  const user = await getCurrentUser();
-  if (!user) throw new Error("Authentication required");
+export async function toggleAttendance(
+  classId: string,
+  status: AttendanceStatus | null
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    console.log("🔍 [Attendance] Request context:", {
+      timestamp: new Date().toISOString(),
+      classId,
+      status,
+    });
 
-  const supabase = await createClient();
+    const supabase = await createClient();
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-  if (status === null) {
-    const { error } = await supabase
-      .from("attendance")
-      .delete()
-      .eq("student_id", user.id)
-      .eq("class_id", classId);
-    
-    if (error) throw new Error(error.message);
-  } else {
-    // Upsert attendance record for current student and target class
-    const { data, error } = await supabase
-      .from("attendance")
-      .upsert(
-        {
-          student_id: user.id,
-          class_id: classId,
-          status: status,
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: "student_id, class_id" }
-      )
-      .select()
-      .single();
+    console.log("🔍 [Attendance] User:", user?.id, "Auth error:", authError?.message);
 
-    if (error) throw new Error(error.message);
+    if (authError || !user) {
+      console.error("🔍 [Attendance] Authentication required or session missing");
+      return { success: false, error: authError?.message || "Authentication required" };
+    }
+
+    if (status === null) {
+      const { data, error } = await supabase
+        .from("attendance")
+        .delete()
+        .eq("student_id", user.id)
+        .eq("class_id", classId)
+        .select();
+
+      console.log("🔍 [Attendance] Delete result:", { data, error });
+      if (error) {
+        console.error("🔍 [Attendance] Supabase delete error:", error.message);
+        return { success: false, error: error.message };
+      }
+    } else {
+      // Upsert attendance record for current student and target class
+      const { data, error } = await supabase
+        .from("attendance")
+        .upsert(
+          {
+            student_id: user.id,
+            class_id: classId,
+            status: status,
+            updated_at: new Date().toISOString(),
+          },
+          { onConflict: "student_id, class_id" }
+        )
+        .select()
+        .single();
+
+      console.log("🔍 [Attendance] Upsert result:", { data, error });
+      if (error) {
+        console.error("🔍 [Attendance] Supabase upsert error:", error.message);
+        return { success: false, error: error.message };
+      }
+    }
+
+    // Revalidate so data refetches automatically
+    revalidatePath("/attendance");
+    revalidatePath("/schedule");
+    revalidatePath("/home");
+
+    return { success: true };
+  } catch (err: any) {
+    console.error("🔍 [Attendance] Exception:", err);
+    return { success: false, error: err?.message || "Unexpected server error" };
   }
-
-  // Revalidate so data refetches automatically
-  revalidatePath("/attendance");
-  revalidatePath("/schedule");
-  revalidatePath("/home");
 }
 
 export async function updateTopicProgress(topicId: string, status: TopicProgressStatus) {

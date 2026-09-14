@@ -7,14 +7,47 @@ const withPWAConfig = withPWA({
   disable: process.env.NODE_ENV === 'development',
   fallbacks: { document: '/offline.html' },
   runtimeCaching: [
+    // ❌ DO NOT cache Supabase mutations (POST, PUT, DELETE, PATCH)
+    {
+      urlPattern: /^https:\/\/.*\.supabase\.co\/rest\/v1\/.*/i,
+      handler: 'NetworkOnly',
+      method: 'POST',
+      options: {},
+    },
+    {
+      urlPattern: /^https:\/\/.*\.supabase\.co\/rest\/v1\/.*/i,
+      handler: 'NetworkOnly',
+      method: 'PUT',
+      options: {},
+    },
+    {
+      urlPattern: /^https:\/\/.*\.supabase\.co\/rest\/v1\/.*/i,
+      handler: 'NetworkOnly',
+      method: 'DELETE',
+      options: {},
+    },
+    {
+      urlPattern: /^https:\/\/.*\.supabase\.co\/rest\/v1\/.*/i,
+      handler: 'NetworkOnly',
+      method: 'PATCH',
+      options: {},
+    },
+    // ✅ Cache GET requests only
     {
       urlPattern: /^https:\/\/.*\.supabase\.co\/rest\/v1\/.*/i,
       handler: 'NetworkFirst',
+      method: 'GET',
       options: {
-        cacheName: 'supabase-api',
-        expiration: { maxEntries: 200, maxAgeSeconds: 60 * 60 * 24 * 7 }, // 7 days
-        networkTimeoutSeconds: 5, // Fall back to cache if network slow
+        cacheName: 'supabase-api-get',
+        expiration: { maxEntries: 200, maxAgeSeconds: 60 * 60 * 24 },
+        networkTimeoutSeconds: 5,
       },
+    },
+    // ✅ Next.js server actions and API routes must never be cached
+    {
+      urlPattern: /^https?:\/\/.*\/api\/.*/i,
+      handler: 'NetworkOnly',
+      options: {},
     },
     {
       urlPattern: /^https:\/\/.*\.supabase\.co\/storage\/.*/i,

@@ -14,9 +14,18 @@ interface AttendanceToggleProps {
 }
 
 // Retry helper for transient network errors
-async function saveWithRetry(classId: string, status: AttendanceStatus | null, attempt = 1): Promise<void> {
+async function saveWithRetry(
+  classId: string,
+  status: AttendanceStatus | null,
+  attempt = 1
+): Promise<{ success: boolean; error?: string }> {
   try {
-    await toggleAttendance(classId, status);
+    const res = await toggleAttendance(classId, status);
+    if (!res?.success && attempt < 2) {
+      await new Promise((r) => setTimeout(r, 500));
+      return saveWithRetry(classId, status, attempt + 1);
+    }
+    return res;
   } catch (err: any) {
     if (err?.name === "AbortError" || err?.message?.includes("aborted")) {
       throw err;
@@ -34,7 +43,7 @@ export function AttendanceToggle({ classId, initialStatus, compact = false }: At
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const isMountedRef = useRef(true);
-  const { updateAttendanceLocally } = useStudentData();
+  const { updateAttendanceLocally, refresh } = useStudentData();
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -66,20 +75,32 @@ export function AttendanceToggle({ classId, initialStatus, compact = false }: At
 
     setIsSaving(true);
 
-    // Set pending save flag in localStorage to handle fast browser reloads
+    // Set pending save flags in localStorage to handle fast browser reloads or app closures
     try {
       if (typeof window !== "undefined") {
         localStorage.setItem("bunkbuddy-pending-save", "1");
+        localStorage.setItem(
+          "bunkbuddy-pending-attendance",
+          JSON.stringify({ classId, status: newStatus, timestamp: Date.now() })
+        );
       }
     } catch {}
 
     try {
-      await saveWithRetry(classId, newStatus);
+      const result = await saveWithRetry(classId, newStatus);
+      if (!result?.success) {
+        throw new Error(result?.error || "Failed to save attendance");
+      }
+
       try {
         if (typeof window !== "undefined") {
           localStorage.removeItem("bunkbuddy-pending-save");
+          localStorage.removeItem("bunkbuddy-pending-attendance");
         }
       } catch {}
+
+      // Trigger background refresh to keep server calculations & percentages synchronized
+      refresh().catch(console.error);
     } catch (err: any) {
       // Don't show error if component was unmounted or request was aborted by navigation/refresh
       if (!isMountedRef.current || err?.name === "AbortError" || err?.message?.includes("aborted")) {
@@ -96,6 +117,7 @@ export function AttendanceToggle({ classId, initialStatus, compact = false }: At
       try {
         if (typeof window !== "undefined") {
           localStorage.removeItem("bunkbuddy-pending-save");
+          localStorage.removeItem("bunkbuddy-pending-attendance");
         }
       } catch {}
 

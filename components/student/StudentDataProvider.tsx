@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
-import { getStudentDashboardData, getDeferredStudentData } from "@/app/actions/student";
+import { getStudentDashboardData, getDeferredStudentData, toggleAttendance } from "@/app/actions/student";
 import { buildSubjectAttendanceBreakdown, computePathTo76 } from "@/lib/utils/attendance";
 
 interface GlobalStudentCache {
@@ -224,12 +224,52 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
       };
 
       globalCache.dashboardData = nextDash;
+      globalCache.timestamp = 0; // Force stale so any page refresh or mount re-fetches authoritative state
+
+      // Persist the optimistic update to localStorage immediately with timestamp 0
+      try {
+        if (typeof window !== "undefined") {
+          localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify({
+              dashboardData: nextDash,
+              deferredData: globalCache.deferredData,
+              timestamp: 0, // Timestamp 0 ensures next load hydrates immediately and revalidates in background
+            })
+          );
+          console.log("🔍 [Cache] Persisted optimistic update to localStorage with stale timestamp");
+        }
+      } catch (e) {}
+
       return nextDash;
     });
   }, []);
 
   useEffect(() => {
-    // 1. Check if an attendance save was in-flight when user refreshed/navigated
+    // 1. Retry any pending attendance save that was interrupted by refresh/close
+    if (typeof window !== "undefined") {
+      const pending = localStorage.getItem("bunkbuddy-pending-attendance");
+      if (pending) {
+        try {
+          const { classId, status } = JSON.parse(pending);
+          console.log("🔍 [Attendance] Retrying pending save on mount:", { classId, status });
+          toggleAttendance(classId, status)
+            .then((result) => {
+              if (result?.success) {
+                console.log("🔍 [Attendance] Pending save retry succeeded!");
+                localStorage.removeItem("bunkbuddy-pending-attendance");
+                localStorage.removeItem("bunkbuddy-pending-save");
+                fetchAllData(false);
+              }
+            })
+            .catch(console.error);
+        } catch (e) {
+          localStorage.removeItem("bunkbuddy-pending-attendance");
+        }
+      }
+    }
+
+    // 2. Check if an attendance save was in-flight when user refreshed/navigated
     let hasPendingSave = false;
     if (typeof window !== "undefined") {
       try {
@@ -249,7 +289,7 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
       }
     }
 
-    // 2. Immediately hydrate from localStorage if memory cache is empty (and no pending save was flagged)
+    // 3. Immediately hydrate from localStorage if memory cache is empty (and no pending save was flagged)
     if (!hasPendingSave && (!globalCache.dashboardData || !globalCache.deferredData) && typeof window !== "undefined") {
       try {
         const cached = localStorage.getItem(STORAGE_KEY);

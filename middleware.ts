@@ -1,4 +1,4 @@
-﻿import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { getAdminEmail } from "@/lib/auth/constants";
 
@@ -34,6 +34,11 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser();
   const pathname = request.nextUrl.pathname;
+
+  // Next.js Server Actions execute directly and handle authentication in their action context
+  if (request.headers.get("next-action")) {
+    return response;
+  }
 
   // Block enforcement check
   const isExempt = pathname === "/login" || pathname === "/blocked" || pathname.startsWith("/api/auth/");
@@ -130,6 +135,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|api/.*|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
