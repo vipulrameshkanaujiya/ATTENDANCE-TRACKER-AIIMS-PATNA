@@ -1,5 +1,6 @@
 "use server";
 
+
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser, getUserProfile } from "@/lib/auth/session";
 import { 
@@ -16,6 +17,7 @@ import {
 import { revalidatePath } from "next/cache";
 import { buildSubjectAttendanceBreakdown, computePathTo76 } from "@/lib/utils/attendance";
 import { generateFutureClasses } from "@/lib/utils/schedule-predictor";
+import { getTodayDateString, getCurrentTimeString, shiftDateString } from "@/lib/utils/date";
 
 export async function toggleAttendance(
   classId: string,
@@ -117,8 +119,6 @@ export async function updateTopicProgress(topicId: string, status: TopicProgress
 
   return data;
 }
-
-import { getTodayDateString, getCurrentTimeString, shiftDateString } from "@/lib/utils/date";
 
 /**
  * Strictly returns the next upcoming session that is in the future.
@@ -332,9 +332,7 @@ export async function getStudentDashboardData() {
   const examDate = activeExam?.exam_date || "2026-11-02";
   
   // Predict up to the day BEFORE the exam
-  const examDateObj = new Date(examDate);
-  examDateObj.setDate(examDateObj.getDate() - 1);
-  const adjustedEndDate = examDateObj.toISOString().split("T")[0];
+  const adjustedEndDate = shiftDateString(examDate, -1);
   
   const futureClasses = generateFutureClasses(todayStr, adjustedEndDate, batchName);
 
@@ -356,6 +354,23 @@ export async function getStudentDashboardData() {
       0.76
     );
   }
+
+  console.log("🔍 [Path to 76 DEBUG]", {
+    todayIST: todayStr,
+    examDate,
+    endDate: adjustedEndDate,
+    batch: batchName,
+    futureClassesTotal: futureClasses.length,
+    pathTheoryCount: futureClasses.filter((c: any) => 
+      c.subject_code === "PATH" && (c.class_type === "Lecture" || c.class_type === "Tutorial" || c.class_type === "Integration" || c.class_type === "SDL")
+    ).reduce((sum: number, c: any) => sum + (c.units || 1), 0),
+    pharmaTheoryCount: futureClasses.filter((c: any) => 
+      c.subject_code === "PHARMA" && (c.class_type === "Lecture" || c.class_type === "Tutorial" || c.class_type === "Integration" || c.class_type === "SDL")
+    ).reduce((sum: number, c: any) => sum + (c.units || 1), 0),
+    microTheoryCount: futureClasses.filter((c: any) => 
+      c.subject_code === "MICRO" && (c.class_type === "Lecture" || c.class_type === "Tutorial" || c.class_type === "Integration" || c.class_type === "SDL")
+    ).reduce((sum: number, c: any) => sum + (c.units || 1), 0),
+  });
 
     const { data: photoRow } = await supabase
       .from("app_settings")

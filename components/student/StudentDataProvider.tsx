@@ -3,12 +3,14 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { getStudentDashboardData, getDeferredStudentData, toggleAttendance } from "@/app/actions/student";
 import { buildSubjectAttendanceBreakdown, computePathTo76 } from "@/lib/utils/attendance";
+import { getTodayDateString } from "@/lib/utils/date";
 
 interface GlobalStudentCache {
   dashboardData: any;
   deferredData: any;
   timestamp: number;
   userId: string | null;
+  cachedDate: string | null;
 }
 
 // Module-level cache (persists in memory across client-side route changes)
@@ -17,6 +19,7 @@ let globalCache: GlobalStudentCache = {
   deferredData: null,
   timestamp: 0,
   userId: null,
+  cachedDate: null,
 };
 
 const STALE_TIME = 5 * 60 * 1000; // 5 minutes
@@ -28,6 +31,7 @@ export function clearStudentDataCache() {
     deferredData: null,
     timestamp: 0,
     userId: null,
+    cachedDate: null,
   };
   try {
     if (typeof window !== "undefined") {
@@ -78,6 +82,7 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
 
       if (dash) {
         const currentUserId = dash?.profile?.id || null;
+        const todayStr = getTodayDateString();
 
         // Update module-level cache
         globalCache = {
@@ -85,6 +90,7 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
           deferredData: deferred,
           timestamp: Date.now(),
           userId: currentUserId,
+          cachedDate: todayStr,
         };
 
         // Cache dashboard and deferred data in localStorage for offline access & instant loads
@@ -96,6 +102,7 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
                 dashboardData: dash,
                 deferredData: deferred,
                 timestamp: Date.now(),
+                cachedDate: todayStr,
               })
             );
           }
@@ -114,6 +121,7 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
           const cached = localStorage.getItem(STORAGE_KEY);
           if (cached) {
             const parsed = JSON.parse(cached);
+            const todayStr = getTodayDateString();
             const cachedDash = parsed?.dashboardData || parsed?.data;
             const cachedDeferred = parsed?.deferredData;
             if (cachedDash) {
@@ -123,7 +131,9 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
                 setDeferredData(cachedDeferred);
                 globalCache.deferredData = cachedDeferred;
               }
-              globalCache.timestamp = parsed.timestamp || Date.now();
+              // If cached data is from a different calendar day, mark stale immediately
+              globalCache.timestamp = (parsed.cachedDate && parsed.cachedDate !== todayStr) ? 0 : (parsed.timestamp || Date.now());
+              globalCache.cachedDate = parsed.cachedDate || null;
             }
           }
         }
@@ -225,6 +235,8 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
 
       globalCache.dashboardData = nextDash;
       globalCache.timestamp = 0; // Force stale so any page refresh or mount re-fetches authoritative state
+      const effectiveCachedDate = globalCache.cachedDate || getTodayDateString();
+      globalCache.cachedDate = effectiveCachedDate;
 
       // Persist the optimistic update to localStorage immediately with timestamp 0
       try {
@@ -235,6 +247,7 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
               dashboardData: nextDash,
               deferredData: globalCache.deferredData,
               timestamp: 0, // Timestamp 0 ensures next load hydrates immediately and revalidates in background
+              cachedDate: effectiveCachedDate,
             })
           );
           console.log("🔍 [Cache] Persisted optimistic update to localStorage with stale timestamp");
@@ -246,6 +259,17 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
   }, []);
 
   useEffect(() => {
+    const todayStr = getTodayDateString();
+
+    // 0. Check in-memory globalCache for day change
+    if (globalCache.cachedDate && globalCache.cachedDate !== todayStr) {
+      console.log("🔍 [StudentDataProvider] Memory cache is from previous day, clearing:", {
+        cachedDate: globalCache.cachedDate,
+        todayStr,
+      });
+      clearStudentDataCache();
+    }
+
     // 1. Retry any pending attendance save that was interrupted by refresh/close
     if (typeof window !== "undefined") {
       const pending = localStorage.getItem("bunkbuddy-pending-attendance");
@@ -282,6 +306,7 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
             deferredData: null,
             timestamp: 0,
             userId: null,
+            cachedDate: null,
           };
         }
       } catch (e) {
@@ -295,19 +320,36 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
         const cached = localStorage.getItem(STORAGE_KEY);
         if (cached) {
           const parsed = JSON.parse(cached);
-          const cachedDash = parsed?.dashboardData || parsed?.data;
-          const cachedDeferred = parsed?.deferredData;
-          if (cachedDash) {
-            setDashboardData(cachedDash);
-            globalCache.dashboardData = cachedDash;
-            if (cachedDeferred) {
-              setDeferredData(cachedDeferred);
-              globalCache.deferredData = cachedDeferred;
+          // Check if localStorage cache is from a previous calendar day
+          if (parsed.cachedDate && parsed.cachedDate !== todayStr) {
+            console.log("🔍 [StudentDataProvider] localStorage cache is from previous day, invalidating:", {
+              cachedDate: parsed.cachedDate,
+              todayStr,
+            });
+            localStorage.removeItem(STORAGE_KEY);
+            globalCache = {
+              dashboardData: null,
+              deferredData: null,
+              timestamp: 0,
+              userId: null,
+              cachedDate: null,
+            };
+          } else {
+            const cachedDash = parsed?.dashboardData || parsed?.data;
+            const cachedDeferred = parsed?.deferredData;
+            if (cachedDash) {
+              setDashboardData(cachedDash);
+              globalCache.dashboardData = cachedDash;
+              if (cachedDeferred) {
+                setDeferredData(cachedDeferred);
+                globalCache.deferredData = cachedDeferred;
+              }
+              globalCache.timestamp = parsed.timestamp || 0;
+              globalCache.cachedDate = parsed.cachedDate || todayStr;
+              setIsLoading(false);
+              (window as any).__BUNKBUDDY_DATA_READY__ = true;
+              window.dispatchEvent(new Event("bunkbuddy:data-ready"));
             }
-            globalCache.timestamp = parsed.timestamp || 0;
-            setIsLoading(false);
-            (window as any).__BUNKBUDDY_DATA_READY__ = true;
-            window.dispatchEvent(new Event("bunkbuddy:data-ready"));
           }
         }
       } catch (e) {
@@ -315,17 +357,54 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
       }
     }
 
-    const isStale = Date.now() - globalCache.timestamp > STALE_TIME;
+    const isDateStale = Boolean(globalCache.cachedDate && globalCache.cachedDate !== todayStr);
+    const isTimeStale = Date.now() - globalCache.timestamp > STALE_TIME;
     if (!globalCache.dashboardData || hasPendingSave) {
       // First load without cache OR fresh recovery after in-flight save — blocking
       fetchAllData(true);
-    } else if (isStale) {
+    } else if (isDateStale || isTimeStale) {
       // Stale revalidation - background (non-blocking)
       fetchAllData(false);
     }
   }, [fetchAllData]);
 
-  const isStale = Date.now() - globalCache.timestamp > STALE_TIME;
+  // 4. Active day-change listener: detects when midnight passes or when PWA/tab regains focus on a new day
+  useEffect(() => {
+    const checkDayChange = () => {
+      const today = getTodayDateString();
+      if (globalCache.cachedDate && globalCache.cachedDate !== today) {
+        console.log("🔍 [StudentDataProvider] Day change detected, refreshing all data:", {
+          cachedDate: globalCache.cachedDate,
+          today,
+        });
+        clearStudentDataCache();
+        fetchAllData(false);
+      }
+    };
+
+    // Check every 60 seconds
+    const intervalId = setInterval(checkDayChange, 60 * 1000);
+
+    // Check when window regains focus or visibility returns
+    const handleVisibilityOrFocus = () => {
+      if (typeof document !== "undefined" && document.visibilityState === "visible") {
+        checkDayChange();
+      }
+    };
+
+    window.addEventListener("focus", handleVisibilityOrFocus);
+    document.addEventListener("visibilitychange", handleVisibilityOrFocus);
+
+    return () => {
+      clearInterval(intervalId);
+      window.removeEventListener("focus", handleVisibilityOrFocus);
+      document.removeEventListener("visibilitychange", handleVisibilityOrFocus);
+    };
+  }, [fetchAllData]);
+
+  const isStale =
+    Boolean(globalCache.cachedDate && globalCache.cachedDate !== getTodayDateString()) ||
+    Date.now() - globalCache.timestamp > STALE_TIME;
 
   return (
     <StudentDataContext.Provider

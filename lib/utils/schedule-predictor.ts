@@ -1,3 +1,5 @@
+import { parseDateString } from "@/lib/utils/date";
+
 export function generateFutureClasses(
   startDate: string,
   endDate: string,
@@ -21,8 +23,8 @@ export function generateFutureClasses(
     units: number;
   }> = [];
 
-  const start = new Date(startDate);
-  const end = new Date(endDate);
+  const start = parseDateString(startDate);
+  const end = parseDateString(endDate);
   const holidays = ["2026-09-04", "2026-10-02", "2026-10-20", "2026-11-08"];
 
   // Normalize batch string to standard
@@ -43,7 +45,7 @@ export function generateFutureClasses(
   // Helper to get occurrence of weekday in month (1st, 2nd, etc)
   const getOccurrenceOfWeekday = (d: Date) => {
     const dayOfWeek = d.getDay(); // 0=Sun, 1=Mon, ...
-    const firstOfMonth = new Date(d.getFullYear(), d.getMonth(), 1);
+    const firstOfMonth = new Date(d.getFullYear(), d.getMonth(), 1, 12, 0, 0);
     const firstDayOfWeek = firstOfMonth.getDay();
     const offset = (dayOfWeek - firstDayOfWeek + 7) % 7;
     const firstDateWithThisWeekday = 1 + offset;
