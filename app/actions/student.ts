@@ -388,8 +388,9 @@ export async function getStudentDashboardData() {
           .from("donations")
           .select("donor_name, amount, currency, message, created_at")
           .eq("is_public", true)
+          .order("amount", { ascending: false, nullsFirst: false })
           .order("created_at", { ascending: false })
-          .limit(5),
+          .limit(10),
         supabase
           .from("donations")
           .select("*", { count: "exact", head: true })

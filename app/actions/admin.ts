@@ -983,6 +983,7 @@ export async function getDonationsListAction() {
     const { data, error } = await supabase
       .from("donations")
       .select("*")
+      .order("amount", { ascending: false, nullsFirst: false })
       .order("created_at", { ascending: false });
 
     if (error) return { success: false, error: error.message, data: [] };
@@ -1033,6 +1034,33 @@ export async function deleteDonationAction(id: string) {
     const { error } = await supabase.from("donations").delete().eq("id", id);
 
     if (error) return { success: false, error: error.message };
+    revalidatePath("/home");
+    revalidatePath("/help");
+    revalidatePath("/admin/donations");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+export async function updateDonationAction(
+  id: string,
+  updates: { donor_name?: string; amount?: number | null; message?: string | null; is_public?: boolean }
+) {
+  try {
+    await requireAdmin();
+    const supabase = createAdminClient();
+
+    const { error } = await supabase
+      .from("donations")
+      .update({
+        ...updates,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", id);
+
+    if (error) return { success: false, error: error.message };
+
     revalidatePath("/home");
     revalidatePath("/help");
     revalidatePath("/admin/donations");

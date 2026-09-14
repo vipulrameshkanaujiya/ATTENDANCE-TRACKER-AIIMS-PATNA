@@ -603,33 +603,45 @@ export function HelpPageClient({
 
               {donationCount > 0 && (
                 <div className="pt-3 border-t border-slate-200 dark:border-slate-800 space-y-2">
-                  <p className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center justify-center sm:justify-start gap-1.5">
-                    <Heart className="w-3.5 h-3.5 text-pink-500 fill-pink-500" />
-                    <span>Recent Supporters ({donationCount})</span>
-                  </p>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                    <p className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center justify-center sm:justify-start gap-1.5">
+                      <Heart className="w-3.5 h-3.5 text-pink-500 fill-pink-500" />
+                      <span>Supporters ({donationCount})</span>
+                    </p>
+                    <span className="text-[10px] text-slate-400 dark:text-slate-500 text-center sm:text-right">
+                      Supporters are listed by contribution amount (highest first).
+                    </span>
+                  </div>
                   <div className="space-y-1.5">
-                    {donations.map((d: any, idx: number) => (
-                      <div
-                        key={idx}
-                        className="text-xs text-slate-600 dark:text-slate-400 flex items-center justify-between py-1.5 px-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800"
-                      >
-                        <span className="font-semibold text-slate-800 dark:text-slate-200">
-                          {d.donor_name}
-                        </span>
-                        <div className="flex items-center gap-2">
-                          {d.message && (
-                            <span className="text-[11px] italic text-slate-500 dark:text-slate-400">
-                              "{d.message}"
-                            </span>
-                          )}
-                          {d.amount && (
-                            <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">
-                              ₹{d.amount}
-                            </span>
-                          )}
+                    {[...donations]
+                      .sort((a: any, b: any) => {
+                        const amtA = a.amount ?? -1;
+                        const amtB = b.amount ?? -1;
+                        if (amtB !== amtA) return amtB - amtA;
+                        return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
+                      })
+                      .map((d: any, idx: number) => (
+                        <div
+                          key={idx}
+                          className="text-xs text-slate-600 dark:text-slate-400 flex items-center justify-between py-1.5 px-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800"
+                        >
+                          <span className="font-semibold text-slate-800 dark:text-slate-200">
+                            {d.donor_name}
+                          </span>
+                          <div className="flex items-center gap-2">
+                            {d.message && (
+                              <span className="text-[11px] italic text-slate-500 dark:text-slate-400">
+                                "{d.message}"
+                              </span>
+                            )}
+                            {d.amount ? (
+                              <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">
+                                ₹{d.amount}
+                              </span>
+                            ) : null}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
                   </div>
                 </div>
               )}

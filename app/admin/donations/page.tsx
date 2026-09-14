@@ -14,6 +14,7 @@ export default async function AdminDonationsPage() {
   const { data: donations } = await supabase
     .from("donations")
     .select("*")
+    .order("amount", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
 
   return (

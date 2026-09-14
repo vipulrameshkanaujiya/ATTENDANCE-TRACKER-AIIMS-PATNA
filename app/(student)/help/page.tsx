@@ -19,6 +19,7 @@ export default async function HelpPage() {
         .from("donations")
         .select("donor_name, amount, currency, message, created_at")
         .eq("is_public", true)
+        .order("amount", { ascending: false, nullsFirst: false })
         .order("created_at", { ascending: false })
         .limit(10),
       supabase

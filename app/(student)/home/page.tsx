@@ -175,7 +175,7 @@ export default function StudentHomePage() {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-bold text-slate-900 dark:text-slate-100">
-                Thank you to our {donationCount} supporter{donationCount > 1 ? "s" : ""}! 🎉
+                🎉 Thank you to our {donationCount} supporter{donationCount > 1 ? "s" : ""}!
               </p>
               <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
                 {donations.slice(0, 3).map((d: any, i: number) => (
