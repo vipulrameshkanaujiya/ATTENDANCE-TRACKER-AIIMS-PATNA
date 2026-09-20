@@ -515,25 +515,25 @@ export function HelpPageClient({
           </p>
         </div>
 
-        <div className="rounded-2xl border border-amber-200/80 dark:border-amber-900/40 bg-gradient-to-br from-amber-50/60 via-white to-amber-50/40 dark:from-slate-900 dark:via-slate-900 dark:to-amber-950/20 p-6 shadow-sm space-y-6">
+        <div className="rounded-2xl border border-[#EDE5D9] dark:border-[#2A2018] bg-[#FAF7F2] dark:bg-[#1A1510] p-5 sm:p-6 shadow-sm space-y-6">
           <div className="max-w-xl space-y-2">
-            <h3 className="text-base font-bold text-text flex items-center gap-2">
+            <h3 className="text-base font-bold text-[#1A1613] dark:text-[#F5F1EB] flex items-center gap-2">
               <span>If BunkBuddy saved your attendance...</span>
             </h3>
-            <p className="text-xs text-slate-600 dark:text-[#A89E92] leading-relaxed">
+            <p className="text-xs text-[#6B6259] dark:text-[#A89E92] leading-relaxed">
               Countless hours went into writing the timetable engine, attendance algorithms, automated scripts, and UI. If this app helped ease your attendance stress, treating me to a chai or coffee is warmly appreciated!
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 pt-2">
             {/* UPI QR Code Container */}
-            <div className="bg-white dark:bg-[#0F0C09] p-3 rounded-2xl border border-border shadow-md flex flex-col items-center gap-2">
+            <div className="bg-white dark:bg-[#1A1510] p-3 rounded-2xl border border-[#EDE5D9] dark:border-[#2A2018] shadow-md flex flex-col items-center gap-2">
               <img
                 src="/upi-qr.png"
                 alt="UPI QR Code - 9825739419@NAVIAXIS"
                 className="w-52 h-52 object-contain rounded-xl"
               />
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              <p className="text-[10px] font-bold text-[#6B6259] dark:text-[#A89E92] uppercase tracking-wider">
                 Scan with any UPI App
               </p>
             </div>
@@ -541,22 +541,22 @@ export function HelpPageClient({
             {/* UPI ID Copy & Buy Me A Coffee Button */}
             <div className="space-y-4 flex-1 w-full text-center sm:text-left">
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700 dark:text-[#A89E92]">
+                <label className="text-xs font-bold text-[#1A1613] dark:text-[#F5F1EB]">
                   Direct UPI ID
                 </label>
                 <div className="flex items-center justify-center sm:justify-start gap-2">
-                  <span className="font-mono text-xs font-bold px-3 py-2 rounded-xl bg-white dark:bg-[#0F0C09] border border-border text-text select-all">
+                  <span className="font-mono text-xs font-bold px-3 py-2 rounded-xl bg-white dark:bg-[#1A1510] border border-[#EDE5D9] dark:border-[#2A2018] text-[#1A1613] dark:text-[#F5F1EB] select-all">
                     9825739419@NAVIAXIS
                   </span>
                   <button
                     onClick={handleCopyUpi}
-                    className="p-2 rounded-xl bg-bg-subtle hover:bg-slate-200 dark:hover:bg-[#2E2418] text-slate-700 dark:text-[#A89E92] transition flex items-center gap-1 text-xs font-semibold cursor-pointer"
+                    className="p-2 rounded-xl bg-[#F2ECE3] hover:bg-[#E5DCD0] dark:bg-[#241C14] dark:hover:bg-[#2E2418] text-[#1A1613] dark:text-[#F5F1EB] transition flex items-center gap-1 text-xs font-semibold cursor-pointer"
                     title="Copy UPI ID"
                   >
                     {copied ? (
                       <>
-                        <Check className="w-4 h-4 text-emerald-500" />
-                        <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">Copied!</span>
+                        <Check className="w-4 h-4 text-[#16A34A] dark:text-[#4ADE80]" />
+                        <span className="text-[11px] text-[#16A34A] dark:text-[#4ADE80] font-bold">Copied!</span>
                       </>
                     ) : (
                       <>
@@ -597,21 +597,22 @@ export function HelpPageClient({
                 </a>
               </div>
 
-              <p className="text-[10px] text-text-muted text-center sm:text-left mt-2">
+              <p className="text-[10px] text-[#6B6259] dark:text-[#A89E92] text-center sm:text-left mt-2">
                 UPI · Buy Me a Coffee · Get Me Chai — choose whichever is easiest for you 💛
               </p>
 
               {donationCount > 0 && (
-                <div className="pt-3 border-t border-border space-y-2">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                    <p className="text-xs font-bold text-slate-800 dark:text-[#F5F1EB] flex items-center justify-center sm:justify-start gap-1.5">
-                      <Heart className="w-3.5 h-3.5 text-accent fill-accent" />
-                      <span>Supporters ({donationCount})</span>
+                <div className="pt-3 border-t border-[#EDE5D9] dark:border-[#2A2018] space-y-2 mt-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-bold text-[#1A1613] dark:text-[#F5F1EB] flex items-center gap-1.5">
+                      <Heart className="w-4 h-4 text-[#F5A623] fill-[#F5A623]" />
+                      Supporters ({donationCount})
+                    </h3>
+                    <p className="text-[10px] text-[#6B6259] dark:text-[#A89E92]">
+                      Sorted by amount (highest first)
                     </p>
-                    <span className="text-[10px] text-text-faint text-center sm:text-right">
-                      Supporters are listed by contribution amount (highest first).
-                    </span>
                   </div>
+                  
                   <div className="space-y-1.5">
                     {[...donations]
                       .sort((a: any, b: any) => {
@@ -621,25 +622,22 @@ export function HelpPageClient({
                         return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
                       })
                       .map((d: any, idx: number) => (
-                        <div
-                          key={idx}
-                          className="text-xs text-slate-600 dark:text-[#A89E92] flex items-center justify-between py-1.5 px-3 rounded-xl bg-bg dark:bg-[#241C14]/50 border border-slate-100 dark:border-[#2A2018]"
-                        >
-                          <span className="font-semibold text-slate-800 dark:text-[#F5F1EB]">
-                            {d.donor_name}
-                          </span>
-                          <div className="flex items-center gap-2">
+                        <div key={idx} className="flex items-center justify-between p-3 rounded-xl border border-[#EDE5D9] dark:border-[#2A2018] bg-white dark:bg-[#1A1510]">
+                          <div className="flex flex-col">
+                            <span className="text-sm font-semibold text-[#1A1613] dark:text-[#F5F1EB]">
+                              {d.donor_name}
+                            </span>
                             {d.message && (
-                              <span className="text-[11px] italic text-text-muted">
+                              <span className="text-[11px] italic text-[#6B6259] dark:text-[#A89E92]">
                                 "{d.message}"
                               </span>
                             )}
-                            {d.amount ? (
-                              <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">
-                                ₹{d.amount}
-                              </span>
-                            ) : null}
                           </div>
+                          {d.amount ? (
+                            <span className="text-sm font-bold text-[#16A34A] dark:text-[#4ADE80]">
+                              ₹{d.amount}
+                            </span>
+                          ) : null}
                         </div>
                       ))}
                   </div>

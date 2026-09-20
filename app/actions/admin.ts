@@ -6,6 +6,7 @@ import { requireAdmin } from "@/lib/auth/session";
 import { ClassType, BatchScope, AttendanceStatus, HistoricalSubjectCode, StudentHistoricalAttendance } from "@/types/database";
 import { revalidatePath } from "next/cache";
 import { getTodayDateString } from "@/lib/utils/date";
+import { computePathTo76 } from "@/lib/utils/attendance";
 
 // 1. CLASS / SCHEDULE ACTIONS
 export async function createClassAction(formData: FormData) {
@@ -1070,3 +1071,129 @@ export async function updateDonationAction(
   }
 }
 
+
+export async function getAllStudentsAttendanceAction() {
+  try {
+    await requireAdmin();
+    const supabase = createAdminClient();
+
+    const { data: students } = await supabase
+      .from("users")
+      .select("id, roll_number, full_name, email, batch_id, created_at, batch:batches(name)")
+      .eq("is_onboarded", true)
+      .order("roll_number");
+
+    if (!students) return { success: true, students: [] };
+
+    const { data: exam } = await supabase
+      .from("exams")
+      .select("exam_date")
+      .eq("is_active", true)
+      .maybeSingle();
+    const examDate = exam?.exam_date || "2026-11-02";
+
+    const { data: subjects } = await supabase
+      .from("subjects")
+      .select("*");
+
+    const { data: allAttendance } = await supabase
+      .from("attendance")
+      .select(`
+        student_id, status, class_id,
+        class:classes(
+          id, date, class_type,
+          subject:subjects(id, code, name, color_code, is_split)
+        )
+      `);
+
+    const { data: allHistorical } = await supabase
+      .from("student_historical_attendance")
+      .select("*");
+
+    const todayStr = getTodayDateString();
+    
+    // Fallback simple shift: examDate - 1 day roughly. For simplicity, just use todayStr to examDate in generateFutureClasses. 
+    // generateFutureClasses predicts up to endDate.
+    const adjustedEndDate = new Date(new Date(examDate).getTime() - 86400000).toISOString().split("T")[0];
+    
+    const uniqueBatches = Array.from(new Set(students.map(s => (s.batch as any)?.name || "Batch A")));
+    const futureClassesByBatch: Record<string, any[]> = {};
+    
+    const { generateFutureClasses } = await import("@/lib/utils/schedule-predictor");
+    const { buildSubjectAttendanceBreakdown, computePathTo76 } = await import("@/lib/utils/attendance");
+    
+    for (const b of uniqueBatches) {
+      futureClassesByBatch[b] = generateFutureClasses(todayStr, adjustedEndDate, b);
+    }
+
+    const results = students.map(student => {
+      const studentAttendance = (allAttendance || []).filter(a => a.student_id === student.id) as any;
+      const studentHistorical = (allHistorical || []).filter(h => h.student_id === student.id) as any;
+      const batchName = (student.batch as any)?.name || "Batch A";
+
+      const breakdownMap = buildSubjectAttendanceBreakdown(
+        subjects as any || [],
+        studentAttendance,
+        studentHistorical
+      );
+
+      const futureClasses = futureClassesByBatch[batchName] || [];
+
+      let totalNeed = 0;
+      let totalPredicted = 0;
+      let totalOverallAttended = 0;
+      let totalOverallClasses = 0;
+
+      const perSubject = [];
+      const targetSubjects = ["PATH", "PHARMA", "MICRO"];
+
+      for (const sub of Object.values(breakdownMap)) {
+         totalOverallAttended += sub.attended;
+         totalOverallClasses += sub.total;
+
+         if (targetSubjects.includes(sub.code)) {
+            const futureTheoryClasses = futureClasses.filter((c: any) => c.subject_code === sub.code && (c.class_type === "Lecture" || c.class_type === "Tutorial" || c.class_type === "Integration" || c.class_type === "SDL"));
+            const futurePracticalClasses = futureClasses.filter((c: any) => c.subject_code === sub.code && c.class_type === "Practical");
+            
+            const predictedFutureTheory = futureTheoryClasses.reduce((sum: number, c: any) => sum + (c.units || 1), 0);
+            const predictedFuturePractical = futurePracticalClasses.reduce((sum: number, c: any) => sum + (c.units || 1), 0);
+            
+            const path = computePathTo76(
+              sub,
+              { theory: predictedFutureTheory, practical: predictedFuturePractical },
+              0.76
+            );
+
+            totalNeed += (path.theory.need + path.practical.need);
+            totalPredicted += (path.theory.predicted_future + path.practical.predicted_future);
+
+            perSubject.push({
+               code: sub.code,
+               name: sub.name,
+               theory: path.theory,
+               practical: path.practical,
+               current_attended: sub.attended,
+               current_total: sub.total,
+            });
+         }
+      }
+
+      const overallPct = totalOverallClasses > 0 ? (totalOverallAttended / totalOverallClasses) * 100 : 0;
+
+      return {
+        id: student.id,
+        roll_number: student.roll_number,
+        full_name: student.full_name,
+        batch_id: batchName,
+        overall_attendance_pct: overallPct,
+        classes_needed_total: totalNeed,
+        classes_predicted_total: totalPredicted,
+        per_subject: perSubject,
+      };
+    });
+
+    return { success: true, students: results };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
