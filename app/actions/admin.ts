@@ -1096,15 +1096,16 @@ export async function getAllStudentsAttendanceAction() {
       .from("subjects")
       .select("*");
 
-    const { data: allAttendance } = await supabase
+    const { data: allAttendance, error: attError } = await supabase
       .from("attendance")
       .select(`
         student_id, status, class_id,
         class:classes(
-          id, date, class_type,
-          subject:subjects(id, code, name, color_code, is_split)
+          id, date, class_type, subject_id,
+          subject:subjects(id, code, name, color_code)
         )
       `);
+    if (attError) console.error("Error fetching attendance:", attError);
 
     const { data: allHistorical } = await supabase
       .from("student_historical_attendance")
