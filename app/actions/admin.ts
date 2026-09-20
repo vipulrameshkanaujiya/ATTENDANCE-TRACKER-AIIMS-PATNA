@@ -1097,20 +1097,50 @@ export async function getAllStudentsAttendanceAction() {
       .select("*");
 
     const todayStr = getTodayDateString();
+    const currentTimeStr = new Date().toLocaleTimeString('en-GB', { timeZone: 'Asia/Kolkata', hour12: false }); // "HH:MM:SS"
 
-    const { data: allClasses } = await supabase
+    const { data: rawAllClasses } = await supabase
       .from("classes")
       .select(`
-        id, date, class_type, batch_scope, subject_id,
+        id, date, start_time, end_time, class_type, batch_scope, subject_id,
         subject:subjects(id, code, name, color_code)
       `)
       .lte("date", todayStr);
 
-    const { data: allAttendance, error: attError } = await supabase
-      .from("attendance")
-      .select("student_id, status, class_id");
-      
-    if (attError) console.error("Error fetching attendance:", attError);
+    const allClasses = (rawAllClasses || []).filter(c => {
+      if (c.date < todayStr) return true;
+      if (c.date === todayStr && c.end_time && c.end_time <= currentTimeStr) return true;
+      return false;
+    });
+
+    // Supabase has a default max API limit of 1000 rows. We must paginate attendance records.
+    let allAttendance: any[] = [];
+    let hasMore = true;
+    let rangeStart = 0;
+    const rangeStep = 1000;
+
+    while (hasMore) {
+      const { data: chunk, error: attError } = await supabase
+        .from("attendance")
+        .select("student_id, status, class_id")
+        .range(rangeStart, rangeStart + rangeStep - 1);
+
+      if (attError) {
+        console.error("Error fetching attendance chunk:", attError);
+        break;
+      }
+
+      if (chunk && chunk.length > 0) {
+        allAttendance = allAttendance.concat(chunk);
+        if (chunk.length < rangeStep) {
+          hasMore = false;
+        } else {
+          rangeStart += rangeStep;
+        }
+      } else {
+        hasMore = false;
+      }
+    }
 
     const { data: allHistorical } = await supabase
       .from("student_historical_attendance")
