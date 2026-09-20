@@ -66,7 +66,7 @@ export function ChangeRollModal({ studentId, currentRoll }: ChangeRollModalProps
               )}
 
               <div className="space-y-2 text-left">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                <label className="text-xs font-semibold text-slate-700 dark:text-[#A89E92] uppercase tracking-wider">
                   New Roll Number
                 </label>
                 <input
@@ -76,7 +76,7 @@ export function ChangeRollModal({ studentId, currentRoll }: ChangeRollModalProps
                   value={newRoll}
                   onChange={(e) => setNewRoll(e.target.value.trim())}
                   placeholder="e.g. 24001"
-                  className="w-full px-3 py-2 text-sm font-mono border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-950 text-text focus:outline-none focus:ring-2 focus:ring-accent"
+                  className="w-full px-3 py-2 text-sm font-mono border border-slate-300 dark:border-[#2A2018] rounded-lg bg-white dark:bg-[#0F0C09] text-text focus:outline-none focus:ring-2 focus:ring-accent"
                 />
               </div>
 
@@ -85,7 +85,7 @@ export function ChangeRollModal({ studentId, currentRoll }: ChangeRollModalProps
                   type="button"
                   onClick={() => setIsOpen(false)}
                   disabled={isPending}
-                  className="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
+                  className="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-[#A89E92] hover:bg-slate-100 dark:hover:bg-[#241C14] rounded-lg transition"
                 >
                   Cancel
                 </button>

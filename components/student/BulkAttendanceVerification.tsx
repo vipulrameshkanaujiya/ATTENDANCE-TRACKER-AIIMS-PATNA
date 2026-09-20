@@ -86,7 +86,7 @@ export function BulkAttendanceVerification({
         )}
 
         <div className="bg-bg-elevated rounded-2xl border border-border shadow-sm p-5 sm:p-6 space-y-4 animate-fade-in">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-100 dark:border-[#2A2018] pb-3">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-900/30 flex items-center justify-center text-emerald-600">
                 <Lock className="w-4 h-4" />
@@ -106,7 +106,7 @@ export function BulkAttendanceVerification({
             </span>
           </div>
 
-          <div className="divide-y divide-slate-100 dark:divide-slate-800">
+          <div className="divide-y divide-slate-100 dark:divide-[#2A2018]">
             {bulkData.map((row) => {
               const tAtt = Number(row.theory_attended) || 0;
               const tTot = Number(row.theory_total) || 0;
@@ -121,9 +121,9 @@ export function BulkAttendanceVerification({
                   key={row.subject_code}
                   className="py-2.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 text-xs"
                 >
-                  <div className="font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                  <div className="font-semibold text-slate-800 dark:text-[#F5F1EB] flex items-center gap-2">
                     <span className="w-16 font-bold text-text">{row.subject_code}:</span>
-                    <span className="text-slate-600 dark:text-slate-400 font-normal">
+                    <span className="text-slate-600 dark:text-[#A89E92] font-normal">
                       Theory{" "}
                       <strong className="text-text font-semibold">
                         {tAtt}/{tTot}
@@ -131,7 +131,7 @@ export function BulkAttendanceVerification({
                       ({tPct}%)
                     </span>
                     <span className="text-slate-300">|</span>
-                    <span className="text-slate-600 dark:text-slate-400 font-normal">
+                    <span className="text-slate-600 dark:text-[#A89E92] font-normal">
                       Practical{" "}
                       <strong className="text-text font-semibold">
                         {pAtt}/{pTot}
@@ -151,7 +151,7 @@ export function BulkAttendanceVerification({
             })}
           </div>
 
-          <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-start gap-2 text-xs text-text-muted bg-slate-50/70 dark:bg-slate-900/70 p-3 rounded-xl">
+          <div className="pt-2 border-t border-slate-100 dark:border-[#2A2018] flex items-start gap-2 text-xs text-text-muted bg-slate-50/70 dark:bg-[#1A1510]/70 p-3 rounded-xl">
             <Info className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
             <p>
               <strong>Note:</strong> Pre-September data is permanently locked to prevent accidental changes. If you notice a clerical error, please contact an Admin to request a correction.
@@ -180,8 +180,8 @@ export function BulkAttendanceVerification({
             <h2 className="text-lg font-bold text-text">
               Pre-September Attendance Found
             </h2>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-              We found your official attendance records for roll number <strong className="font-mono text-slate-900 dark:text-slate-200">{rollNumber}</strong>. 
+            <p className="text-sm text-slate-600 dark:text-[#A89E92] mt-1 leading-relaxed">
+              We found your official attendance records for roll number <strong className="font-mono text-slate-900 dark:text-[#F5F1EB]">{rollNumber}</strong>. 
               Please review carefully before confirming.
             </p>
           </div>
@@ -189,26 +189,26 @@ export function BulkAttendanceVerification({
 
         <div className="border border-border rounded-xl overflow-hidden my-6">
           <table className="w-full text-left text-sm">
-            <thead className="bg-bg dark:bg-slate-800 text-text-muted">
+            <thead className="bg-bg dark:bg-[#241C14] text-text-muted">
               <tr>
                 <th className="px-4 py-3 font-semibold">Subject</th>
                 <th className="px-4 py-3 font-semibold text-center">Theory</th>
                 <th className="px-4 py-3 font-semibold text-center">Practical</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+            <tbody className="divide-y divide-slate-100 dark:divide-[#2A2018]">
               {bulkData.map((row) => (
                 <tr key={row.subject_code}>
-                  <td className="px-4 py-3 font-bold text-slate-800 dark:text-slate-200">
+                  <td className="px-4 py-3 font-bold text-slate-800 dark:text-[#F5F1EB]">
                     {row.subject_code}
                   </td>
                   <td className="px-4 py-3 text-center">
-                    <span className="font-mono bg-slate-100 dark:bg-slate-950 px-2 py-1 rounded text-slate-700 dark:text-slate-300">
+                    <span className="font-mono bg-slate-100 dark:bg-[#0F0C09] px-2 py-1 rounded text-slate-700 dark:text-[#A89E92]">
                       <strong className="text-text">{row.theory_attended}</strong> / {row.theory_total}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-center">
-                    <span className="font-mono bg-slate-100 dark:bg-slate-950 px-2 py-1 rounded text-slate-700 dark:text-slate-300">
+                    <span className="font-mono bg-slate-100 dark:bg-[#0F0C09] px-2 py-1 rounded text-slate-700 dark:text-[#A89E92]">
                       <strong className="text-text">{row.practical_attended}</strong> / {row.practical_total}
                     </span>
                   </td>
@@ -244,7 +244,7 @@ export function BulkAttendanceVerification({
                   e.target.value.trim().toUpperCase() === nameFromBulk?.toUpperCase()
                 );
               }}
-              className="w-full text-sm rounded-lg border border-amber-300 dark:border-amber-900/50 bg-white dark:bg-slate-950 px-3 py-2 text-text uppercase"
+              className="w-full text-sm rounded-lg border border-amber-300 dark:border-amber-900/50 bg-white dark:bg-[#0F0C09] px-3 py-2 text-text uppercase"
             />
             {enteredName && !nameConfirmed && (
               <p className="text-xs text-red-600 dark:text-red-400 mt-2">
@@ -287,7 +287,7 @@ export function BulkAttendanceVerification({
           <button
             onClick={() => setIsIssueReported(true)}
             disabled={isPending}
-            className="flex-none bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold py-2.5 px-4 rounded-xl transition border border-slate-200 dark:border-slate-700 text-sm"
+            className="flex-none bg-slate-100 hover:bg-slate-200 dark:bg-[#241C14] dark:hover:bg-[#2E2418] text-slate-700 dark:text-[#A89E92] font-semibold py-2.5 px-4 rounded-xl transition border border-slate-200 dark:border-[#2A2018] text-sm"
           >
             Report Issue
           </button>

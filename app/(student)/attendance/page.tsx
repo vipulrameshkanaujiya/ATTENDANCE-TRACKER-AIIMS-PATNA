@@ -79,7 +79,7 @@ export default function AttendancePage() {
 
       {/* Subject Breakdown Cards */}
       <div className="space-y-3">
-        <h2 className="text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-[#A89E92]">
           Subject-Wise Breakdown
         </h2>
 
@@ -100,11 +100,11 @@ export default function AttendancePage() {
 
       {/* Path to 76% Section — gated behind September attendance completeness */}
       {dashboardData?.pathTo76 && Object.keys(dashboardData.pathTo76).length > 0 && (
-        <div className="space-y-3 pt-4 border-t border-slate-100 dark:border-slate-800">
+        <div className="space-y-3 pt-4 border-t border-slate-100 dark:border-[#2A2018]">
           {(dashboardData.septemberDataComplete ?? true) ? (
             <>
               <div className="flex items-center justify-between">
-                <h2 className="text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                <h2 className="text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-[#A89E92]">
                   📅 Path to 76% ({new Date(dashboardData.examDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })})
                 </h2>
               </div>

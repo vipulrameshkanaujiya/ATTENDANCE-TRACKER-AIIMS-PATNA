@@ -41,7 +41,7 @@ export function TopicStatusPill({ topicId, initialStatus }: TopicStatusPillProps
         "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition select-none min-h-[36px]",
         status === "COMPLETED" && "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 border border-emerald-300 hover:bg-emerald-100",
         status === "LEARNING" && "bg-amber-50 dark:bg-amber-900/20 text-amber-700 border border-amber-300 hover:bg-amber-100",
-        status === "NOT_STARTED" && "bg-bg-subtle text-slate-600 dark:text-slate-400 border border-border hover:bg-slate-200"
+        status === "NOT_STARTED" && "bg-bg-subtle text-slate-600 dark:text-[#A89E92] border border-border hover:bg-slate-200"
       )}
       title="Tap to change status"
     >

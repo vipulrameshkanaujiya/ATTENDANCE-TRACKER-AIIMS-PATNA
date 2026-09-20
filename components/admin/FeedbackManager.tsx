@@ -159,7 +159,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
         );
       default:
         return (
-          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700">
+          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200 dark:bg-[#241C14] dark:text-[#A89E92] dark:border-[#2A2018]">
             Other
           </span>
         );
@@ -177,7 +177,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
         );
       case "REVIEWED":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-accent-text dark:bg-blue-950/50 dark:text-blue-300 border border-blue-300/60 dark:border-blue-700/50">
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-accent-text dark:bg-[#241C14]/50 dark:text-accent-text border border-blue-300/60 dark:border-accent/30/50">
             <Eye className="w-3 h-3 text-accent" />
             Reviewed
           </span>
@@ -191,7 +191,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
         );
       case "ARCHIVED":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 dark:bg-[#241C14] dark:text-[#A89E92] border border-slate-200 dark:border-[#2A2018]">
             <Archive className="w-3 h-3 text-slate-400" />
             Archived
           </span>
@@ -232,7 +232,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
                   isActive
                     ? "bg-accent text-white shadow-xs"
-                    : "bg-bg-subtle text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
+                    : "bg-bg-subtle text-slate-600 dark:text-[#A89E92] hover:bg-slate-200 dark:hover:bg-[#2E2418]"
                 }`}
               >
                 <span>{tab}</span>
@@ -240,7 +240,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
                   className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
                     isActive
                       ? "bg-accent-hover text-white"
-                      : "bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300"
+                      : "bg-slate-200 dark:bg-[#2E2418] text-slate-700 dark:text-[#A89E92]"
                   }`}
                 >
                   {count}
@@ -259,7 +259,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
               placeholder="Search by roll number, email, message, notes..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-bg dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
+              className="w-full pl-9 pr-4 py-2 bg-bg dark:bg-[#241C14]/60 border border-slate-200 dark:border-[#2A2018] rounded-xl text-xs text-slate-800 dark:text-[#F5F1EB] focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
             />
           </div>
 
@@ -268,7 +268,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="px-3 py-2 bg-bg dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
+              className="px-3 py-2 bg-bg dark:bg-[#241C14]/60 border border-slate-200 dark:border-[#2A2018] rounded-xl text-xs text-slate-800 dark:text-[#F5F1EB] focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
             >
               <option value="ALL">All Categories</option>
               <option value="general">General</option>
@@ -287,7 +287,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
             <div className="w-12 h-12 rounded-2xl bg-accent-soft dark:bg-accent-soft/40 text-accent-text dark:text-accent flex items-center justify-center mx-auto mb-3">
               <MessageSquare className="w-6 h-6" />
             </div>
-            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">
+            <h3 className="text-sm font-bold text-slate-800 dark:text-[#F5F1EB]">
               No feedback found
             </h3>
             <p className="text-xs text-text-muted mt-1">
@@ -300,7 +300,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-border bg-slate-50/75 dark:bg-slate-800/40 text-[11px] font-bold text-text-muted uppercase tracking-wider">
+                <tr className="border-b border-border bg-slate-50/75 dark:bg-[#241C14]/40 text-[11px] font-bold text-text-muted uppercase tracking-wider">
                   <th className="py-3 px-4">Date</th>
                   <th className="py-3 px-4">Student</th>
                   <th className="py-3 px-4">Category</th>
@@ -309,11 +309,11 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-xs">
+              <tbody className="divide-y divide-slate-100 dark:divide-[#2A2018] text-xs">
                 {filteredItems.map((item) => (
                   <tr
                     key={item.id}
-                    className="hover:bg-slate-50/60 dark:hover:bg-slate-800/30 transition-colors"
+                    className="hover:bg-slate-50/60 dark:hover:bg-[#241C14]/30 transition-colors"
                   >
                     <td className="py-3 px-4 text-text-muted whitespace-nowrap font-mono text-[11px]">
                       {formatDate(item.created_at)}
@@ -321,7 +321,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
                     <td className="py-3 px-4">
                       <div className="flex flex-col gap-0.5">
                         {item.roll_number ? (
-                          <span className="font-bold text-slate-800 dark:text-slate-100 font-mono">
+                          <span className="font-bold text-slate-800 dark:text-[#F5F1EB] font-mono">
                             {item.roll_number}
                           </span>
                         ) : (
@@ -336,7 +336,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
                       {getCategoryBadge(item.category)}
                     </td>
                     <td className="py-3 px-4 max-w-xs sm:max-w-md">
-                      <p className="text-slate-700 dark:text-slate-300 line-clamp-2 leading-relaxed">
+                      <p className="text-slate-700 dark:text-[#A89E92] line-clamp-2 leading-relaxed">
                         {item.message}
                       </p>
                       {item.admin_notes && (
@@ -352,7 +352,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
                       <div className="inline-flex items-center gap-1.5">
                         <button
                           onClick={() => handleOpenModal(item)}
-                          className="px-2.5 py-1.5 rounded-lg bg-accent-soft hover:bg-indigo-100 dark:bg-accent-soft/40 dark:hover:bg-indigo-900/50 text-accent-text dark:text-accent font-semibold text-xs transition inline-flex items-center gap-1"
+                          className="px-2.5 py-1.5 rounded-lg bg-accent-soft hover:bg-indigo-100 dark:bg-accent-soft/40 dark:hover:bg-accent/20 text-accent-text dark:text-accent font-semibold text-xs transition inline-flex items-center gap-1"
                           title="View and edit"
                         >
                           <Edit3 className="w-3.5 h-3.5" />
@@ -380,7 +380,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
           <div className="bg-bg-elevated border border-border rounded-2xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto space-y-5">
             {/* Modal Header */}
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#2A2018]">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-xl bg-accent-soft dark:bg-accent-soft/50 text-accent-text dark:text-accent flex items-center justify-center">
                   <MessageSquare className="w-4 h-4" />
@@ -396,19 +396,19 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
               </div>
               <button
                 onClick={handleCloseModal}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-[#F5F1EB] hover:bg-slate-100 dark:hover:bg-[#241C14] transition"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Submitter Info Grid */}
-            <div className="grid grid-cols-2 gap-3 p-3 rounded-xl bg-bg dark:bg-slate-800/40 border border-slate-200/70 dark:border-slate-800">
+            <div className="grid grid-cols-2 gap-3 p-3 rounded-xl bg-bg dark:bg-[#241C14]/40 border border-slate-200/70 dark:border-[#2A2018]">
               <div>
                 <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">
                   Roll Number
                 </span>
-                <span className="text-xs font-bold text-slate-800 dark:text-slate-200 font-mono">
+                <span className="text-xs font-bold text-slate-800 dark:text-[#F5F1EB] font-mono">
                   {selectedItem.roll_number || "Not provided"}
                 </span>
               </div>
@@ -422,7 +422,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
                 <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">
                   Email
                 </span>
-                <span className="text-xs text-slate-700 dark:text-slate-300 font-mono">
+                <span className="text-xs text-slate-700 dark:text-[#A89E92] font-mono">
                   {selectedItem.email || "Anonymous user"}
                 </span>
               </div>
@@ -430,17 +430,17 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
 
             {/* Message Body */}
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-[#A89E92] uppercase tracking-wider mb-1.5">
                 Message Content
               </label>
-              <div className="p-3.5 rounded-xl bg-bg dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-xs text-slate-800 dark:text-slate-200 whitespace-pre-wrap leading-relaxed max-h-60 overflow-y-auto">
+              <div className="p-3.5 rounded-xl bg-bg dark:bg-[#241C14]/60 border border-slate-200 dark:border-[#2A2018] text-xs text-slate-800 dark:text-[#F5F1EB] whitespace-pre-wrap leading-relaxed max-h-60 overflow-y-auto">
                 {selectedItem.message}
               </div>
             </div>
 
             {/* Status Selector */}
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-[#A89E92] uppercase tracking-wider mb-1.5">
                 Update Status
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -452,7 +452,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
                     className={`py-2 px-2.5 rounded-xl text-xs font-bold transition text-center border ${
                       editStatus === st
                         ? "bg-accent text-white border-accent/30 shadow-xs"
-                        : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-bg"
+                        : "bg-white dark:bg-[#241C14] text-slate-700 dark:text-[#A89E92] border-slate-200 dark:border-[#2A2018] hover:bg-bg"
                     }`}
                   >
                     {st}
@@ -463,7 +463,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
 
             {/* Admin Notes */}
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-[#A89E92] uppercase tracking-wider mb-1.5">
                 Internal Admin Notes
               </label>
               <textarea
@@ -471,7 +471,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
                 onChange={(e) => setEditNotes(e.target.value)}
                 placeholder="Add notes about actions taken, investigation status, etc..."
                 rows={3}
-                className="w-full px-3.5 py-2.5 bg-bg dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
+                className="w-full px-3.5 py-2.5 bg-bg dark:bg-[#241C14]/60 border border-slate-200 dark:border-[#2A2018] rounded-xl text-xs text-slate-800 dark:text-[#F5F1EB] focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
               />
             </div>
 
@@ -490,7 +490,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
             )}
 
             {/* Modal Actions */}
-            <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
+            <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-[#2A2018]">
               <button
                 type="button"
                 onClick={() => handleDelete(selectedItem.id)}
@@ -506,7 +506,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
                   type="button"
                   onClick={handleCloseModal}
                   disabled={isPending}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-[#A89E92] hover:bg-slate-100 dark:hover:bg-[#241C14] transition"
                 >
                   Cancel
                 </button>

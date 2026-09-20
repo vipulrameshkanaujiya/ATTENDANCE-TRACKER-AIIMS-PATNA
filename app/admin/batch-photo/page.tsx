@@ -49,7 +49,7 @@ export default function BatchPhotoAdminPage() {
       <div className="bg-bg-elevated border border-border rounded-xl p-5 shadow-xs">
         <form onSubmit={handleUpload} className="space-y-4">
           <div>
-            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+            <label className="block text-sm font-semibold text-slate-700 dark:text-[#A89E92] mb-1">
               Select Photo (JPG/PNG, max 5MB)
             </label>
             <input 
@@ -62,14 +62,14 @@ export default function BatchPhotoAdminPage() {
           </div>
           
           <div>
-            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+            <label className="block text-sm font-semibold text-slate-700 dark:text-[#A89E92] mb-1">
               Caption (optional)
             </label>
             <input 
               type="text" 
               name="caption" 
               placeholder="e.g. MBBS Batch 2024 — AIIMS Patna"
-              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg dark:bg-slate-800"
+              className="w-full px-3 py-2 border border-slate-300 dark:border-[#2A2018] rounded-lg dark:bg-[#241C14]"
             />
           </div>
 

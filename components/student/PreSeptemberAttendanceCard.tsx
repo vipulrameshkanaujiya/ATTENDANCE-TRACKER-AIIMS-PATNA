@@ -166,7 +166,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
         )}
 
         <div className="bg-bg-elevated rounded-2xl border border-border shadow-sm p-5 sm:p-6 space-y-4 animate-fade-in">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-100 dark:border-[#2A2018] pb-3">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-900/30 flex items-center justify-center text-emerald-600">
               <Lock className="w-4 h-4" />
@@ -187,7 +187,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
         </div>
 
         {/* Formatted breakdown for the 5 subjects */}
-        <div className="divide-y divide-slate-100 dark:divide-slate-800">
+        <div className="divide-y divide-slate-100 dark:divide-[#2A2018]">
           {HISTORICAL_SUBJECTS.map((sub) => {
             const rec = initialMap[sub.code];
             const tAtt = rec?.theory_attended || 0;
@@ -203,9 +203,9 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
                 key={sub.code}
                 className="py-2.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 text-xs"
               >
-                <div className="font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                <div className="font-semibold text-slate-800 dark:text-[#F5F1EB] flex items-center gap-2">
                   <span className="w-16 font-bold text-text">{sub.shortName}:</span>
-                  <span className="text-slate-600 dark:text-slate-400 font-normal">
+                  <span className="text-slate-600 dark:text-[#A89E92] font-normal">
                     Theory{" "}
                     <strong className="text-text font-semibold">
                       {tAtt}/{tTot}
@@ -213,7 +213,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
                     ({tPct}%)
                   </span>
                   <span className="text-slate-300">|</span>
-                  <span className="text-slate-600 dark:text-slate-400 font-normal">
+                  <span className="text-slate-600 dark:text-[#A89E92] font-normal">
                     Practical{" "}
                     <strong className="text-text font-semibold">
                       {pAtt}/{pTot}
@@ -233,7 +233,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
           })}
         </div>
 
-        <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-start gap-2 text-xs text-text-muted bg-slate-50/70 dark:bg-slate-900/70 p-3 rounded-xl">
+        <div className="pt-2 border-t border-slate-100 dark:border-[#2A2018] flex items-start gap-2 text-xs text-text-muted bg-slate-50/70 dark:bg-[#1A1510]/70 p-3 rounded-xl">
           <Info className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
           <p>
             <strong>Note:</strong> Pre-September data is permanently locked to prevent accidental changes. If you notice a clerical error, please contact an Admin to request a correction.
@@ -247,7 +247,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
   // 2. EDITABLE INITIAL ENTRY VIEW
   return (
     <div className="bg-bg-elevated rounded-2xl border-2 border-blue-500/20 shadow-sm p-5 sm:p-6 space-y-4">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-100 dark:border-[#2A2018] pb-3">
         <div>
           <h3 className="text-sm font-bold text-text uppercase tracking-wider">
             Pre-September Attendance History
@@ -273,9 +273,9 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
         </div>
       </div>
 
-      <div className="p-3.5 bg-accent-soft/90 border border-accent/30 dark:border-blue-900/30 rounded-xl flex items-start gap-2.5">
+      <div className="p-3.5 bg-accent-soft/90 border border-accent/30 dark:border-accent/30/30 rounded-xl flex items-start gap-2.5">
         <Info className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-        <div className="text-xs text-accent-text dark:text-blue-100 space-y-0.5">
+        <div className="text-xs text-accent-text dark:text-accent-text space-y-0.5">
           <p className="font-semibold">⚠️ PHARMA Note:</p>
           <p className="text-accent-text/90 text-[11px]">
             Integration sessions count as 2 units (2 hours) + SDL as 1 unit. Make sure your historical count reflects this.
@@ -300,7 +300,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-bg dark:bg-slate-950 text-slate-600 dark:text-slate-400 uppercase tracking-wider border-b border-border">
+            <thead className="bg-bg dark:bg-[#0F0C09] text-slate-600 dark:text-[#A89E92] uppercase tracking-wider border-b border-border">
               <tr>
                 <th className="p-2.5 font-semibold">Subject</th>
                 <th className="p-2.5 font-semibold text-center" colSpan={2}>
@@ -311,12 +311,12 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+            <tbody className="divide-y divide-slate-100 dark:divide-[#2A2018]">
               {HISTORICAL_SUBJECTS.map((sub) => {
                 const values = formData[sub.code];
                 return (
                   <tr key={sub.code} className="hover:bg-slate-50/70">
-                    <td className="p-2.5 font-medium text-slate-800 dark:text-slate-200">
+                    <td className="p-2.5 font-medium text-slate-800 dark:text-[#F5F1EB]">
                       <div className="font-bold text-text">{sub.name}</div>
                       <span className="text-[10px] text-text-faint font-mono uppercase">{sub.code}</span>
                     </td>
@@ -331,7 +331,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
                           required
                           value={values.theoryAttended}
                           onChange={(e) => handleInputChange(sub.code, "theoryAttended", e.target.value)}
-                          className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-1 focus:ring-accent font-mono"
+                          className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 dark:border-[#2A2018] rounded-lg focus:ring-1 focus:ring-accent font-mono"
                           placeholder="Att"
                         />
                         <span className="text-text-faint font-bold">/</span>
@@ -345,7 +345,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
                         required
                         value={values.theoryTotal}
                         onChange={(e) => handleInputChange(sub.code, "theoryTotal", e.target.value)}
-                        className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-1 focus:ring-accent font-mono"
+                        className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 dark:border-[#2A2018] rounded-lg focus:ring-1 focus:ring-accent font-mono"
                         placeholder="Total"
                       />
                     </td>
@@ -360,7 +360,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
                           required
                           value={values.practicalAttended}
                           onChange={(e) => handleInputChange(sub.code, "practicalAttended", e.target.value)}
-                          className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-1 focus:ring-accent font-mono"
+                          className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 dark:border-[#2A2018] rounded-lg focus:ring-1 focus:ring-accent font-mono"
                           placeholder="Att"
                         />
                         <span className="text-text-faint font-bold">/</span>
@@ -374,7 +374,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
                         required
                         value={values.practicalTotal}
                         onChange={(e) => handleInputChange(sub.code, "practicalTotal", e.target.value)}
-                        className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-1 focus:ring-accent font-mono"
+                        className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 dark:border-[#2A2018] rounded-lg focus:ring-1 focus:ring-accent font-mono"
                         placeholder="Total"
                       />
                     </td>
@@ -385,7 +385,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
           </table>
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+        <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 dark:border-[#2A2018]">
           <button
             type="submit"
             disabled={isPending}

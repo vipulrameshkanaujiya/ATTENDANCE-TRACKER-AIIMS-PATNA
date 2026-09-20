@@ -75,7 +75,7 @@ function AutoPresentCard({ initialPref }: { initialPref: any }) {
           className={`relative w-14 h-7 rounded-full transition-all duration-300 ${
             optimisticAutoPresent
               ? "bg-emerald-500/10 border-2 border-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.4)]"
-              : "bg-slate-200 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700"
+              : "bg-slate-200 dark:bg-[#241C14] border-2 border-slate-300 dark:border-[#2A2018]"
           }`}
         >
           {/* Circle knob */}
@@ -83,7 +83,7 @@ function AutoPresentCard({ initialPref }: { initialPref: any }) {
             className={`absolute top-0.5 w-5 h-5 rounded-full transition-all duration-300 ${
               optimisticAutoPresent
                 ? "translate-x-7 bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.8)]"
-                : "translate-x-0.5 bg-slate-400 dark:bg-slate-600"
+                : "translate-x-0.5 bg-slate-400 dark:bg-[#3A2E22]"
             }`}
           />
         </div>
@@ -179,7 +179,7 @@ export default function StudentHomePage() {
               <p className="text-xs font-bold text-text">
                 🎉 Thank you to our {donationCount} supporter{donationCount > 1 ? "s" : ""}!
               </p>
-              <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+              <p className="text-[11px] text-slate-600 dark:text-[#A89E92] mt-1 leading-relaxed">
                 {donations.slice(0, 3).map((d: any, i: number) => (
                   <span key={i}>
                     <strong>{d.donor_name}</strong>
@@ -221,7 +221,7 @@ export default function StudentHomePage() {
         <div className="flex items-center justify-between">
           <h2 className="text-base font-bold text-text tracking-tight flex items-center gap-2">
             <span>Today's Sessions</span>
-            <span className="text-xs font-semibold px-2 py-0.5 bg-bg-subtle text-slate-600 dark:text-slate-400 rounded-full">
+            <span className="text-xs font-semibold px-2 py-0.5 bg-bg-subtle text-slate-600 dark:text-[#A89E92] rounded-full">
               {todayClasses.length}
             </span>
           </h2>
@@ -275,7 +275,7 @@ export default function StudentHomePage() {
             ))}
           </div>
         ) : (
-          <div className="p-6 text-center bg-bg-elevated rounded-xl border border-dashed border-slate-300 dark:border-slate-700">
+          <div className="p-6 text-center bg-bg-elevated rounded-xl border border-dashed border-slate-300 dark:border-[#2A2018]">
             <p className="text-xs text-text-muted">No classes listed for today.</p>
           </div>
         )}
@@ -318,10 +318,10 @@ export default function StudentHomePage() {
                 return (
                   <div
                     key={sub.subject_id}
-                    className="p-3.5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 space-y-2.5"
+                    className="p-3.5 rounded-xl border border-slate-100 dark:border-[#2A2018] bg-slate-50/50 dark:bg-[#1A1510]/50 space-y-2.5"
                   >
-                    <div className="flex items-center justify-between border-b border-slate-200/50 dark:border-slate-800/50 pb-1.5">
-                      <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                    <div className="flex items-center justify-between border-b border-slate-200/50 dark:border-[#2A2018]/50 pb-1.5">
+                      <span className="text-xs font-bold text-slate-800 dark:text-[#F5F1EB]">
                         {sub.subject_name}
                       </span>
                       <span className="text-[10px] font-semibold text-text-faint">
@@ -332,7 +332,7 @@ export default function StudentHomePage() {
                     {/* Theory Breakdown */}
                     <div className="space-y-1">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-semibold text-slate-700 dark:text-slate-300">
+                        <span className="font-semibold text-slate-700 dark:text-[#A89E92]">
                           Theory:{" "}
                           <span className="font-bold text-text">
                             {sub.theory?.total ? `${theoryPct}%` : "—"}
@@ -372,7 +372,7 @@ export default function StudentHomePage() {
                     {/* Practical Breakdown */}
                     <div className="space-y-1">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-semibold text-slate-700 dark:text-slate-300">
+                        <span className="font-semibold text-slate-700 dark:text-[#A89E92]">
                           Practical:{" "}
                           <span className="font-bold text-text">
                             {sub.practical?.total ? `${practicalPct}%` : "—"}
@@ -415,10 +415,10 @@ export default function StudentHomePage() {
               return (
                 <div
                   key={sub.subject_id}
-                  className="p-3.5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 space-y-2"
+                  className="p-3.5 rounded-xl border border-slate-100 dark:border-[#2A2018] bg-slate-50/50 dark:bg-[#1A1510]/50 space-y-2"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                    <span className="text-xs font-bold text-slate-800 dark:text-[#F5F1EB]">
                       {sub.subject_name}
                     </span>
                     <span

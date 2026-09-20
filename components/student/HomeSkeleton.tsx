@@ -82,7 +82,7 @@ export function HomeSkeleton() {
           {[1, 2, 3, 4].map((i) => (
             <div
               key={i}
-              className="p-4 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 space-y-3"
+              className="p-4 rounded-xl border border-slate-100 dark:border-[#2A2018] bg-slate-50/50 dark:bg-[#0F0C09]/50 space-y-3"
             >
               <div className="flex items-center justify-between">
                 <Skeleton className="h-4 w-28 rounded" />

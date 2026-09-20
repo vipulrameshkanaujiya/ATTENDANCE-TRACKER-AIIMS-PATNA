@@ -20,7 +20,7 @@ export function AttendanceSkeleton() {
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-2">
           {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="p-3 bg-bg dark:bg-slate-950 rounded-xl space-y-2 border border-slate-100 dark:border-slate-800">
+            <div key={i} className="p-3 bg-bg dark:bg-[#0F0C09] rounded-xl space-y-2 border border-slate-100 dark:border-[#2A2018]">
               <Skeleton className="h-3 w-12 rounded" />
               <Skeleton className="h-5 w-16 rounded" />
             </div>

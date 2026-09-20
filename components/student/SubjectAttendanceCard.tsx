@@ -26,9 +26,9 @@ export function SubjectAttendanceCard({ stat, isSelected = false }: SubjectAtten
             : "border-border hover:border-slate-300"
         )}
       >
-        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-[#2A2018] pb-2">
           <div className="flex flex-col">
-            <span className="text-sm font-bold text-slate-800 dark:text-slate-200">
+            <span className="text-sm font-bold text-slate-800 dark:text-[#F5F1EB]">
               {stat.name}
             </span>
             <span className="text-[10px] text-text-faint font-medium">
@@ -52,7 +52,7 @@ export function SubjectAttendanceCard({ stat, isSelected = false }: SubjectAtten
         {/* Theory Split */}
         <div className="space-y-1">
           <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold text-slate-700 dark:text-slate-300">
+            <span className="font-semibold text-slate-700 dark:text-[#A89E92]">
               Theory:{" "}
               <span className="font-bold text-text">
                 {stat.theory?.total ? `${theoryPct}%` : "—"}
@@ -94,7 +94,7 @@ export function SubjectAttendanceCard({ stat, isSelected = false }: SubjectAtten
         {/* Practical Split */}
         <div className="space-y-1">
           <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold text-slate-700 dark:text-slate-300">
+            <span className="font-semibold text-slate-700 dark:text-[#A89E92]">
               Practical:{" "}
               <span className="font-bold text-text">
                 {stat.practical?.total ? `${practicalPct}%` : "—"}
@@ -148,7 +148,7 @@ export function SubjectAttendanceCard({ stat, isSelected = false }: SubjectAtten
       )}
     >
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+        <span className="text-xs font-bold text-slate-800 dark:text-[#F5F1EB]">
           {stat.name}
         </span>
         <span

@@ -19,8 +19,8 @@ export default async function ProfilePage() {
 
       <div className="bg-bg-elevated rounded-2xl border border-border shadow-sm p-6 space-y-6">
         {/* Avatar & Name */}
-        <div className="flex items-center gap-4 border-b border-slate-100 dark:border-slate-800 pb-5">
-          <div className="w-16 h-16 rounded-full bg-blue-100 text-accent-text flex items-center justify-center font-bold text-xl border-2 border-accent/30 dark:border-blue-900/30 flex-shrink-0">
+        <div className="flex items-center gap-4 border-b border-slate-100 dark:border-[#2A2018] pb-5">
+          <div className="w-16 h-16 rounded-full bg-blue-100 text-accent-text flex items-center justify-center font-bold text-xl border-2 border-accent/30 dark:border-accent/30/30 flex-shrink-0">
             {profile?.avatar_url ? (
               <img
                 src={profile.avatar_url}
@@ -49,7 +49,7 @@ export default async function ProfilePage() {
 
         {/* Info Rows */}
         <div className="space-y-3.5">
-          <div className="flex items-center justify-between p-3 rounded-xl bg-bg dark:bg-slate-950 border border-slate-100 dark:border-slate-800">
+          <div className="flex items-center justify-between p-3 rounded-xl bg-bg dark:bg-[#0F0C09] border border-slate-100 dark:border-[#2A2018]">
             <div className="flex items-center gap-2.5 text-xs text-text-muted font-medium">
               <Hash className="w-4 h-4 text-accent" />
               <span>MBBS Roll Number</span>
@@ -59,7 +59,7 @@ export default async function ProfilePage() {
             </span>
           </div>
 
-          <div className="flex items-center justify-between p-3 rounded-xl bg-bg dark:bg-slate-950 border border-slate-100 dark:border-slate-800">
+          <div className="flex items-center justify-between p-3 rounded-xl bg-bg dark:bg-[#0F0C09] border border-slate-100 dark:border-[#2A2018]">
             <div className="flex items-center gap-2.5 text-xs text-text-muted font-medium">
               <Layers className="w-4 h-4 text-accent" />
               <span>Assigned Batch</span>
@@ -69,12 +69,12 @@ export default async function ProfilePage() {
             </span>
           </div>
 
-          <div className="flex items-center justify-between p-3 rounded-xl bg-bg dark:bg-slate-950 border border-slate-100 dark:border-slate-800">
+          <div className="flex items-center justify-between p-3 rounded-xl bg-bg dark:bg-[#0F0C09] border border-slate-100 dark:border-[#2A2018]">
             <div className="flex items-center gap-2.5 text-xs text-text-muted font-medium">
               <Mail className="w-4 h-4 text-text-faint" />
               <span>Google Account</span>
             </div>
-            <span className="text-xs text-slate-700 dark:text-slate-300 font-medium truncate max-w-[180px]">
+            <span className="text-xs text-slate-700 dark:text-[#A89E92] font-medium truncate max-w-[180px]">
               {user.email}
             </span>
           </div>
@@ -93,7 +93,7 @@ export default async function ProfilePage() {
         )}
 
         {/* Sign Out Action */}
-        <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+        <div className="pt-2 border-t border-slate-100 dark:border-[#2A2018]">
           <form action={signOutAction}>
             <button
               type="submit"

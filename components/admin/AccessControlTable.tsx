@@ -106,32 +106,32 @@ export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocke
         </div>
         <form onSubmit={handleBlockSubmit} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-slate-600 dark:text-slate-400">Email Address</label>
+            <label className="text-xs font-semibold text-slate-600 dark:text-[#A89E92]">Email Address</label>
             <input 
               type="email" 
               value={blockForm.email} 
               onChange={e => setBlockForm(prev => ({...prev, email: e.target.value}))}
-              className="w-full text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-bg dark:bg-slate-950 px-3 py-2 text-text"
+              className="w-full text-sm rounded-lg border border-slate-300 dark:border-[#2A2018] bg-bg dark:bg-[#0F0C09] px-3 py-2 text-text"
               placeholder="e.g. student@aiimspatna.org"
             />
           </div>
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-slate-600 dark:text-slate-400">Roll Number</label>
+            <label className="text-xs font-semibold text-slate-600 dark:text-[#A89E92]">Roll Number</label>
             <input 
               type="text" 
               value={blockForm.rollNumber} 
               onChange={e => setBlockForm(prev => ({...prev, rollNumber: e.target.value}))}
-              className="w-full text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-bg dark:bg-slate-950 px-3 py-2 text-text"
+              className="w-full text-sm rounded-lg border border-slate-300 dark:border-[#2A2018] bg-bg dark:bg-[#0F0C09] px-3 py-2 text-text"
               placeholder="e.g. 24001"
             />
           </div>
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-slate-600 dark:text-slate-400">Reason (Optional)</label>
+            <label className="text-xs font-semibold text-slate-600 dark:text-[#A89E92]">Reason (Optional)</label>
             <input 
               type="text" 
               value={blockForm.reason} 
               onChange={e => setBlockForm(prev => ({...prev, reason: e.target.value}))}
-              className="w-full text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-bg dark:bg-slate-950 px-3 py-2 text-text"
+              className="w-full text-sm rounded-lg border border-slate-300 dark:border-[#2A2018] bg-bg dark:bg-[#0F0C09] px-3 py-2 text-text"
               placeholder="e.g. Suspended"
             />
           </div>
@@ -150,7 +150,7 @@ export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocke
         <h2 className="text-lg font-bold text-text mb-4">Currently Blocked Users</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
-            <thead className="bg-bg dark:bg-slate-800 text-text-muted">
+            <thead className="bg-bg dark:bg-[#241C14] text-text-muted">
               <tr>
                 <th className="px-4 py-3 font-semibold rounded-tl-lg">Identifier</th>
                 <th className="px-4 py-3 font-semibold">Reason</th>
@@ -158,15 +158,15 @@ export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocke
                 <th className="px-4 py-3 font-semibold rounded-tr-lg text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+            <tbody className="divide-y divide-slate-100 dark:divide-[#2A2018]">
               {initialBlocked.map(b => (
-                <tr key={b.id} className="hover:bg-bg dark:hover:bg-slate-800/50">
+                <tr key={b.id} className="hover:bg-bg dark:hover:bg-[#241C14]/50">
                   <td className="px-4 py-3">
                     <div className="font-medium text-text">{b.email || b.roll_number}</div>
                     <div className="text-xs text-slate-500">{b.email && b.roll_number ? `${b.roll_number} (${b.email})` : ""}</div>
                   </td>
-                  <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{b.reason || "-"}</td>
-                  <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{new Date(b.blocked_at).toLocaleDateString()}</td>
+                  <td className="px-4 py-3 text-slate-600 dark:text-[#A89E92]">{b.reason || "-"}</td>
+                  <td className="px-4 py-3 text-slate-600 dark:text-[#A89E92]">{new Date(b.blocked_at).toLocaleDateString()}</td>
                   <td className="px-4 py-3 text-right">
                     <button 
                       onClick={() => handleUnblock(b.id)}
@@ -202,13 +202,13 @@ export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocke
               placeholder="Search roll, email, name..."
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
-              className="pl-9 pr-4 py-2 text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-bg dark:bg-slate-950 text-text focus:outline-none focus:ring-2 focus:ring-accent w-full sm:w-64"
+              className="pl-9 pr-4 py-2 text-sm rounded-lg border border-slate-300 dark:border-[#2A2018] bg-bg dark:bg-[#0F0C09] text-text focus:outline-none focus:ring-2 focus:ring-accent w-full sm:w-64"
             />
           </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
-            <thead className="bg-bg dark:bg-slate-800 text-text-muted">
+            <thead className="bg-bg dark:bg-[#241C14] text-text-muted">
               <tr>
                 <th className="px-4 py-3 font-semibold rounded-tl-lg">Roll</th>
                 <th className="px-4 py-3 font-semibold">Name</th>
@@ -216,14 +216,14 @@ export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocke
                 <th className="px-4 py-3 font-semibold rounded-tr-lg text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+            <tbody className="divide-y divide-slate-100 dark:divide-[#2A2018]">
               {filteredUsers.map(u => {
                 const isBlocked = initialBlocked.some(b => (b.email && b.email === u.email) || (b.roll_number && b.roll_number === u.roll_number) || (b.user_id === u.id));
                 return (
-                  <tr key={u.id} className="hover:bg-bg dark:hover:bg-slate-800/50">
+                  <tr key={u.id} className="hover:bg-bg dark:hover:bg-[#241C14]/50">
                     <td className="px-4 py-3 font-semibold text-text">{u.roll_number || "-"}</td>
                     <td className="px-4 py-3 text-text">{u.full_name || "-"}</td>
-                    <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{u.email}</td>
+                    <td className="px-4 py-3 text-slate-600 dark:text-[#A89E92]">{u.email}</td>
                     <td className="px-4 py-3 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <ChangeRollModal studentId={u.id} currentRoll={u.roll_number} />
@@ -240,7 +240,7 @@ export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocke
                               setIsPending(false);
                             }}
                             disabled={isPending}
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 rounded-lg transition"
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-[#241C14] dark:text-[#A89E92] dark:hover:bg-[#2E2418] rounded-lg transition"
                           >
                             <ShieldX className="w-3.5 h-3.5" /> Block
                           </button>

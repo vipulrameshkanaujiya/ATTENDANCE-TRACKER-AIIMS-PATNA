@@ -125,7 +125,7 @@ export function HelpPageClient({
           <h1 className="text-3xl sm:text-4xl font-black text-text tracking-tight">
             BunkBuddy
           </h1>
-          <p className="text-sm sm:text-base font-medium text-slate-600 dark:text-slate-400 max-w-md mx-auto">
+          <p className="text-sm sm:text-base font-medium text-slate-600 dark:text-[#A89E92] max-w-md mx-auto">
             Your attendance companion for AIIMS Patna MBBS 2024
           </p>
           <div className="pt-1">
@@ -143,10 +143,10 @@ export function HelpPageClient({
           href="#how-to-use"
           className="p-4 rounded-2xl border border-border bg-bg-elevated hover:border-accent/30 dark:hover:border-accent/30 transition shadow-xs flex flex-col items-center text-center gap-2 group cursor-pointer"
         >
-          <div className="w-10 h-10 rounded-xl bg-accent-soft dark:bg-blue-900/30 text-accent flex items-center justify-center group-hover:scale-110 transition">
+          <div className="w-10 h-10 rounded-xl bg-accent-soft dark:bg-accent/10 text-accent flex items-center justify-center group-hover:scale-110 transition">
             <BookOpen className="w-5 h-5" />
           </div>
-          <span className="text-xs font-bold text-slate-800 dark:text-slate-200">How to Use</span>
+          <span className="text-xs font-bold text-slate-800 dark:text-[#F5F1EB]">How to Use</span>
         </a>
 
         <a
@@ -156,7 +156,7 @@ export function HelpPageClient({
           <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition">
             <MessageSquare className="w-5 h-5" />
           </div>
-          <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Feedback</span>
+          <span className="text-xs font-bold text-slate-800 dark:text-[#F5F1EB]">Feedback</span>
         </a>
 
         <a
@@ -166,7 +166,7 @@ export function HelpPageClient({
           <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-600 flex items-center justify-center group-hover:scale-110 transition">
             <Coffee className="w-5 h-5" />
           </div>
-          <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Support</span>
+          <span className="text-xs font-bold text-slate-800 dark:text-[#F5F1EB]">Support</span>
         </a>
 
         <a
@@ -175,10 +175,10 @@ export function HelpPageClient({
           rel="noopener noreferrer"
           className="p-4 rounded-2xl border border-border bg-bg-elevated hover:border-slate-400 dark:hover:border-slate-600 transition shadow-xs flex flex-col items-center text-center gap-2 group cursor-pointer"
         >
-          <div className="w-10 h-10 rounded-xl bg-bg-subtle text-slate-800 dark:text-slate-200 flex items-center justify-center group-hover:scale-110 transition">
+          <div className="w-10 h-10 rounded-xl bg-bg-subtle text-slate-800 dark:text-[#F5F1EB] flex items-center justify-center group-hover:scale-110 transition">
             <GithubIcon className="w-5 h-5" />
           </div>
-          <span className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1">
+          <span className="text-xs font-bold text-slate-800 dark:text-[#F5F1EB] flex items-center gap-1">
             GitHub <ExternalLink className="w-3 h-3 text-slate-400" />
           </span>
         </a>
@@ -399,14 +399,14 @@ export function HelpPageClient({
               key={idx}
               className="group rounded-2xl border border-border bg-bg-elevated p-4 transition-all open:shadow-xs"
             >
-              <summary className="flex items-center justify-between font-semibold text-xs sm:text-sm text-slate-800 dark:text-slate-200 cursor-pointer select-none list-none">
+              <summary className="flex items-center justify-between font-semibold text-xs sm:text-sm text-slate-800 dark:text-[#F5F1EB] cursor-pointer select-none list-none">
                 <span className="flex items-center gap-2">
                   <span className="text-accent-text dark:text-accent font-bold">Q:</span>
                   {item.q}
                 </span>
                 <ChevronDown className="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform duration-200 shrink-0 ml-2" />
               </summary>
-              <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-400 leading-relaxed pl-5">
+              <div className="mt-3 pt-3 border-t border-slate-100 dark:border-[#2A2018] text-xs text-slate-600 dark:text-[#A89E92] leading-relaxed pl-5">
                 {item.a}
               </div>
             </details>
@@ -444,13 +444,13 @@ export function HelpPageClient({
 
           <form onSubmit={handleFeedbackSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+              <label className="text-xs font-bold text-slate-700 dark:text-[#A89E92]">
                 Category
               </label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 p-2.5 text-text focus:outline-none focus:ring-2 focus:ring-accent"
+                className="w-full text-xs rounded-xl border border-slate-300 dark:border-[#2A2018] bg-white dark:bg-[#0F0C09] p-2.5 text-text focus:outline-none focus:ring-2 focus:ring-accent"
               >
                 <option value="general">💬 General Feedback</option>
                 <option value="bug">🐛 Report a Bug / Wrong Attendance</option>
@@ -461,7 +461,7 @@ export function HelpPageClient({
 
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                <label className="text-xs font-bold text-slate-700 dark:text-[#A89E92]">
                   Message
                 </label>
                 <span className="text-[10px] text-slate-400 font-mono">
@@ -473,14 +473,14 @@ export function HelpPageClient({
                 onChange={(e) => setMessage(e.target.value.slice(0, 500))}
                 rows={4}
                 placeholder="Explain the bug, ask a question, or suggest a new feature..."
-                className="w-full text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 p-3 text-text focus:outline-none focus:ring-2 focus:ring-accent placeholder:text-slate-400"
+                className="w-full text-xs rounded-xl border border-slate-300 dark:border-[#2A2018] bg-white dark:bg-[#0F0C09] p-3 text-text focus:outline-none focus:ring-2 focus:ring-accent placeholder:text-slate-400"
                 required
               />
             </div>
 
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2">
               <p className="text-[11px] text-text-faint">
-                Submitted as: <strong className="font-mono text-slate-600 dark:text-slate-300">{profile?.roll_number || "Guest"}</strong> ({profile?.email || "Signed in"})
+                Submitted as: <strong className="font-mono text-slate-600 dark:text-[#A89E92]">{profile?.roll_number || "Guest"}</strong> ({profile?.email || "Signed in"})
               </p>
               <button
                 type="submit"
@@ -520,14 +520,14 @@ export function HelpPageClient({
             <h3 className="text-base font-bold text-text flex items-center gap-2">
               <span>If BunkBuddy saved your attendance...</span>
             </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            <p className="text-xs text-slate-600 dark:text-[#A89E92] leading-relaxed">
               Countless hours went into writing the timetable engine, attendance algorithms, automated scripts, and UI. If this app helped ease your attendance stress, treating me to a chai or coffee is warmly appreciated!
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 pt-2">
             {/* UPI QR Code Container */}
-            <div className="bg-white dark:bg-slate-950 p-3 rounded-2xl border border-border shadow-md flex flex-col items-center gap-2">
+            <div className="bg-white dark:bg-[#0F0C09] p-3 rounded-2xl border border-border shadow-md flex flex-col items-center gap-2">
               <img
                 src="/upi-qr.png"
                 alt="UPI QR Code - 9825739419@NAVIAXIS"
@@ -541,16 +541,16 @@ export function HelpPageClient({
             {/* UPI ID Copy & Buy Me A Coffee Button */}
             <div className="space-y-4 flex-1 w-full text-center sm:text-left">
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                <label className="text-xs font-bold text-slate-700 dark:text-[#A89E92]">
                   Direct UPI ID
                 </label>
                 <div className="flex items-center justify-center sm:justify-start gap-2">
-                  <span className="font-mono text-xs font-bold px-3 py-2 rounded-xl bg-white dark:bg-slate-950 border border-border text-text select-all">
+                  <span className="font-mono text-xs font-bold px-3 py-2 rounded-xl bg-white dark:bg-[#0F0C09] border border-border text-text select-all">
                     9825739419@NAVIAXIS
                   </span>
                   <button
                     onClick={handleCopyUpi}
-                    className="p-2 rounded-xl bg-bg-subtle hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition flex items-center gap-1 text-xs font-semibold cursor-pointer"
+                    className="p-2 rounded-xl bg-bg-subtle hover:bg-slate-200 dark:hover:bg-[#2E2418] text-slate-700 dark:text-[#A89E92] transition flex items-center gap-1 text-xs font-semibold cursor-pointer"
                     title="Copy UPI ID"
                   >
                     {copied ? (
@@ -604,7 +604,7 @@ export function HelpPageClient({
               {donationCount > 0 && (
                 <div className="pt-3 border-t border-border space-y-2">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                    <p className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center justify-center sm:justify-start gap-1.5">
+                    <p className="text-xs font-bold text-slate-800 dark:text-[#F5F1EB] flex items-center justify-center sm:justify-start gap-1.5">
                       <Heart className="w-3.5 h-3.5 text-accent fill-accent" />
                       <span>Supporters ({donationCount})</span>
                     </p>
@@ -623,9 +623,9 @@ export function HelpPageClient({
                       .map((d: any, idx: number) => (
                         <div
                           key={idx}
-                          className="text-xs text-slate-600 dark:text-slate-400 flex items-center justify-between py-1.5 px-3 rounded-xl bg-bg dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800"
+                          className="text-xs text-slate-600 dark:text-[#A89E92] flex items-center justify-between py-1.5 px-3 rounded-xl bg-bg dark:bg-[#241C14]/50 border border-slate-100 dark:border-[#2A2018]"
                         >
-                          <span className="font-semibold text-slate-800 dark:text-slate-200">
+                          <span className="font-semibold text-slate-800 dark:text-[#F5F1EB]">
                             {d.donor_name}
                           </span>
                           <div className="flex items-center gap-2">
@@ -665,7 +665,7 @@ export function HelpPageClient({
             href="https://github.com/vipulrameshkanaujiya/ATTENDANCE-TRACKER-AIIMS-PATNA"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-100 dark:hover:bg-white dark:text-slate-950 font-bold text-xs transition shadow-sm shrink-0 cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white dark:bg-[#F5F1EB] dark:hover:bg-white dark:text-[#0F0C09] font-bold text-xs transition shadow-sm shrink-0 cursor-pointer"
           >
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
@@ -677,7 +677,7 @@ export function HelpPageClient({
 
       {/* SECTION I: FOOTER */}
       <footer className="pt-6 border-t border-border text-center space-y-2 text-xs text-text-faint">
-        <p className="font-medium text-slate-600 dark:text-slate-400">
+        <p className="font-medium text-slate-600 dark:text-[#A89E92]">
           Made with 🩺 by Vipul K · AIIMS Patna MBBS 2024
         </p>
         <p className="text-[11px]">

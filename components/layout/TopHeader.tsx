@@ -49,7 +49,7 @@ export function TopHeader({ profile }: TopHeaderProps) {
   useEffect(() => setMounted(true), []);
 
   return (
-    <header className="sticky top-0 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-border px-4 py-3 sm:px-6">
+    <header className="sticky top-0 z-30 bg-white/90 dark:bg-[#1A1510]/90 backdrop-blur-md border-b border-border px-4 py-3 sm:px-6">
       <div className="w-full max-w-5xl mx-auto flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5 min-w-0 flex-1 overflow-hidden">
           <img 
@@ -61,7 +61,7 @@ export function TopHeader({ profile }: TopHeaderProps) {
             <h1 className="text-sm font-bold text-text leading-none truncate">
               BunkBuddy
             </h1>
-            <p className="text-[10px] font-semibold text-accent dark:text-blue-400 tracking-wider uppercase truncate mt-0.5">
+            <p className="text-[10px] font-semibold text-accent dark:text-accent-text tracking-wider uppercase truncate mt-0.5">
               AIIMS Patna
             </p>
           </div>
@@ -72,7 +72,7 @@ export function TopHeader({ profile }: TopHeaderProps) {
           <Link
             href="/help"
             prefetch={true}
-            className="w-8 h-8 rounded-full flex items-center justify-center text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition focus:outline-none"
+            className="w-8 h-8 rounded-full flex items-center justify-center text-slate-600 hover:bg-slate-100 dark:text-[#A89E92] dark:hover:bg-[#241C14] transition focus:outline-none"
             title="Help & About"
           >
             <HelpCircle className="w-4 h-4" />
@@ -82,7 +82,7 @@ export function TopHeader({ profile }: TopHeaderProps) {
           <ThemeToggle />
 
           {/* Batch Badge */}
-          <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-accent-soft text-accent-text dark:bg-blue-900/40 dark:text-blue-300 border border-accent/30/60 dark:border-blue-800/60">
+          <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-accent-soft text-accent-text dark:bg-accent/10 dark:text-accent-text border border-accent/30/60 dark:border-accent/30/60">
             {batchName} A {roll}
           </span>
 
@@ -101,7 +101,7 @@ export function TopHeader({ profile }: TopHeaderProps) {
           <Link
             href="/profile"
             prefetch={true}
-            className="w-8 h-8 rounded-full bg-bg-subtle border border-slate-300 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition focus:outline-none focus:ring-2 focus:ring-accent"
+            className="w-8 h-8 rounded-full bg-bg-subtle border border-slate-300 dark:border-[#2A2018] flex items-center justify-center text-slate-700 dark:text-[#A89E92] hover:bg-slate-200 dark:hover:bg-[#2E2418] transition focus:outline-none focus:ring-2 focus:ring-accent"
             title="My Profile"
           >
             {profile?.avatar_url ? (
@@ -111,7 +111,7 @@ export function TopHeader({ profile }: TopHeaderProps) {
                 className="w-full h-full rounded-full object-cover"
               />
             ) : (
-              <User className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+              <User className="w-4 h-4 text-slate-600 dark:text-[#A89E92]" />
             )}
           </Link>
         </div>

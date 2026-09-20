@@ -53,7 +53,7 @@ export function InstallPrompt() {
           </button>
           <button
             onClick={handleDismiss}
-            className="text-xs font-semibold px-3 py-1.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
+            className="text-xs font-semibold px-3 py-1.5 text-slate-600 dark:text-[#A89E92] hover:bg-slate-100 dark:hover:bg-[#241C14] rounded-lg transition"
           >
             Not now
           </button>

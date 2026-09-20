@@ -120,7 +120,7 @@ export default function SchedulePage() {
           Object.entries(groupedByDate).map(([date, dayClasses]) => (
             <div key={date} className="space-y-3">
               <div className="sticky top-14 z-20 bg-slate-50/95 backdrop-blur-sm py-1 flex items-center gap-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-text bg-slate-200 dark:bg-slate-800 px-2.5 py-0.5 rounded-md">
+                <span className="text-xs font-bold uppercase tracking-wider text-text bg-slate-200 dark:bg-[#241C14] px-2.5 py-0.5 rounded-md">
                   {parseDateString(date).toLocaleDateString("en-US", { weekday: "short" })}
                 </span>
                 <span className="text-sm font-bold text-text-muted">
@@ -153,7 +153,7 @@ export default function SchedulePage() {
                           <span className="text-xs font-bold text-accent-text">
                             {c.subject?.code || "MBBS"}
                           </span>
-                          <span className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-bg-subtle text-slate-600 dark:text-slate-400">
+                          <span className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-bg-subtle text-slate-600 dark:text-[#A89E92]">
                             {c.class_type}
                           </span>
                           <span className="text-[11px] font-semibold text-text-muted">
@@ -193,9 +193,9 @@ export default function SchedulePage() {
             </div>
           ))
         ) : (
-          <div className="p-10 text-center bg-bg-elevated rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 space-y-2">
+          <div className="p-10 text-center bg-bg-elevated rounded-2xl border border-dashed border-slate-300 dark:border-[#2A2018] space-y-2">
             <CalendarIcon className="w-8 h-8 text-slate-300 mx-auto" />
-            <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+            <p className="text-sm font-semibold text-slate-700 dark:text-[#A89E92]">
               {currentView === "day"
                 ? `No classes scheduled for ${formatReadableDate(selectedDate, true)}`
                 : `No classes found for this timeframe`}

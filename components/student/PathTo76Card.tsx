@@ -36,7 +36,7 @@ export function PathTo76Card({ subjectName, stat }: { subjectName: string; stat:
 
   return (
     <div className="p-4 rounded-xl border border-border bg-bg-elevated shadow-xs space-y-3">
-      <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">{subjectName}</h3>
+      <h3 className="text-sm font-bold text-slate-800 dark:text-[#F5F1EB] uppercase tracking-wider">{subjectName}</h3>
       <div className="space-y-2">
         <div className="flex items-center gap-2">
           <span className="text-xs font-semibold text-text-muted w-16">Theory:</span>
@@ -48,7 +48,7 @@ export function PathTo76Card({ subjectName, stat }: { subjectName: string; stat:
         </div>
       </div>
       {subjectName.toUpperCase().includes("PHARMA") && (
-        <div className="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+        <div className="mt-2 pt-2 border-t border-slate-100 dark:border-[#2A2018]">
           <p className="text-[10px] text-text-faint italic">
             ℹ️ PHARMA Integration counts as 2 units + SDL as 1 unit (total 3 per Saturday)
           </p>

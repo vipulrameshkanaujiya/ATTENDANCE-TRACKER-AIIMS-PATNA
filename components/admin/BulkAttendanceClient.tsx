@@ -120,7 +120,7 @@ export function BulkAttendanceClient({ currentData }: { currentData: any[] }) {
           </a>
         </div>
 
-        <div className="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-6 text-center">
+        <div className="border-2 border-dashed border-slate-300 dark:border-[#2A2018] rounded-xl p-6 text-center">
           <input 
             type="file" 
             accept=".csv" 
@@ -144,7 +144,7 @@ export function BulkAttendanceClient({ currentData }: { currentData: any[] }) {
         {parsedRows.length > 0 && (
           <div className="mt-6 space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+              <span className="text-sm font-semibold text-slate-700 dark:text-[#A89E92]">
                 Parsed {parsedRows.length} rows (Previewing first 5)
               </span>
               <button 
@@ -157,9 +157,9 @@ export function BulkAttendanceClient({ currentData }: { currentData: any[] }) {
               </button>
             </div>
             
-            <div className="overflow-x-auto border border-slate-200 dark:border-slate-700 rounded-lg">
+            <div className="overflow-x-auto border border-slate-200 dark:border-[#2A2018] rounded-lg">
               <table className="w-full text-left text-xs">
-                <thead className="bg-bg dark:bg-slate-800 text-text-muted">
+                <thead className="bg-bg dark:bg-[#241C14] text-text-muted">
                   <tr>
                     <th className="p-2">Roll</th>
                     <th className="p-2">Subj</th>
@@ -169,7 +169,7 @@ export function BulkAttendanceClient({ currentData }: { currentData: any[] }) {
                     <th className="p-2">Pr Tot</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                <tbody className="divide-y divide-slate-100 dark:divide-[#2A2018]">
                   {parsedRows.slice(0, 5).map((r, i) => (
                     <tr key={i}>
                       <td className="p-2 font-mono">{r.roll_number}</td>
@@ -208,22 +208,22 @@ export function BulkAttendanceClient({ currentData }: { currentData: any[] }) {
 
         <div className="overflow-x-auto border border-border rounded-lg">
           <table className="w-full text-left text-xs">
-            <thead className="bg-bg dark:bg-slate-800 text-text-muted">
+            <thead className="bg-bg dark:bg-[#241C14] text-text-muted">
               <tr>
                 <th className="p-3">Roll</th>
                 <th className="p-3">Subjects (Th / Pr)</th>
                 <th className="p-3 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+            <tbody className="divide-y divide-slate-100 dark:divide-[#2A2018]">
               {Object.entries(groupedData).map(([roll, rows]: [string, any]) => (
-                <tr key={roll} className="hover:bg-bg dark:hover:bg-slate-800/50">
+                <tr key={roll} className="hover:bg-bg dark:hover:bg-[#241C14]/50">
                   <td className="p-3 font-mono font-bold text-text">{roll}</td>
                   <td className="p-3">
                     <div className="flex flex-wrap gap-2">
                       {rows.map((r: any) => (
                         <span key={r.subject_code} className="inline-flex items-center gap-1 bg-bg-subtle px-2 py-1 rounded text-[10px]">
-                          <strong className="text-slate-700 dark:text-slate-300">{r.subject_code}</strong>
+                          <strong className="text-slate-700 dark:text-[#A89E92]">{r.subject_code}</strong>
                           <span className="text-slate-500">T:{r.theory_attended}/{r.theory_total}</span>
                           <span className="text-slate-500">P:{r.practical_attended}/{r.practical_total}</span>
                         </span>
