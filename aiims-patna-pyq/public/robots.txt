@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /admin
+Allow: /
+Sitemap: https://aiims-patna-pyq.netlify.app/sitemap-index.xml

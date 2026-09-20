@@ -108,7 +108,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Student protected routes
-  const protectedStudentRoutes = ["/home", "/schedule", "/attendance", "/stats", "/profile"];
+  const protectedStudentRoutes = ["/home", "/schedule", "/attendance", "/profile"];
   const isProtectedStudentRoute = protectedStudentRoutes.some((route) => pathname.startsWith(route));
 
   if (isProtectedStudentRoute) {

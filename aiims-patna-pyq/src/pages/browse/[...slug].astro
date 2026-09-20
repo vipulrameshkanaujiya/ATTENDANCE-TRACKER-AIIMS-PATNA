@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import QuestionCard from '../../components/QuestionCard.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allContent = await getCollection('subjects');
+  const paths = [];
+
+  const slugify = (text: string) => text.toLowerCase().replace(/\s+/g, '-');
+
+  const hierarchy: any = {};
+
+  allContent.forEach(item => {
+    const { subject, chapter, topic, subtopic } = item.data;
+    const sSlug = slugify(subject);
+    const cSlug = slugify(chapter);
+    const tSlug = slugify(topic);
+    const stSlug = slugify(subtopic);
+
+    if (!hierarchy[sSlug]) {
+      hierarchy[sSlug] = { name: subject, chapters: {} };
+      paths.push({ params: { slug: sSlug }, props: { type: 'subject', data: hierarchy[sSlug] } });
+    }
+    if (!hierarchy[sSlug].chapters[cSlug]) {
+      hierarchy[sSlug].chapters[cSlug] = { name: chapter, topics: {} };
+      paths.push({ params: { slug: `${sSlug}/${cSlug}` }, props: { type: 'chapter', data: hierarchy[sSlug].chapters[cSlug], parent: {name: subject, slug: sSlug} } });
+    }
+    if (!hierarchy[sSlug].chapters[cSlug].topics[tSlug]) {
+      hierarchy[sSlug].chapters[cSlug].topics[tSlug] = { name: topic, subtopics: {} };
+      paths.push({ params: { slug: `${sSlug}/${cSlug}/${tSlug}` }, props: { type: 'topic', data: hierarchy[sSlug].chapters[cSlug].topics[tSlug], parent: {name: chapter, slug: `${sSlug}/${cSlug}`} } });
+    }
+    if (!hierarchy[sSlug].chapters[cSlug].topics[tSlug].subtopics[stSlug]) {
+      hierarchy[sSlug].chapters[cSlug].topics[tSlug].subtopics[stSlug] = { name: subtopic, questions: item.data.questions };
+      paths.push({ params: { slug: `${sSlug}/${cSlug}/${tSlug}/${stSlug}` }, props: { type: 'subtopic', data: hierarchy[sSlug].chapters[cSlug].topics[tSlug].subtopics[stSlug], parent: {name: topic, slug: `${sSlug}/${cSlug}/${tSlug}`} } });
+    }
+  });
+
+  return paths;
+}
+
+const { slug } = Astro.params;
+const { type, data, parent } = Astro.props;
+
+let children = [];
+let questions = [];
+
+if (type === 'subject') {
+  children = Object.entries(data.chapters).map(([cSlug, cData]: any) => ({ name: cData.name, slug: `${slug}/${cSlug}` }));
+} else if (type === 'chapter') {
+  children = Object.entries(data.topics).map(([tSlug, tData]: any) => ({ name: tData.name, slug: `${slug}/${tSlug}` }));
+} else if (type === 'topic') {
+  children = Object.entries(data.subtopics).map(([stSlug, stData]: any) => ({ name: stData.name, slug: `${slug}/${stSlug}` }));
+} else if (type === 'subtopic') {
+  questions = data.questions;
+}
+---
+
+<BaseLayout title={data.name}>
+  <div class="py-8">
+    <nav class="flex items-center gap-2 text-sm text-text-muted mb-6">
+      <a href="/browse" class="hover:text-accent transition-colors">Browse</a>
+      {parent && (
+        <>
+          <span>/</span>
+          <a href={`/browse/${parent.slug}`} class="hover:text-accent transition-colors">{parent.name}</a>
+        </>
+      )}
+      <span>/</span>
+      <span class="text-text font-medium">{data.name}</span>
+    </nav>
+    
+    <h1 class="text-3xl font-bold mb-2">{data.name}</h1>
+    <p class="text-text-muted mb-8">
+      {type === 'subject' && 'Select a chapter to continue.'}
+      {type === 'chapter' && 'Select a topic to continue.'}
+      {type === 'topic' && 'Select a subtopic to view questions.'}
+      {type === 'subtopic' && `${questions.length} questions available.`}
+    </p>
+
+    {children.length > 0 && (
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {children.map((child: any) => (
+          <a href={`/browse/${child.slug}`} class="bg-bg-elevated border border-border p-6 rounded-xl hover:border-accent hover:shadow-md transition-all group flex items-center justify-between">
+            <h2 class="text-lg font-bold group-hover:text-accent transition-colors">{child.name}</h2>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-border-strong group-hover:text-accent transition-colors"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        ))}
+      </div>
+    )}
+
+    {type === 'subtopic' && (
+      <div class="space-y-6 mt-8">
+        {questions.map((q: any, i: number) => (
+          <QuestionCard index={i + 1} question={q} />
+        ))}
+      </div>
+    )}
+  </div>
+</BaseLayout>

@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Search">
+  <div class="max-w-3xl mx-auto py-8">
+    <h1 class="text-3xl font-bold mb-8">Search Questions</h1>
+    <div id="search" class="bg-bg-elevated p-6 rounded-xl border border-border shadow-sm min-h-[50vh]"></div>
+  </div>
+
+  <link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+  <script src="/pagefind/pagefind-ui.js" is:inline></script>
+  <script is:inline>
+    window.addEventListener('DOMContentLoaded', (event) => {
+      new PagefindUI({ element: "#search", showSubResults: true });
+    });
+  </script>
+</BaseLayout>

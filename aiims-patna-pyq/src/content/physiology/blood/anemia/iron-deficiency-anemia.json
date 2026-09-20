@@ -1,0 +1,59 @@
+{
+  "subject": "Physiology",
+  "professional": "1st",
+  "chapter": "Blood",
+  "topic": "Anemia",
+  "subtopic": "Iron Deficiency Anemia",
+  "questions": [
+    {
+      "id": "q-101",
+      "clusterId": "c-1",
+      "canonical": true,
+      "type": "LAQ",
+      "question": "Describe the stages of iron deficiency anemia in detail. Mention the clinical features and laboratory findings.",
+      "marks": 10,
+      "batchYears": ["'24", "'23", "'19"],
+      "yearKnown": true,
+      "tags": ["iron metabolism", "microcytic"],
+      "variants": [
+        {
+          "batchYear": "'24",
+          "text": "Describe the stages of iron deficiency anemia in detail. Mention the clinical features and laboratory findings."
+        },
+        {
+          "batchYear": "'23",
+          "text": "Discuss iron metabolism. Write a note on iron deficiency anemia."
+        },
+        {
+          "batchYear": "'19",
+          "text": "Classify anemias. Describe the blood picture in iron deficiency anemia."
+        }
+      ],
+      "answer": {
+        "status": "verified",
+        "content": "Iron deficiency anemia progresses through several stages:\n\n1. **Negative Iron Balance:** Iron requirements exceed absorption. Bone marrow iron stores (hemosiderin) are depleted. Serum ferritin levels fall.\n2. **Iron-Deficient Erythropoiesis:** Serum iron levels fall, total iron-binding capacity (TIBC) increases, and transferrin saturation falls below 15%.\n3. **Iron Deficiency Anemia:** Hemoglobin synthesis is impaired. Microcytic, hypochromic anemia develops.\n\n### Clinical Features\n- Pallor, fatigue, weakness\n- Koilonychia (spoon-shaped nails)\n- Glossitis, angular stomatitis\n\n### Laboratory Findings\n- Low Hb, MCV, MCH, MCHC\n- Peripheral smear: Microcytic hypochromic RBCs\n- Low serum iron, high TIBC, low serum ferritin.",
+        "contributorCount": 3,
+        "references": ["Guyton and Hall Textbook of Medical Physiology, 14th Ed."],
+        "lastUpdated": "2025-01-15T10:00:00Z"
+      }
+    },
+    {
+      "id": "q-102",
+      "clusterId": "c-2",
+      "canonical": true,
+      "type": "SAQ",
+      "question": "What is the normal requirement of iron in an adult male and a pregnant female?",
+      "marks": 5,
+      "batchYears": ["'21"],
+      "yearKnown": true,
+      "tags": ["nutrition"],
+      "answer": {
+        "status": "draft",
+        "content": "- **Adult male:** 1-2 mg/day\n- **Pregnant female:** 3-5 mg/day (increased demand for fetal development and expanded maternal blood volume).",
+        "contributorCount": 1,
+        "references": [],
+        "lastUpdated": "2024-12-01T08:30:00Z"
+      }
+    }
+  ]
+}

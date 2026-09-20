@@ -1,0 +1,19 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+---
+<header class="border-b border-border bg-bg-elevated sticky top-0 z-40">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-2 group">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:scale-110 transition-transform">
+        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+      </svg>
+      <span class="font-bold text-xl tracking-tight">DocPrep</span>
+    </a>
+    <nav class="flex items-center gap-6">
+      <a href="/browse" class="text-sm font-medium hover:text-accent transition-colors hidden sm:block">Browse</a>
+      <a href="/search" class="text-sm font-medium hover:text-accent transition-colors hidden sm:block">Search</a>
+      <a href="/help" class="text-sm font-medium hover:text-accent transition-colors hidden sm:block">Help</a>
+      <ThemeToggle />
+    </nav>
+  </div>
+</header>

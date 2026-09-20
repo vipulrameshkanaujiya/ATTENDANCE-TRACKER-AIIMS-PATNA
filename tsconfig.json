@@ -23,5 +23,5 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "test-*.ts", "tests", "scripts"]
+  "exclude": ["node_modules", "test-*.ts", "tests", "scripts", "aiims-patna-pyq"]
 }

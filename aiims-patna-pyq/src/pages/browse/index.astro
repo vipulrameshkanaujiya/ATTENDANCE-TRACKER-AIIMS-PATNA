@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allContent = await getCollection('subjects');
+const subjects = [...new Set(allContent.map(item => item.data.subject))];
+---
+<BaseLayout title="Browse Subjects">
+  <div class="py-8">
+    <h1 class="text-3xl font-bold mb-2">Browse by Subject</h1>
+    <p class="text-text-muted mb-8">Select a subject to explore its chapters and topics.</p>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      {subjects.map(subject => (
+        <a href={`/browse/${subject.toLowerCase().replace(/\s+/g, '-')}`} class="bg-bg-elevated border border-border p-6 rounded-xl hover:border-accent hover:shadow-md transition-all group flex items-center justify-between">
+          <h2 class="text-xl font-bold group-hover:text-accent transition-colors">{subject}</h2>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-border-strong group-hover:text-accent transition-colors"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </a>
+      ))}
+      {subjects.length === 0 && (
+        <div class="col-span-full p-8 text-center bg-bg-subtle rounded-xl border border-border text-text-muted">
+          No subjects found.
+        </div>
+      )}
+    </div>
+  </div>
+</BaseLayout>

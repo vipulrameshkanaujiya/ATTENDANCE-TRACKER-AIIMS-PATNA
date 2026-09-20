@@ -1,0 +1,1 @@
+-- Schema for future Supabase integration

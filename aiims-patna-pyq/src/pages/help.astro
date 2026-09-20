@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FAQAccordion from '../components/FAQAccordion.astro';
+
+const faqs = [
+  { question: "What is DocPrep?", answer: "DocPrep is a comprehensive Previous Year Question (PYQ) bank tailored specifically for AIIMS Patna MBBS students." },
+  { question: "Is this official?", answer: "No, DocPrep is a student-led initiative and is not officially affiliated with AIIMS Patna administration." },
+  { question: "Do I need to login?", answer: "No, all content is freely accessible without logging in. You only need to log in if you want to save questions to your personal dashboard (feature coming soon)." },
+  { question: "Are the answers verified?", answer: "Answers are crowdsourced and reviewed by peers. Look for the 'Verified' badge on answers that have been checked by multiple contributors." },
+  { question: "How do I report an error?", answer: "Currently, you can email us at vipulrameshkanaujiya@gmail.com with the question ID and the correction." },
+  { question: "Can I contribute?", answer: "Yes! We are looking for contributors to help write and verify answers. Contact us to get access to the admin panel." },
+  { question: "Is my data safe?", answer: "We don't collect personal data for browsing. Any saved questions will be stored securely using Supabase." }
+];
+
+const features = [
+  "Comprehensive PYQ database",
+  "Topic-wise categorization",
+  "Full-text search",
+  "Dark mode support",
+  "Mobile-friendly design",
+  "Verified peer-reviewed answers",
+  "No login required for reading",
+  "Fast static site performance",
+  "Save questions (Coming soon)"
+];
+---
+<BaseLayout title="Help & Support">
+  <div class="max-w-3xl mx-auto py-8">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">How can we help?</h1>
+      <p class="text-lg text-text-muted">Guides, FAQs, and support for DocPrep.</p>
+    </div>
+
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold mb-6">Quick Start</h2>
+      <ol class="list-decimal list-inside space-y-4 text-text bg-bg-elevated p-6 rounded-xl border border-border">
+        <li class="pl-2"><strong>Browse by Subject:</strong> Navigate through your professional year subjects.</li>
+        <li class="pl-2"><strong>Browse by Year:</strong> Filter questions by the batch year they appeared in.</li>
+        <li class="pl-2"><strong>Search:</strong> Use the search bar to find specific topics or keywords.</li>
+        <li class="pl-2"><strong>Reveal Answers:</strong> Click 'Show Answer' to see peer-reviewed solutions.</li>
+        <li class="pl-2"><strong>Save Questions:</strong> Use the bookmark icon to save questions for later review.</li>
+        <li class="pl-2"><strong>Rate Difficulty:</strong> Help others by rating how difficult you found a question.</li>
+      </ol>
+    </section>
+
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold mb-6">FAQs</h2>
+      <FAQAccordion faqs={faqs} />
+    </section>
+
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold mb-6">Features</h2>
+      <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {features.map(feature => (
+          <li class="flex items-center gap-3 bg-bg-subtle p-4 rounded-lg border border-border">
+            <span>✅</span>
+            <span class="font-medium">{feature}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section id="support" class="mb-16 bg-accent-soft p-8 rounded-2xl border border-accent/20 text-center">
+      <h2 class="text-2xl font-bold mb-4 text-accent-text">Support the Project</h2>
+      <p class="text-accent-text mb-6">DocPrep is free for all students. If you find it helpful, consider supporting the server costs.</p>
+      
+      <div class="bg-white p-6 rounded-xl inline-block shadow-sm mx-auto mb-6">
+        <img src="/images/support/upi-qr.png" alt="UPI QR Code" class="w-48 h-48 mx-auto bg-gray-100 rounded-lg object-cover mb-4" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2QxZDVkYiIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxyZWN0IHg9IjMiIHk9IjMiIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgcng9IjIiIHJ5PSIyIj48L3JlY3Q+PGNpcmNsZSBjeD0iOC41IiBjeT0iOC41IiByPSIxLjUiPjwvY2lyY2xlPjxwb2x5bGluZSBwb2ludHM9IjIxIDE1IDE2IDEw NSA1IDIxIj48L3BvbHlsaW5lPjwvc3ZnPg=='" />
+        <p class="text-sm font-medium text-gray-500">QR code coming soon</p>
+      </div>
+      
+      <div class="bg-white/50 py-3 px-6 rounded-lg inline-flex items-center gap-3 border border-accent/20 mx-auto">
+        <span class="font-semibold text-accent-text">UPI ID:</span>
+        <code class="text-lg bg-white px-2 py-1 rounded select-all font-mono text-gray-800">9825739419@NAVIAXIS</code>
+      </div>
+    </section>
+
+    <section class="text-center border-t border-border pt-12">
+      <h2 class="text-2xl font-bold mb-4">Credits</h2>
+      <p class="text-lg font-medium text-text mb-2">Built by VIPUL K</p>
+      <p class="text-text-muted mb-8">A student initiative for AIIMS Patna MBBS students.</p>
+      
+      <a href="mailto:vipulrameshkanaujiya@gmail.com" class="inline-flex items-center gap-2 bg-text text-bg-elevated px-6 py-3 rounded-full font-medium hover:opacity-90 transition-opacity">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        Contact Developer
+      </a>
+    </section>
+  </div>
+</BaseLayout>

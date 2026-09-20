@@ -1,0 +1,24 @@
+---
+interface Props {
+  variants: { batchYear: string; paper?: string; text: string }[];
+}
+const { variants } = Astro.props;
+---
+{variants && variants.length > 1 && (
+  <details class="mt-4 group border border-border rounded-lg bg-bg-subtle overflow-hidden">
+    <summary class="cursor-pointer px-4 py-2 font-medium text-sm text-text-muted hover:text-text hover:bg-border transition-colors list-none flex items-center justify-between">
+      <span>View all variants ({variants.length})</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transform group-open:rotate-180 transition-transform">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </summary>
+    <div class="p-4 border-t border-border space-y-3">
+      {variants.map(variant => (
+        <div class="text-sm">
+          <span class="font-medium text-accent mr-2">{variant.batchYear} {variant.paper || ''}</span>
+          <span class="text-text">{variant.text}</span>
+        </div>
+      ))}
+    </div>
+  </details>
+)}

@@ -1,0 +1,21 @@
+---
+interface Props {
+  faqs: { question: string; answer: string }[];
+}
+const { faqs } = Astro.props;
+---
+<div class="space-y-4">
+  {faqs.map(faq => (
+    <details class="group bg-bg-elevated border border-border rounded-xl overflow-hidden shadow-sm">
+      <summary class="cursor-pointer px-6 py-4 font-medium text-text hover:text-accent transition-colors list-none flex items-center justify-between">
+        {faq.question}
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transform group-open:rotate-180 transition-transform">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </summary>
+      <div class="px-6 pb-4 text-text-muted text-sm whitespace-pre-wrap leading-relaxed border-t border-border mt-1 pt-4">
+        {faq.answer}
+      </div>
+    </details>
+  ))}
+</div>

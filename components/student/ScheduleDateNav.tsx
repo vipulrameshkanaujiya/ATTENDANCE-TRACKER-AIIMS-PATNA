@@ -1,16 +1,7 @@
 "use client";
-import { 
-  Calendar as CalendarIcon, 
-  ChevronLeft, 
-  ChevronRight, 
-  RotateCcw 
-} from "lucide-react";
-import { 
-  shiftDateString, 
-  getWeekRange, 
-  formatReadableDate, 
-  parseDateString 
-} from "@/lib/utils/date";
+import { useEffect, useRef } from "react";
+import { format, addDays, subDays, isSameDay } from "date-fns";
+import { parseDateString } from "@/lib/utils/date";
 
 interface ScheduleDateNavProps {
   currentView: "day" | "week" | "month";
@@ -27,30 +18,36 @@ export function ScheduleDateNav({
   onChangeView,
   onChangeDate
 }: ScheduleDateNavProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const activeRef = useRef<HTMLButtonElement>(null);
+
+  const selectedD = parseDateString(selectedDate);
+  const todayD = parseDateString(todayStr);
+
+  // Generate 30 days centered on today
+  const days = Array.from({ length: 30 }, (_, i) => {
+    return addDays(subDays(todayD, 7), i);
+  });
+
+  // Auto-scroll to center the active day
+  useEffect(() => {
+    if (activeRef.current && scrollRef.current) {
+      const container = scrollRef.current;
+      const active = activeRef.current;
+      const scrollLeft = active.offsetLeft - container.offsetWidth / 2 + active.offsetWidth / 2;
+      container.scrollTo({ left: scrollLeft, behavior: "smooth" });
+    }
+  }, [selectedDate]);
+
   const handleViewChange = (newView: "day" | "week" | "month") => {
     onChangeView(newView);
   };
 
-  const handleDateChange = (newDate: string) => {
-    if (!newDate) return;
+  const handleDateChange = (day: Date) => {
+    const str = format(day, "yyyy-MM-dd");
     onChangeView(currentView);
-    onChangeDate(newDate);
+    onChangeDate(str);
   };
-
-  const handleStepDate = (direction: -1 | 1) => {
-    let delta = direction;
-    if (currentView === "week") {
-      delta = direction * 7;
-    } else if (currentView === "month") {
-      delta = direction * 30;
-    }
-    const nextDate = shiftDateString(selectedDate, delta);
-    onChangeView(currentView);
-    onChangeDate(nextDate);
-  };
-
-  const { days: weekDays } = getWeekRange(selectedDate);
-  const isSelectedToday = selectedDate === todayStr;
 
   return (
     <div className="space-y-3">
@@ -84,110 +81,48 @@ export function ScheduleDateNav({
         </div>
       </div>
 
-      {/* 2. Interactive Date Navigation Bar */}
-      <div className="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          {/* Stepper buttons & date display */}
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1">
+      {/* 2. Swipeable Date Slider */}
+      <div className="relative bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs py-3">
+        {/* Gradient fades on edges */}
+        <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white dark:from-slate-900 to-transparent z-10 pointer-events-none rounded-l-xl" />
+        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white dark:from-slate-900 to-transparent z-10 pointer-events-none rounded-r-xl" />
+
+        <div
+          ref={scrollRef}
+          className="flex gap-2 overflow-x-auto scroll-smooth snap-x snap-mandatory px-4 scrollbar-hide"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          {days.map((day) => {
+            const isActive = isSameDay(day, selectedD);
+            const isToday = isSameDay(day, todayD);
+
+            return (
               <button
-                type="button"
-                onClick={() => handleStepDate(-1)}
-                className="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 transition focus:outline-none"
-                title="Previous"
+                key={day.toISOString()}
+                ref={isActive ? activeRef : null}
+                onClick={() => handleDateChange(day)}
+                className={`flex flex-col items-center justify-center min-w-[56px] h-[72px] rounded-2xl snap-center transition-all ${
+                  isActive
+                    ? "bg-indigo-600 text-white shadow-md scale-105"
+                    : "bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
+                }`}
               >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => handleStepDate(1)}
-                className="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 transition focus:outline-none"
-                title="Next"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <span className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
-                <CalendarIcon className="w-4 h-4 text-blue-600 flex-shrink-0" />
-                <span>
-                  {currentView === "month"
-                    ? parseDateString(selectedDate).toLocaleDateString("en-US", { month: "long", year: "numeric" })
-                    : currentView === "week"
-                    ? `Week of ${formatReadableDate(weekDays[0], false)} – ${formatReadableDate(weekDays[6], false)}`
-                    : formatReadableDate(selectedDate, true)}
-                </span>
-              </span>
-
-              {isSelectedToday && (
-                <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 border border-emerald-200 dark:border-emerald-900/30">
-                  Today
-                </span>
-              )}
-            </div>
-          </div>
-
-          {/* Quick jump actions & Date Picker */}
-          <div className="flex items-center gap-2">
-            {!isSelectedToday && (
-              <button
-                type="button"
-                onClick={() => {
-                  onChangeDate(todayStr);
-                  onChangeView("day");
-                }}
-                className="px-2.5 py-1 rounded-lg text-xs font-semibold text-blue-700 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-900/30 hover:bg-blue-100 flex items-center gap-1 transition"
-              >
-                <RotateCcw className="w-3 h-3" />
-                <span>Jump to Today</span>
-              </button>
-            )}
-
-            {/* Native Date Picker */}
-            <input
-              type="date"
-              value={selectedDate}
-              onChange={(e) => handleDateChange(e.target.value)}
-              className="text-xs font-medium text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-              title="Pick a specific date"
-            />
-          </div>
-        </div>
-
-        {/* 3. Quick-Click Weekday Pills (Mon - Sun) */}
-        <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
-          <div className="grid grid-cols-7 gap-1 sm:gap-2">
-            {weekDays.map((dStr) => {
-              const d = parseDateString(dStr);
-              const weekday = d.toLocaleDateString("en-US", { weekday: "short" });
-              const dayNum = d.getDate();
-              const isSelected = dStr === selectedDate;
-              const isToday = dStr === todayStr;
-
-              return (
-                <button
-                  key={dStr}
-                  type="button"
-                  onClick={() => handleDateChange(dStr)}
-                  className={`py-1.5 px-1 rounded-lg text-center transition flex flex-col items-center justify-center ${
-                    isSelected
-                      ? "bg-blue-600 text-white shadow-xs"
-                      : isToday
-                      ? "bg-blue-50 dark:bg-blue-900/20 text-blue-800 border border-blue-200 dark:border-blue-900/30 hover:bg-blue-100"
-                      : "bg-slate-50 dark:bg-slate-950 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100"
+                <span
+                  className={`text-[10px] uppercase font-bold tracking-wider ${
+                    isActive ? "text-indigo-200" : "text-slate-400 dark:text-slate-500"
                   }`}
                 >
-                  <span className={`text-[10px] uppercase font-bold tracking-wider ${isSelected ? "text-blue-100" : "text-slate-400 dark:text-slate-500"}`}>
-                    {weekday}
-                  </span>
-                  <span className="text-xs sm:text-sm font-extrabold leading-tight">
-                    {dayNum}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+                  {format(day, "EEE")}
+                </span>
+                <span className="text-lg font-black mt-0.5">
+                  {format(day, "d")}
+                </span>
+                {isToday && !isActive && (
+                  <span className="w-1 h-1 rounded-full bg-indigo-500 mt-0.5" />
+                )}
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>

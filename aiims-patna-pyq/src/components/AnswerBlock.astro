@@ -1,0 +1,66 @@
+---
+import { marked } from 'marked';
+
+interface Props {
+  answer: {
+    status: string;
+    content?: string;
+    images?: string[];
+    contributorCount: number;
+    references?: string[];
+    lastUpdated?: string;
+  };
+}
+
+const { answer } = Astro.props;
+const parsedContent = answer.content ? marked.parse(answer.content) : '';
+---
+<details class="mt-4 group">
+  <summary class="cursor-pointer font-medium text-accent hover:text-accent-hover transition-colors list-none flex items-center gap-1 select-none">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transform group-open:rotate-90 transition-transform">
+      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+    </svg>
+    Show Answer
+  </summary>
+  
+  <div class="mt-4 p-5 bg-bg-elevated border border-border rounded-xl shadow-sm">
+    {answer.status === 'draft' && (
+      <div class="mb-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-bg-subtle text-text-muted border border-border">
+        Draft Answer
+      </div>
+    )}
+    
+    <div class="prose prose-sm dark:prose-invert max-w-none text-text whitespace-pre-wrap" set:html={parsedContent} />
+    
+    {answer.images && answer.images.length > 0 && (
+      <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {answer.images.map(img => (
+          <img src={img} alt="Answer illustration" loading="lazy" class="rounded-lg border border-border w-full h-auto" />
+        ))}
+      </div>
+    )}
+    
+    {answer.references && answer.references.length > 0 && (
+      <div class="mt-6 pt-4 border-t border-border">
+        <h4 class="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">References</h4>
+        <ul class="text-sm text-text-faint list-disc list-inside">
+          {answer.references.map(ref => <li>{ref}</li>)}
+        </ul>
+      </div>
+    )}
+    
+    <div class="mt-6 pt-4 border-t border-border flex items-center justify-between text-xs text-text-faint">
+      <div class="flex items-center gap-1">
+        {answer.status === 'verified' && (
+          <span class="text-verified font-medium flex items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            Verified
+          </span>
+        )}
+        <span class="px-1.5">&middot;</span>
+        <span>{answer.contributorCount} contributors</span>
+      </div>
+      {answer.lastUpdated && <span>Updated {new Date(answer.lastUpdated).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</span>}
+    </div>
+  </div>
+</details>

@@ -10,6 +10,51 @@ interface TopHeaderProps {
   profile: UserProfile | null;
 }
 
+export function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return <div className="w-[72px] h-8" />;
+
+  const isDark = theme === "dark";
+
+  return (
+    <button
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+      className="relative flex items-center w-[72px] h-8 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 p-0.5 transition-colors"
+      aria-label="Toggle theme"
+    >
+      {/* Sliding circle background */}
+      <div
+        className={`absolute top-0.5 w-7 h-7 rounded-full transition-all duration-300 ease-out ${
+          isDark
+            ? "translate-x-[36px] bg-indigo-600 shadow-[0_0_8px_rgba(99,102,241,0.6)]"
+            : "translate-x-0 bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]"
+        }`}
+      />
+      
+      {/* Sun icon */}
+      <div className="relative z-10 flex items-center justify-center w-7 h-7">
+        <Sun
+          className={`w-4 h-4 transition-colors ${
+            isDark ? "text-slate-400" : "text-white"
+          }`}
+        />
+      </div>
+      
+      {/* Moon icon */}
+      <div className="relative z-10 flex items-center justify-center w-7 h-7 ml-auto">
+        <Moon
+          className={`w-4 h-4 transition-colors ${
+            isDark ? "text-white" : "text-slate-400"
+          }`}
+        />
+      </div>
+    </button>
+  );
+}
+
 export function TopHeader({ profile }: TopHeaderProps) {
   const roll = profile?.roll_number || "24___";
   const batchName = profile?.batch?.name || "Batch";
@@ -49,15 +94,7 @@ export function TopHeader({ profile }: TopHeaderProps) {
           </Link>
 
           {/* Theme Toggle */}
-          {mounted && (
-            <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="w-8 h-8 rounded-full flex items-center justify-center text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition focus:outline-none"
-              title="Toggle Theme"
-            >
-              {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
-          )}
+          <ThemeToggle />
 
           {/* Batch Badge */}
           <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800/60">

@@ -1,0 +1,17 @@
+---
+interface Props {
+  ratings?: {
+    hard: number;
+    medium: number;
+    easy: number;
+  };
+}
+const { ratings } = Astro.props;
+---
+<div class="text-xs text-text-muted mt-3">
+  {ratings ? (
+    <span>Difficulty &middot; <span class="text-hard font-medium">{ratings.hard}% Hard</span> &middot; <span class="text-medium font-medium">{ratings.medium}% Med</span> &middot; <span class="text-easy font-medium">{ratings.easy}% Easy</span></span>
+  ) : (
+    <span>Difficulty &middot; No ratings yet</span>
+  )}
+</div>

@@ -1,0 +1,38 @@
+---
+import SaveButton from './SaveButton.astro';
+import VariantsList from './VariantsList.astro';
+import AnswerBlock from './AnswerBlock.astro';
+import DifficultyLine from './DifficultyLine.astro';
+
+interface Props {
+  index: number;
+  question: any;
+}
+
+const { index, question } = Astro.props;
+const { id, type, marks, question: qText, batchYears, yearKnown, variants, answer } = question;
+
+const yearString = yearKnown && batchYears && batchYears.length > 0 ? batchYears.join(', ') : 'not known';
+---
+<article class="bg-bg-elevated border border-border rounded-xl p-5 shadow-card">
+  <div class="flex items-center justify-between mb-3">
+    <div class="flex items-center gap-2">
+      <span class="font-bold text-text bg-bg-subtle px-2 py-0.5 rounded border border-border">Q{index}</span>
+      {type && <span class="text-xs font-medium px-2 py-0.5 rounded bg-accent-soft text-accent-text border border-accent/20">{type}</span>}
+      {marks && <span class="text-xs font-medium text-text-muted">{marks} marks</span>}
+    </div>
+    <SaveButton id={id} />
+  </div>
+  
+  <h3 class="text-lg font-medium text-text mb-3 leading-snug">{qText}</h3>
+  
+  <div class="text-sm text-text-muted mb-2">
+    <span class="font-medium text-text">Year:</span> {yearString}
+  </div>
+  
+  <VariantsList variants={variants} />
+  
+  {answer && <AnswerBlock answer={answer} />}
+  
+  <DifficultyLine />
+</article>

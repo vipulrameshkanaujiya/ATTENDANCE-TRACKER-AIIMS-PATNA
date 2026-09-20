@@ -149,18 +149,20 @@ export default function StudentHomePage() {
 
         {/* Exam Countdown Widget */}
         {activeExam && countdownDays !== null && (
-          <div className="mt-2 sm:mt-0 p-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-sm flex items-center justify-between sm:justify-start gap-4">
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-blue-200">
-                {activeExam.title}
-              </p>
-              <p className="text-xl font-extrabold leading-none">
-                {countdownDays} <span className="text-xs font-normal text-blue-100">DAYS LEFT</span>
-              </p>
-            </div>
-            <div className="text-right sm:text-left text-[11px] text-blue-100 border-l border-blue-400/40 pl-3">
-              <p className="font-semibold">{new Date(activeExam.exam_date).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })}</p>
-              <p className="text-[10px] text-blue-200">Pre-Prof Exam</p>
+          <div className="rounded-2xl bg-gradient-to-br from-amber-500 via-orange-500 to-rose-500 text-white p-4 shadow-md mt-2 sm:mt-0">
+            <div className="flex items-center justify-between sm:justify-start gap-4">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-wider text-amber-100">
+                  {activeExam.title}
+                </p>
+                <p className="text-2xl font-black mt-1">
+                  {countdownDays} <span className="text-sm font-bold">days left</span>
+                </p>
+              </div>
+              <div className="text-right sm:text-left border-l border-amber-400/40 pl-3">
+                <p className="text-xs font-bold">{new Date(activeExam.exam_date).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })}</p>
+                <p className="text-[10px] text-amber-100">Pre-Prof Exam</p>
+              </div>
             </div>
           </div>
         )}

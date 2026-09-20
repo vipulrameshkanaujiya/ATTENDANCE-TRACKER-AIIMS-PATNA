@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import QuestionCard from '../../components/QuestionCard.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allContent = await getCollection('subjects');
+  const paths: any[] = [];
+
+  allContent.forEach(item => {
+    item.data.questions.forEach((q: any) => {
+      paths.push({
+        params: { id: q.id },
+        props: { question: q, subject: item.data.subject, topic: item.data.topic }
+      });
+    });
+  });
+
+  return paths;
+}
+
+const { id } = Astro.params;
+const { question, subject, topic } = Astro.props;
+---
+<BaseLayout title={`Question ${id}`}>
+  <div class="py-8 max-w-3xl mx-auto">
+    <nav class="flex items-center gap-2 text-sm text-text-muted mb-6">
+      <a href="/browse" class="hover:text-accent transition-colors">Browse</a>
+      <span>/</span>
+      <span>{subject}</span>
+      <span>/</span>
+      <span>{topic}</span>
+    </nav>
+    
+    <QuestionCard index={1} question={question} />
+  </div>
+</BaseLayout>

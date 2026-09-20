@@ -1,0 +1,71 @@
+backend:
+  name: git-gateway
+  branch: main
+media_folder: "public/images/questions"
+public_folder: "/images/questions"
+collections:
+  - name: "subjects"
+    label: "Subjects"
+    folder: "src/content"
+    nested:
+      depth: 4
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Subject", name: "subject", widget: "string" }
+      - { label: "Professional", name: "professional", widget: "select", options: ["1st", "2nd", "3rd", "Final"] }
+      - { label: "Chapter", name: "chapter", widget: "string" }
+      - { label: "Topic", name: "topic", widget: "string" }
+      - { label: "Subtopic", name: "subtopic", widget: "string" }
+      - label: "Questions"
+        name: "questions"
+        widget: "list"
+        fields:
+          - { label: "ID", name: "id", widget: "string" }
+          - { label: "Cluster ID", name: "clusterId", widget: "string", required: false }
+          - { label: "Canonical", name: "canonical", widget: "boolean", default: true }
+          - { label: "Type", name: "type", widget: "select", options: ["SAQ", "LAQ", "PBQ"] }
+          - { label: "Question", name: "question", widget: "text" }
+          - { label: "Marks", name: "marks", widget: "number", required: false }
+          - label: "Batch Years"
+            name: "batchYears"
+            widget: "list"
+            field: { label: "Year", name: "year", widget: "string" }
+          - { label: "Year Known", name: "yearKnown", widget: "boolean", default: true }
+          - label: "Tags"
+            name: "tags"
+            widget: "list"
+            field: { label: "Tag", name: "tag", widget: "string" }
+            required: false
+          - label: "Question Images"
+            name: "questionImages"
+            widget: "list"
+            field: { label: "Image", name: "image", widget: "image" }
+            required: false
+          - label: "Variants"
+            name: "variants"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Batch Year", name: "batchYear", widget: "string" }
+              - { label: "Paper", name: "paper", widget: "string", required: false }
+              - { label: "Text", name: "text", widget: "text" }
+          - label: "Answer"
+            name: "answer"
+            widget: "object"
+            required: false
+            fields:
+              - { label: "Status", name: "status", widget: "select", options: ["draft", "review", "verified"] }
+              - { label: "Content", name: "content", widget: "markdown", required: false }
+              - label: "Images"
+                name: "images"
+                widget: "list"
+                field: { label: "Image", name: "image", widget: "image" }
+                required: false
+              - { label: "Contributor Count", name: "contributorCount", widget: "number", default: 1 }
+              - label: "References"
+                name: "references"
+                widget: "list"
+                field: { label: "Reference", name: "reference", widget: "string" }
+                required: false
+              - { label: "Last Updated", name: "lastUpdated", widget: "datetime", required: false }
