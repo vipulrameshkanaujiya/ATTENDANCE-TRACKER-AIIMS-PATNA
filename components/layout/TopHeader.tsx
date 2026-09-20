@@ -13,41 +13,43 @@ interface TopHeaderProps {
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-
   useEffect(() => setMounted(true), []);
-  if (!mounted) return <div className="w-[72px] h-8" />;
+  if (!mounted) return <div className="w-16 h-8" />;
 
   const isDark = theme === "dark";
 
   return (
     <button
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="relative flex items-center w-[72px] h-8 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 p-0.5 transition-colors"
+      className="relative flex items-center gap-1 p-1 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 transition-colors"
       aria-label="Toggle theme"
     >
-      {/* Sliding circle background */}
+      {/* Sun slot */}
       <div
-        className={`absolute top-0.5 w-7 h-7 rounded-full transition-all duration-300 ease-out ${
+        className={`flex items-center justify-center w-7 h-7 rounded-full transition-all duration-300 ${
           isDark
-            ? "translate-x-[36px] bg-indigo-600 shadow-[0_0_8px_rgba(99,102,241,0.6)]"
-            : "translate-x-0 bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]"
+            ? "bg-transparent"
+            : "bg-amber-400 shadow-sm"
         }`}
-      />
-      
-      {/* Sun icon */}
-      <div className="relative z-10 flex items-center justify-center w-7 h-7">
+      >
         <Sun
           className={`w-4 h-4 transition-colors ${
             isDark ? "text-slate-400" : "text-white"
           }`}
         />
       </div>
-      
-      {/* Moon icon */}
-      <div className="relative z-10 flex items-center justify-center w-7 h-7 ml-auto">
+
+      {/* Moon slot */}
+      <div
+        className={`flex items-center justify-center w-7 h-7 rounded-full transition-all duration-300 ${
+          isDark
+            ? "bg-white shadow-sm"
+            : "bg-transparent"
+        }`}
+      >
         <Moon
           className={`w-4 h-4 transition-colors ${
-            isDark ? "text-white" : "text-slate-400"
+            isDark ? "text-slate-900" : "text-slate-400"
           }`}
         />
       </div>

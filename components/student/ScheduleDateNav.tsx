@@ -24,10 +24,14 @@ export function ScheduleDateNav({
   const selectedD = parseDateString(selectedDate);
   const todayD = parseDateString(todayStr);
 
-  // Generate 30 days centered on today
-  const days = Array.from({ length: 30 }, (_, i) => {
-    return addDays(subDays(todayD, 7), i);
-  });
+  // Wide range: Sep 1 → Nov 30, 2026
+  const days: Date[] = [];
+  let current = new Date("2026-09-01");
+  const end = new Date("2026-11-30");
+  while (current <= end) {
+    days.push(new Date(current));
+    current = addDays(current, 1);
+  }
 
   // Auto-scroll to center the active day
   useEffect(() => {
@@ -81,7 +85,26 @@ export function ScheduleDateNav({
         </div>
       </div>
 
-      {/* 2. Swipeable Date Slider */}
+      {/* Row 1: Today + Calendar picker */}
+      <div className="flex items-center justify-between gap-2">
+        <button
+          onClick={() => handleDateChange(todayD)}
+          className="px-3 py-1.5 text-xs font-bold rounded-lg bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900 transition"
+        >
+          Today
+        </button>
+
+        <input
+          type="date"
+          value={format(selectedD, "yyyy-MM-dd")}
+          onChange={(e) => {
+            if (e.target.value) handleDateChange(new Date(e.target.value));
+          }}
+          className="px-3 py-1.5 text-xs font-medium rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+      </div>
+
+      {/* Row 2: Swipeable Date Slider */}
       <div className="relative bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs py-3">
         {/* Gradient fades on edges */}
         <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white dark:from-slate-900 to-transparent z-10 pointer-events-none rounded-l-xl" />
