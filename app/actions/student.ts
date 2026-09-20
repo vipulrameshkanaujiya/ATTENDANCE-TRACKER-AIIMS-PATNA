@@ -810,3 +810,67 @@ export async function submitFeedbackAction(formData: FormData): Promise<{ succes
     return { success: false, error: err?.message || "Failed to submit feedback." };
   }
 }
+
+export async function trackUserActivityAction(page: string, activityType: string = "page_view") {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return { success: false };
+
+    // Update users table (throttled on client-side to avoid spamming)
+    await supabase
+      .from("users")
+      .update({
+        last_seen_at: new Date().toISOString(),
+        last_page_visited: page,
+      })
+      .eq("id", user.id);
+
+    // Log the activity
+    await supabase.from("user_activity").insert({
+      user_id: user.id,
+      activity_type: activityType,
+      page,
+    });
+
+    return { success: true };
+  } catch {
+    return { success: false };
+  }
+}
+
+export async function markMessageReadAction(messageId: string) {
+  try {
+    const supabase = await createClient();
+    const { error } = await supabase
+      .from("admin_messages")
+      .update({ is_read: true, read_at: new Date().toISOString() })
+      .eq("id", messageId);
+      
+    if (error) return { success: false };
+    
+    // We do NOT use revalidatePath here because it causes the page to jump
+    // We handle optimistic update in client
+    return { success: true };
+  } catch {
+    return { success: false };
+  }
+}
+
+export async function getUnreadMessagesCountAction() {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return 0;
+
+    const { count } = await supabase
+      .from("admin_messages")
+      .select("id", { count: "exact", head: true })
+      .eq("to_user_id", user.id)
+      .eq("is_read", false);
+
+    return count || 0;
+  } catch {
+    return 0;
+  }
+}

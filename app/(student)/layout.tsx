@@ -5,6 +5,8 @@ import { StudentDataProvider } from "@/components/student/StudentDataProvider";
 import { InstallPrompt } from "@/components/ui/InstallPrompt";
 import { OfflineBanner } from "@/components/layout/OfflineBanner";
 
+import { ActivityTracker } from "@/components/student/ActivityTracker";
+
 export default async function StudentLayout({
   children,
 }: {
@@ -14,6 +16,7 @@ export default async function StudentLayout({
 
   return (
     <StudentDataProvider>
+      <ActivityTracker />
       <OfflineBanner />
       <div className="min-h-screen flex flex-col md:flex-row bg-bg text-text transition-colors duration-200">
         <BottomNav />

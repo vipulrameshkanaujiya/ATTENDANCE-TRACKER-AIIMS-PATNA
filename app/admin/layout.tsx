@@ -13,11 +13,14 @@ import {
   ShieldAlert,
   Camera,
   MessageSquare,
-  Heart
+  Heart,
+  Activity
 } from "lucide-react";
 
 const adminNavItems = [
   { label: "Overview", href: "/admin", icon: Shield },
+  { label: "Messages", href: "/admin/messages", icon: MessageSquare },
+  { label: "User Activity", href: "/admin/activity", icon: Activity },
   { label: "Schedule", href: "/admin/schedule", icon: Calendar },
   { label: "Import PDF", href: "/admin/import", icon: FileUp },
   { label: "Students", href: "/admin/students", icon: Users },

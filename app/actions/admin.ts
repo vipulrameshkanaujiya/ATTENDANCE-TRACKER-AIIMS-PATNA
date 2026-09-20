@@ -1197,3 +1197,96 @@ export async function getAllStudentsAttendanceAction() {
     return { success: false, error: err.message };
   }
 }
+
+export async function sendAdminMessageAction(formData: FormData) {
+  try {
+    const { user: adminUser } = await requireAdmin();
+    const supabase = createAdminClient();
+
+    const toUserId = formData.get("to_user_id") as string;
+    const subject = (formData.get("subject") as string)?.trim() || null;
+    const body = (formData.get("body") as string)?.trim();
+
+    if (!toUserId) return { success: false, error: "Recipient required." };
+    if (!body || body.length < 3) return { success: false, error: "Message too short." };
+
+    const { error } = await supabase.from("admin_messages").insert({
+      from_admin_id: adminUser.id,
+      to_user_id: toUserId,
+      subject,
+      body,
+    });
+
+    if (error) return { success: false, error: error.message };
+
+    revalidatePath("/admin/messages");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+export async function deleteAdminMessageAction(id: string) {
+  try {
+    await requireAdmin();
+    const supabase = createAdminClient();
+    await supabase.from("admin_messages").delete().eq("id", id);
+    revalidatePath("/admin/messages");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+export async function getUserActivityOverviewAction() {
+  try {
+    await requireAdmin();
+    const supabase = createAdminClient();
+
+    // Last 30 days window
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+
+    const { data: students } = await supabase
+      .from("users")
+      .select("id, roll_number, full_name, email, last_seen_at, last_page_visited")
+      .eq("is_onboarded", true)
+      .order("last_seen_at", { ascending: false, nullsFirst: false });
+
+    const { data: activityCounts } = await supabase
+      .from("user_activity")
+      .select("user_id")
+      .gte("created_at", thirtyDaysAgo);
+
+    const countsByUser = (activityCounts || []).reduce((acc: any, r) => {
+      acc[r.user_id] = (acc[r.user_id] || 0) + 1;
+      return acc;
+    }, {});
+
+    const results = (students || []).map(s => ({
+      ...s,
+      activity_last_30d: countsByUser[s.id] || 0,
+    }));
+
+    return { success: true, students: results };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+export async function getUserActivityLogAction(userId: string) {
+  try {
+    await requireAdmin();
+    const supabase = createAdminClient();
+
+    const { data } = await supabase
+      .from("user_activity")
+      .select("*")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(100);
+
+    return { success: true, log: data || [] };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}

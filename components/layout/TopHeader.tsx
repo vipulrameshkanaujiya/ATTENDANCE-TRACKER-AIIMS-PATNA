@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { UserProfile } from "@/types/database";
-import { User, Shield, Sun, Moon, HelpCircle } from "lucide-react";
+import { User, Shield, Sun, Moon, HelpCircle, Bell } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { getUnreadMessagesCountAction } from "@/app/actions/student";
 
 interface TopHeaderProps {
   profile: UserProfile | null;
@@ -46,7 +47,20 @@ export function TopHeader({ profile }: TopHeaderProps) {
 
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    setMounted(true);
+
+    const fetchCount = async () => {
+      const count = await getUnreadMessagesCountAction();
+      setUnreadCount(count);
+    };
+
+    fetchCount();
+    const interval = setInterval(fetchCount, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <header className="sticky top-0 z-30 bg-white/90 dark:bg-[#1A1510]/90 backdrop-blur-md border-b border-border px-4 py-3 sm:px-6">
@@ -68,6 +82,21 @@ export function TopHeader({ profile }: TopHeaderProps) {
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          {/* Messages / Inbox */}
+          <Link
+            href="/messages"
+            prefetch={true}
+            className="relative w-8 h-8 rounded-full flex items-center justify-center text-slate-600 hover:bg-slate-100 dark:text-[#A89E92] dark:hover:bg-[#241C14] transition focus:outline-none"
+            title="Messages"
+          >
+            <Bell className="w-4 h-4" />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-accent text-white text-[10px] font-bold flex items-center justify-center">
+                {unreadCount > 9 ? "9+" : unreadCount}
+              </span>
+            )}
+          </Link>
+
           {/* Help & About */}
           <Link
             href="/help"
