@@ -1096,22 +1096,25 @@ export async function getAllStudentsAttendanceAction() {
       .from("subjects")
       .select("*");
 
+    const todayStr = getTodayDateString();
+
+    const { data: allClasses } = await supabase
+      .from("classes")
+      .select(`
+        id, date, class_type, batch_scope, subject_id,
+        subject:subjects(id, code, name, color_code)
+      `)
+      .lte("date", todayStr);
+
     const { data: allAttendance, error: attError } = await supabase
       .from("attendance")
-      .select(`
-        student_id, status, class_id,
-        class:classes(
-          id, date, class_type, subject_id,
-          subject:subjects(id, code, name, color_code)
-        )
-      `);
+      .select("student_id, status, class_id");
+      
     if (attError) console.error("Error fetching attendance:", attError);
 
     const { data: allHistorical } = await supabase
       .from("student_historical_attendance")
       .select("*");
-
-    const todayStr = getTodayDateString();
     
     // Fallback simple shift: examDate - 1 day roughly. For simplicity, just use todayStr to examDate in generateFutureClasses. 
     // generateFutureClasses predicts up to endDate.
@@ -1132,9 +1135,21 @@ export async function getAllStudentsAttendanceAction() {
       const studentHistorical = (allHistorical || []).filter(h => h.student_id === student.id) as any;
       const batchName = (student.batch as any)?.name || "Batch A";
 
+      const attendanceByClass = new Map<string, string>();
+      for (const a of studentAttendance) {
+        attendanceByClass.set(a.class_id, a.status);
+      }
+
+      const syntheticRecords = (allClasses || [])
+        .filter(c => c.batch_scope === "ALL" || c.batch_scope === batchName)
+        .map(c => ({
+          status: attendanceByClass.get(c.id) || "ABSENT",
+          class: c
+        }));
+
       const breakdownMap = buildSubjectAttendanceBreakdown(
         subjects as any || [],
-        studentAttendance,
+        syntheticRecords,
         studentHistorical
       );
 
