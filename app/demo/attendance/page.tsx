@@ -57,7 +57,7 @@ export default function DemoAttendancePage() {
                   type="button"
                   onClick={() => setSelectedSub(isSelected ? "ALL" : s.code)}
                   className={`p-4 rounded-xl border text-left bg-white transition shadow-xs space-y-3 ${
-                    isSelected ? "border-blue-500 ring-2 ring-blue-500/20" : "border-slate-200 hover:border-slate-300"
+                    isSelected ? "border-accent ring-2 ring-accent/20" : "border-slate-200 hover:border-slate-300"
                   }`}
                 >
                   <div className="flex items-center justify-between border-b border-slate-100 pb-2">
@@ -115,7 +115,7 @@ export default function DemoAttendancePage() {
                 type="button"
                 onClick={() => setSelectedSub(isSelected ? "ALL" : s.code)}
                 className={`p-4 rounded-xl border text-left bg-white transition shadow-xs ${
-                  isSelected ? "border-blue-500 ring-2 ring-blue-500/20" : "border-slate-200 hover:border-slate-300"
+                  isSelected ? "border-accent ring-2 ring-accent/20" : "border-slate-200 hover:border-slate-300"
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
@@ -139,7 +139,7 @@ export default function DemoAttendancePage() {
             Attendance History ({filtered.length})
           </h2>
           {selectedSub !== "ALL" && (
-            <button onClick={() => setSelectedSub("ALL")} className="text-xs font-semibold text-blue-600 hover:underline">
+            <button onClick={() => setSelectedSub("ALL")} className="text-xs font-semibold text-accent hover:underline">
               Reset filter
             </button>
           )}
@@ -153,7 +153,7 @@ export default function DemoAttendancePage() {
             >
               <div className="space-y-0.5">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-blue-700">{item.code}</span>
+                  <span className="text-xs font-bold text-accent-text">{item.code}</span>
                   <span className="text-[11px] text-slate-400">{item.date} · {item.time}</span>
                 </div>
                 <p className="text-sm font-semibold text-slate-900">{item.topic}</p>

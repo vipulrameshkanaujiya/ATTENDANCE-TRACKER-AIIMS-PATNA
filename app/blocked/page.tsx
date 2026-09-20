@@ -28,7 +28,7 @@ export default function BlockedPage() {
           </p>
           <a 
             href={`mailto:${adminEmail}`}
-            className="mt-2 inline-block font-bold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition"
+            className="mt-2 inline-block font-bold text-accent hover:text-accent-text dark:text-blue-400 dark:hover:text-blue-300 transition"
           >
             {adminEmail}
           </a>

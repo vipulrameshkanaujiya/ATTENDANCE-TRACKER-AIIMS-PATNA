@@ -28,7 +28,7 @@ export default async function AdminCurriculumPage() {
         {/* 1. Add Subject */}
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-3">
           <h2 className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
-            <Plus className="w-4 h-4 text-blue-600" />
+            <Plus className="w-4 h-4 text-accent" />
             <span>Add Subject</span>
           </h2>
           <form action={createSubjectAction} className="space-y-2.5">
@@ -54,7 +54,7 @@ export default async function AdminCurriculumPage() {
             </div>
             <button
               type="submit"
-              className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition"
+              className="w-full py-2 bg-accent hover:bg-accent-hover text-white rounded-lg text-xs font-bold transition"
             >
               Add Subject
             </button>
@@ -161,7 +161,7 @@ export default async function AdminCurriculumPage() {
           <div key={s.id} className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-3">
             <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-blue-100 text-blue-800">
+                <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-blue-100 text-accent-text">
                   {s.code}
                 </span>
                 <span className="text-sm font-bold text-slate-900">{s.name}</span>

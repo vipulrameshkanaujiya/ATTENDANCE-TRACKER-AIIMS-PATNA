@@ -202,7 +202,7 @@ export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocke
               placeholder="Search roll, email, name..."
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
-              className="pl-9 pr-4 py-2 text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-bg dark:bg-slate-950 text-text focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-64"
+              className="pl-9 pr-4 py-2 text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-bg dark:bg-slate-950 text-text focus:outline-none focus:ring-2 focus:ring-accent w-full sm:w-64"
             />
           </div>
         </div>

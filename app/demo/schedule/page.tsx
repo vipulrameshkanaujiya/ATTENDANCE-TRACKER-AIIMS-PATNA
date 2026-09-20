@@ -22,7 +22,7 @@ export default function DemoSchedulePage() {
             Class Schedule
           </h1>
           <p className="text-xs text-slate-500 font-medium">
-            Filtered for <span className="text-blue-700 font-semibold">Batch A</span> and Full-Batch Lectures
+            Filtered for <span className="text-accent-text font-semibold">Batch A</span> and Full-Batch Lectures
           </p>
         </div>
 
@@ -32,7 +32,7 @@ export default function DemoSchedulePage() {
               key={v}
               onClick={() => setView(v)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition ${
-                view === v ? "bg-white text-blue-700 shadow-xs" : "text-slate-600 hover:text-slate-900"
+                view === v ? "bg-white text-accent-text shadow-xs" : "text-slate-600 hover:text-slate-900"
               }`}
             >
               {v}
@@ -43,7 +43,7 @@ export default function DemoSchedulePage() {
 
       <div className="space-y-3">
         <div className="py-1 flex items-center gap-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-blue-700 bg-blue-100 px-2.5 py-0.5 rounded-md">
+          <span className="text-xs font-bold uppercase tracking-wider text-accent-text bg-blue-100 px-2.5 py-0.5 rounded-md">
             Monday
           </span>
           <span className="text-sm font-bold text-slate-800">
@@ -65,7 +65,7 @@ export default function DemoSchedulePage() {
                 </div>
                 <div className="border-l-2 border-slate-200 pl-3 space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-blue-700">{c.subject_code}</span>
+                    <span className="text-xs font-bold text-accent-text">{c.subject_code}</span>
                     <span className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-slate-100 text-slate-600">
                       {c.class_type}
                     </span>

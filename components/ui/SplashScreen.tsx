@@ -90,21 +90,21 @@ export function SplashScreen() {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 transition-opacity duration-500 ${
+      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-gradient-to-br from-[#0F0C09] via-[#1A1510] to-[#241C14] transition-opacity duration-500 ${
         isFading ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >
       {/* Animated background glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-violet-500/20 rounded-full blur-3xl animate-pulse-slow animation-delay-1000" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse-slow animation-delay-1000" />
       </div>
 
       {/* Logo container */}
       <div className="relative z-10 flex flex-col items-center gap-6">
         <div className="relative">
           {/* Ring pulse glow */}
-          <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-accent to-accent-hover blur-xl opacity-60 animate-pulse-glow" />
+          <div className="absolute inset-0 rounded-3xl bg-accent blur-xl opacity-60 animate-pulse-glow" />
 
           {/* Logo */}
           <img
@@ -119,16 +119,16 @@ export function SplashScreen() {
           <h1 className="text-3xl font-black text-white tracking-tight">
             BunkBuddy
           </h1>
-          <p className="text-xs font-medium text-indigo-300/80 uppercase tracking-[0.3em]">
+          <p className="text-xs font-medium text-accent-text/80 uppercase tracking-[0.3em]">
             AIIMS Patna
           </p>
         </div>
 
         {/* Loading dots */}
         <div className="flex items-center gap-2 mt-4 animate-text-entrance-delay">
-          <span className="w-2 h-2 rounded-full bg-indigo-400 animate-bounce" style={{ animationDelay: "0ms" }} />
-          <span className="w-2 h-2 rounded-full bg-indigo-400 animate-bounce" style={{ animationDelay: "150ms" }} />
-          <span className="w-2 h-2 rounded-full bg-indigo-400 animate-bounce" style={{ animationDelay: "300ms" }} />
+          <span className="w-2 h-2 rounded-full bg-accent animate-bounce" style={{ animationDelay: "0ms" }} />
+          <span className="w-2 h-2 rounded-full bg-accent animate-bounce" style={{ animationDelay: "150ms" }} />
+          <span className="w-2 h-2 rounded-full bg-accent animate-bounce" style={{ animationDelay: "300ms" }} />
         </div>
       </div>
     </div>

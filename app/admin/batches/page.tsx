@@ -53,7 +53,7 @@ export default async function AdminBatchesPage() {
                     name="roll_min"
                     type="number"
                     defaultValue={b.roll_min}
-                    className="w-full px-2.5 py-1.5 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    className="w-full px-2.5 py-1.5 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-accent"
                   />
                 </div>
                 <div>
@@ -62,14 +62,14 @@ export default async function AdminBatchesPage() {
                     name="roll_max"
                     type="number"
                     defaultValue={b.roll_max}
-                    className="w-full px-2.5 py-1.5 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    className="w-full px-2.5 py-1.5 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-accent"
                   />
                 </div>
               </div>
 
               <button
                 type="submit"
-                className="w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition"
+                className="w-full py-2 px-3 bg-accent hover:bg-accent-hover text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition"
               >
                 <Save className="w-3.5 h-3.5" />
                 <span>Update Range</span>

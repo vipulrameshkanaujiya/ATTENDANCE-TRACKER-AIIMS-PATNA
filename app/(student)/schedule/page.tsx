@@ -150,7 +150,7 @@ export default function SchedulePage() {
 
                       <div className="border-l-2 border-border pl-3 space-y-1">
                         <div className="flex flex-wrap items-center gap-1.5">
-                          <span className="text-xs font-bold text-blue-700">
+                          <span className="text-xs font-bold text-accent-text">
                             {c.subject?.code || "MBBS"}
                           </span>
                           <span className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-bg-subtle text-slate-600 dark:text-slate-400">

@@ -61,7 +61,7 @@ export function TopHeader({ profile }: TopHeaderProps) {
             <h1 className="text-sm font-bold text-text leading-none truncate">
               BunkBuddy
             </h1>
-            <p className="text-[10px] font-semibold text-blue-600 dark:text-blue-400 tracking-wider uppercase truncate mt-0.5">
+            <p className="text-[10px] font-semibold text-accent dark:text-blue-400 tracking-wider uppercase truncate mt-0.5">
               AIIMS Patna
             </p>
           </div>
@@ -82,7 +82,7 @@ export function TopHeader({ profile }: TopHeaderProps) {
           <ThemeToggle />
 
           {/* Batch Badge */}
-          <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800/60">
+          <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-accent-soft text-accent-text dark:bg-blue-900/40 dark:text-blue-300 border border-accent/30/60 dark:border-blue-800/60">
             {batchName} A {roll}
           </span>
 
@@ -101,7 +101,7 @@ export function TopHeader({ profile }: TopHeaderProps) {
           <Link
             href="/profile"
             prefetch={true}
-            className="w-8 h-8 rounded-full bg-bg-subtle border border-slate-300 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-8 h-8 rounded-full bg-bg-subtle border border-slate-300 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition focus:outline-none focus:ring-2 focus:ring-accent"
             title="My Profile"
           >
             {profile?.avatar_url ? (

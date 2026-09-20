@@ -94,7 +94,7 @@ export default function LoginPage() {
             <div className="flex items-start gap-2.5">
               <GraduationCap className="w-4 h-4 text-slate-500 mt-0.5 flex-shrink-0" />
               <p className="text-xs text-slate-600 leading-relaxed">
-                <strong>Single Admin:</strong> The configured administrator is <code className="text-blue-700 bg-blue-50 px-1 py-0.5 rounded text-[11px]">vipulrameshkanaujiya@gmail.com</code>.
+                <strong>Single Admin:</strong> The configured administrator is <code className="text-accent-text bg-accent-soft px-1 py-0.5 rounded text-[11px]">vipulrameshkanaujiya@gmail.com</code>.
               </p>
             </div>
           </div>

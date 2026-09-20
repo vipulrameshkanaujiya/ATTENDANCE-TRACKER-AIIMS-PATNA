@@ -37,7 +37,7 @@ export default function DemoHomePage() {
       {/* 1. Header Greeting & Countdown Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-accent bg-accent-soft px-2 py-0.5 rounded-md border border-blue-100">
             MBBS Phase-2 Student Portal
           </span>
           <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mt-1 flex items-center gap-2">
@@ -69,13 +69,13 @@ export default function DemoHomePage() {
       {/* 2. NEXT CLASS Hero Card */}
       {nextClass && (
         <div className="bg-white rounded-2xl border-2 border-blue-600/30 shadow-sm p-5 sm:p-6 relative overflow-hidden">
-          <div className="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-bold tracking-wider uppercase px-3 py-1 rounded-bl-xl shadow-xs">
+          <div className="absolute top-0 right-0 bg-accent text-white text-[10px] font-bold tracking-wider uppercase px-3 py-1 rounded-bl-xl shadow-xs">
             Next Scheduled Session
           </div>
 
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-md text-xs font-bold bg-blue-100 text-blue-800">
+              <span className="px-2.5 py-0.5 rounded-md text-xs font-bold bg-blue-100 text-accent-text">
                 {nextClass.subject_code}
               </span>
               <span className="text-xs font-semibold text-slate-600">
@@ -96,7 +96,7 @@ export default function DemoHomePage() {
             <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100">
               <div className="flex items-center gap-4 text-xs font-medium text-slate-600">
                 <span className="flex items-center gap-1.5">
-                  <Clock className="w-4 h-4 text-blue-600" />
+                  <Clock className="w-4 h-4 text-accent" />
                   <span>{nextClass.start_time.slice(0, 5)} – {nextClass.end_time.slice(0, 5)}</span>
                 </span>
                 <span className="flex items-center gap-1.5">
@@ -148,7 +148,7 @@ export default function DemoHomePage() {
           </h2>
           <Link
             href="/demo/schedule"
-            className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-0.5"
+            className="text-xs font-semibold text-accent hover:text-accent-text flex items-center gap-0.5"
           >
             <span>Full Schedule</span>
             <ChevronRight className="w-3.5 h-3.5" />
@@ -168,7 +168,7 @@ export default function DemoHomePage() {
                 </div>
                 <div className="border-l-2 border-slate-200 pl-3 space-y-0.5">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-blue-700">
+                    <span className="text-xs font-bold text-accent-text">
                       {c.subject_code}
                     </span>
                     <span className="text-[11px] font-medium text-slate-500">
@@ -226,7 +226,7 @@ export default function DemoHomePage() {
           </div>
           <Link
             href="/demo/attendance"
-            className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-0.5"
+            className="text-xs font-semibold text-accent hover:text-accent-text flex items-center gap-0.5"
           >
             <span>Full History</span>
             <ChevronRight className="w-3.5 h-3.5" />
@@ -368,11 +368,11 @@ export default function DemoHomePage() {
             <div key={sub.code} className="p-3.5 rounded-xl border border-slate-100 bg-slate-50/60 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-slate-800">{sub.name}</span>
-                <span className="text-xs font-bold text-blue-700">{sub.progress}%</span>
+                <span className="text-xs font-bold text-accent-text">{sub.progress}%</span>
               </div>
               <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-blue-600 rounded-full"
+                  className="h-full bg-accent rounded-full"
                   style={{ width: `${sub.progress}%` }}
                 />
               </div>

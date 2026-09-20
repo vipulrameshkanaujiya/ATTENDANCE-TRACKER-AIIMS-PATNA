@@ -38,7 +38,7 @@ export default function BatchPhotoAdminPage() {
     <div className="max-w-2xl mx-auto space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-text flex items-center gap-2">
-          <Camera className="w-6 h-6 text-blue-600" />
+          <Camera className="w-6 h-6 text-accent" />
           Batch Photo
         </h1>
         <p className="text-sm text-slate-500 mt-1">
@@ -57,7 +57,7 @@ export default function BatchPhotoAdminPage() {
               name="photo" 
               accept="image/jpeg, image/png, image/webp" 
               required
-              className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-accent-soft file:text-accent-text hover:file:bg-blue-100"
             />
           </div>
           
@@ -77,7 +77,7 @@ export default function BatchPhotoAdminPage() {
             <button
               type="submit"
               disabled={isPending}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-accent hover:bg-accent-hover text-white rounded-lg font-semibold transition disabled:opacity-50"
             >
               <Upload className="w-4 h-4" />
               Upload Photo

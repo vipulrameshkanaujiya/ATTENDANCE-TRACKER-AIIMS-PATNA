@@ -205,7 +205,7 @@ export default function AdminScheduleTable({
                         {c.end_time ? c.end_time.slice(0, 5) : "—"}
                       </div>
                     </td>
-                    <td className="p-3 font-bold text-blue-700">
+                    <td className="p-3 font-bold text-accent-text">
                       {c.subject?.code || "—"}
                     </td>
                     <td className="p-3 font-medium text-slate-900 max-w-[220px] truncate" title={c.topic || ""}>
@@ -228,7 +228,7 @@ export default function AdminScheduleTable({
                         <button
                           type="button"
                           onClick={() => handleOpenEdit(c)}
-                          className="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50 border border-transparent hover:border-blue-200 transition"
+                          className="p-1.5 rounded-lg text-accent hover:bg-accent-soft border border-transparent hover:border-accent/30 transition"
                           title="Edit class"
                         >
                           <Pencil className="w-4 h-4" />
@@ -268,7 +268,7 @@ export default function AdminScheduleTable({
             {/* Modal Header */}
             <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-blue-100 text-accent-text flex items-center justify-center">
                   <Pencil className="w-4 h-4" />
                 </div>
                 <div>
@@ -311,7 +311,7 @@ export default function AdminScheduleTable({
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, date: e.target.value }))
                       }
-                      className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-accent"
                     />
                   </div>
 
@@ -330,7 +330,7 @@ export default function AdminScheduleTable({
                           start_time: e.target.value,
                         }))
                       }
-                      className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-accent"
                     />
                   </div>
 
@@ -346,7 +346,7 @@ export default function AdminScheduleTable({
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, end_time: e.target.value }))
                       }
-                      className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-accent"
                     />
                   </div>
                 </div>
@@ -365,7 +365,7 @@ export default function AdminScheduleTable({
                           subject_id: e.target.value,
                         }))
                       }
-                      className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-accent"
                     >
                       <option value="">-- General / Other --</option>
                       {subjects.map((s) => (
@@ -388,7 +388,7 @@ export default function AdminScheduleTable({
                         setFormData((prev) => ({ ...prev, topic: e.target.value }))
                       }
                       placeholder="e.g. Iron Deficiency Anemia"
-                      className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-accent"
                     />
                   </div>
                 </div>
@@ -406,7 +406,7 @@ export default function AdminScheduleTable({
                         setFormData((prev) => ({ ...prev, faculty: e.target.value }))
                       }
                       placeholder="e.g. Dr. Alok"
-                      className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-accent"
                     />
                   </div>
 
@@ -422,7 +422,7 @@ export default function AdminScheduleTable({
                         setFormData((prev) => ({ ...prev, venue: e.target.value }))
                       }
                       placeholder="e.g. Lecture Hall 2"
-                      className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-accent"
                     />
                   </div>
                 </div>
@@ -440,7 +440,7 @@ export default function AdminScheduleTable({
                           class_type: e.target.value as ClassType,
                         }))
                       }
-                      className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-accent"
                     >
                       {CLASS_TYPES.map((t) => (
                         <option key={t} value={t}>
@@ -462,7 +462,7 @@ export default function AdminScheduleTable({
                           batch_scope: e.target.value as BatchScope,
                         }))
                       }
-                      className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-accent"
                     >
                       {BATCH_SCOPES.map((b) => (
                         <option key={b.value} value={b.value}>
@@ -487,7 +487,7 @@ export default function AdminScheduleTable({
                 <button
                   type="submit"
                   disabled={isSaving}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition shadow-xs flex items-center gap-1.5 disabled:opacity-50"
+                  className="px-4 py-2 bg-accent hover:bg-accent-hover text-white text-xs font-bold rounded-lg transition shadow-xs flex items-center gap-1.5 disabled:opacity-50"
                 >
                   {isSaving && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                   <span>{isSaving ? "Saving..." : "Save Changes"}</span>

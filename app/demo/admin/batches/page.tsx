@@ -76,7 +76,7 @@ export default function DemoAdminBatchesPage() {
                   const max = parseInt((document.getElementById(`max-${b.id}`) as HTMLInputElement)?.value || "0", 10);
                   handleUpdate(b.id, min, max);
                 }}
-                className="w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition"
+                className="w-full py-2 px-3 bg-accent hover:bg-accent-hover text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition"
               >
                 <Save className="w-3.5 h-3.5" />
                 <span>Update Range</span>

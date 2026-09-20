@@ -234,7 +234,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
         </div>
 
         <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-start gap-2 text-xs text-text-muted bg-slate-50/70 dark:bg-slate-900/70 p-3 rounded-xl">
-          <Info className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" />
+          <Info className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
           <p>
             <strong>Note:</strong> Pre-September data is permanently locked to prevent accidental changes. If you notice a clerical error, please contact an Admin to request a correction.
           </p>
@@ -273,11 +273,11 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
         </div>
       </div>
 
-      <div className="p-3.5 bg-blue-50/90 border border-blue-200 dark:border-blue-900/30 rounded-xl flex items-start gap-2.5">
-        <Info className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
-        <div className="text-xs text-blue-900 dark:text-blue-100 space-y-0.5">
+      <div className="p-3.5 bg-accent-soft/90 border border-accent/30 dark:border-blue-900/30 rounded-xl flex items-start gap-2.5">
+        <Info className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+        <div className="text-xs text-accent-text dark:text-blue-100 space-y-0.5">
           <p className="font-semibold">⚠️ PHARMA Note:</p>
-          <p className="text-blue-800/90 text-[11px]">
+          <p className="text-accent-text/90 text-[11px]">
             Integration sessions count as 2 units (2 hours) + SDL as 1 unit. Make sure your historical count reflects this.
           </p>
         </div>
@@ -331,7 +331,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
                           required
                           value={values.theoryAttended}
                           onChange={(e) => handleInputChange(sub.code, "theoryAttended", e.target.value)}
-                          className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-1 focus:ring-blue-500 font-mono"
+                          className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-1 focus:ring-accent font-mono"
                           placeholder="Att"
                         />
                         <span className="text-text-faint font-bold">/</span>
@@ -345,7 +345,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
                         required
                         value={values.theoryTotal}
                         onChange={(e) => handleInputChange(sub.code, "theoryTotal", e.target.value)}
-                        className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-1 focus:ring-blue-500 font-mono"
+                        className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-1 focus:ring-accent font-mono"
                         placeholder="Total"
                       />
                     </td>
@@ -360,7 +360,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
                           required
                           value={values.practicalAttended}
                           onChange={(e) => handleInputChange(sub.code, "practicalAttended", e.target.value)}
-                          className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-1 focus:ring-blue-500 font-mono"
+                          className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-1 focus:ring-accent font-mono"
                           placeholder="Att"
                         />
                         <span className="text-text-faint font-bold">/</span>
@@ -374,7 +374,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
                         required
                         value={values.practicalTotal}
                         onChange={(e) => handleInputChange(sub.code, "practicalTotal", e.target.value)}
-                        className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-1 focus:ring-blue-500 font-mono"
+                        className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-1 focus:ring-accent font-mono"
                         placeholder="Total"
                       />
                     </td>
@@ -389,7 +389,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
           <button
             type="submit"
             disabled={isPending}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition shadow-sm disabled:opacity-50"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-accent hover:bg-accent-hover text-white text-xs font-bold transition shadow-sm disabled:opacity-50"
           >
             {isPending ? (
               <>

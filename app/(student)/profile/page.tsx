@@ -20,7 +20,7 @@ export default async function ProfilePage() {
       <div className="bg-bg-elevated rounded-2xl border border-border shadow-sm p-6 space-y-6">
         {/* Avatar & Name */}
         <div className="flex items-center gap-4 border-b border-slate-100 dark:border-slate-800 pb-5">
-          <div className="w-16 h-16 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xl border-2 border-blue-200 dark:border-blue-900/30 flex-shrink-0">
+          <div className="w-16 h-16 rounded-full bg-blue-100 text-accent-text flex items-center justify-center font-bold text-xl border-2 border-accent/30 dark:border-blue-900/30 flex-shrink-0">
             {profile?.avatar_url ? (
               <img
                 src={profile.avatar_url}
@@ -51,7 +51,7 @@ export default async function ProfilePage() {
         <div className="space-y-3.5">
           <div className="flex items-center justify-between p-3 rounded-xl bg-bg dark:bg-slate-950 border border-slate-100 dark:border-slate-800">
             <div className="flex items-center gap-2.5 text-xs text-text-muted font-medium">
-              <Hash className="w-4 h-4 text-blue-600" />
+              <Hash className="w-4 h-4 text-accent" />
               <span>MBBS Roll Number</span>
             </div>
             <span className="text-sm font-bold font-mono text-text">
@@ -61,10 +61,10 @@ export default async function ProfilePage() {
 
           <div className="flex items-center justify-between p-3 rounded-xl bg-bg dark:bg-slate-950 border border-slate-100 dark:border-slate-800">
             <div className="flex items-center gap-2.5 text-xs text-text-muted font-medium">
-              <Layers className="w-4 h-4 text-blue-600" />
+              <Layers className="w-4 h-4 text-accent" />
               <span>Assigned Batch</span>
             </div>
-            <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-blue-100 text-blue-800">
+            <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-blue-100 text-accent-text">
               {profile?.batch?.name || "Batch A"}
             </span>
           </div>

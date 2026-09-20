@@ -16,13 +16,13 @@ export default function DemoProfilePage() {
 
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-5">
         <div className="flex items-center gap-4 border-b border-slate-100 pb-5">
-          <div className="w-16 h-16 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xl border-2 border-blue-200">
+          <div className="w-16 h-16 rounded-full bg-blue-100 text-accent-text flex items-center justify-center font-bold text-xl border-2 border-accent/30">
             DS
           </div>
           <div>
             <h2 className="text-base font-bold text-slate-900">{demoStudent.full_name}</h2>
             <p className="text-xs text-slate-500 font-mono">{demoStudent.email}</p>
-            <span className="inline-block mt-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
+            <span className="inline-block mt-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-accent-soft text-accent-text border border-accent/30">
               Demo Student Account
             </span>
           </div>
@@ -31,7 +31,7 @@ export default function DemoProfilePage() {
         <div className="space-y-3">
           <div className="flex items-center justify-between p-3 rounded-xl bg-bg border border-slate-100">
             <div className="flex items-center gap-2 text-xs text-slate-500">
-              <Hash className="w-4 h-4 text-blue-600" />
+              <Hash className="w-4 h-4 text-accent" />
               <span>MBBS Roll Number</span>
             </div>
             <span className="text-sm font-bold font-mono text-slate-900">{demoStudent.roll_number}</span>
@@ -39,10 +39,10 @@ export default function DemoProfilePage() {
 
           <div className="flex items-center justify-between p-3 rounded-xl bg-bg border border-slate-100">
             <div className="flex items-center gap-2 text-xs text-slate-500">
-              <Layers className="w-4 h-4 text-blue-600" />
+              <Layers className="w-4 h-4 text-accent" />
               <span>Assigned Batch</span>
             </div>
-            <span className="text-xs font-bold px-2.5 py-1 rounded bg-blue-100 text-blue-800">
+            <span className="text-xs font-bold px-2.5 py-1 rounded bg-blue-100 text-accent-text">
               {demoStudent.batch.name} ({demoStudent.batch.notes})
             </span>
           </div>

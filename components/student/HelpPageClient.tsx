@@ -118,7 +118,7 @@ export function HelpPageClient({
           <img
             src="/logo.png"
             alt="BunkBuddy Logo"
-            className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-3xl shadow-xl mx-auto object-cover border-2 border-indigo-200 dark:border-indigo-900/50"
+            className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-3xl shadow-xl mx-auto object-cover border-2 border-accent/30 dark:border-accent/30"
           />
         </div>
         <div className="space-y-1.5">
@@ -129,7 +129,7 @@ export function HelpPageClient({
             Your attendance companion for AIIMS Patna MBBS 2024
           </p>
           <div className="pt-1">
-            <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-accent-soft dark:bg-accent-soft/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800/60">
+            <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-accent-soft dark:bg-accent-soft/60 text-accent-text dark:text-accent-text border border-accent/30 dark:border-accent/30">
               <Heart className="w-3 h-3 text-rose-500 fill-rose-500" />
               Built by Vipul K
             </span>
@@ -141,9 +141,9 @@ export function HelpPageClient({
       <section className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
         <a
           href="#how-to-use"
-          className="p-4 rounded-2xl border border-border bg-bg-elevated hover:border-indigo-400 dark:hover:border-indigo-600 transition shadow-xs flex flex-col items-center text-center gap-2 group cursor-pointer"
+          className="p-4 rounded-2xl border border-border bg-bg-elevated hover:border-accent/30 dark:hover:border-accent/30 transition shadow-xs flex flex-col items-center text-center gap-2 group cursor-pointer"
         >
-          <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center group-hover:scale-110 transition">
+          <div className="w-10 h-10 rounded-xl bg-accent-soft dark:bg-blue-900/30 text-accent flex items-center justify-center group-hover:scale-110 transition">
             <BookOpen className="w-5 h-5" />
           </div>
           <span className="text-xs font-bold text-slate-800 dark:text-slate-200">How to Use</span>
@@ -151,7 +151,7 @@ export function HelpPageClient({
 
         <a
           href="#feedback"
-          className="p-4 rounded-2xl border border-border bg-bg-elevated hover:border-indigo-400 dark:hover:border-indigo-600 transition shadow-xs flex flex-col items-center text-center gap-2 group cursor-pointer"
+          className="p-4 rounded-2xl border border-border bg-bg-elevated hover:border-accent/30 dark:hover:border-accent/30 transition shadow-xs flex flex-col items-center text-center gap-2 group cursor-pointer"
         >
           <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition">
             <MessageSquare className="w-5 h-5" />
@@ -252,12 +252,12 @@ export function HelpPageClient({
                 key={item.step}
                 className="p-4 rounded-2xl border border-border bg-bg-elevated shadow-xs flex items-start gap-3.5"
               >
-                <div className="w-8 h-8 rounded-xl bg-accent-soft dark:bg-accent-soft/50 text-accent-text dark:text-accent font-black text-xs flex items-center justify-center shrink-0 border border-indigo-100 dark:border-indigo-900/30">
+                <div className="w-8 h-8 rounded-xl bg-accent-soft dark:bg-accent-soft/50 text-accent-text dark:text-accent font-black text-xs flex items-center justify-center shrink-0 border border-indigo-100 dark:border-accent/30">
                   {item.step}
                 </div>
                 <div className="space-y-0.5 min-w-0">
                   <h3 className="text-sm font-bold text-text flex items-center gap-1.5">
-                    <Icon className="w-3.5 h-3.5 text-indigo-500" />
+                    <Icon className="w-3.5 h-3.5 text-accent-text" />
                     <span>{item.title}</span>
                   </h3>
                   <p className="text-xs text-text-muted leading-relaxed">
@@ -287,7 +287,7 @@ export function HelpPageClient({
               title: "Secure Login",
               desc: "Google OAuth ensures only verified accounts have access. Your identity is tamper-proof.",
               icon: Shield,
-              color: "text-blue-500",
+              color: "text-accent",
             },
             {
               title: "Instant Marking",
@@ -317,7 +317,7 @@ export function HelpPageClient({
               title: "Live Schedule",
               desc: "Interactive Day, Week, and Month timetable synced with academic notifications.",
               icon: Calendar,
-              color: "text-indigo-500",
+              color: "text-accent-text",
             },
             {
               title: "Dark Mode",
@@ -605,7 +605,7 @@ export function HelpPageClient({
                 <div className="pt-3 border-t border-border space-y-2">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                     <p className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center justify-center sm:justify-start gap-1.5">
-                      <Heart className="w-3.5 h-3.5 text-pink-500 fill-pink-500" />
+                      <Heart className="w-3.5 h-3.5 text-accent fill-accent" />
                       <span>Supporters ({donationCount})</span>
                     </p>
                     <span className="text-[10px] text-text-faint text-center sm:text-right">
@@ -687,7 +687,7 @@ export function HelpPageClient({
           For bugs or urgent issues:{" "}
           <a
             href="mailto:vipulrameshkanaujiya@gmail.com"
-            className="text-accent-text dark:text-accent underline hover:text-indigo-700"
+            className="text-accent-text dark:text-accent underline hover:text-accent-text"
           >
             vipulrameshkanaujiya@gmail.com
           </a>

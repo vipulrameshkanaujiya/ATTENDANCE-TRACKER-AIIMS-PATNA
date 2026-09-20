@@ -13,9 +13,9 @@ export default function DemoStatsPage() {
         </p>
       </div>
 
-      <div className="p-3.5 bg-blue-50/70 border border-blue-100 rounded-xl flex items-start gap-2.5">
-        <ShieldCheck className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-        <p className="text-xs text-blue-900 leading-relaxed">
+      <div className="p-3.5 bg-accent-soft/70 border border-blue-100 rounded-xl flex items-start gap-2.5">
+        <ShieldCheck className="w-4 h-4 text-accent mt-0.5 flex-shrink-0" />
+        <p className="text-xs text-accent-text leading-relaxed">
           <strong>Privacy Enforced:</strong> Aggregate batch-level analytics only. No student names, individual percentages, or leaderboards are displayed.
         </p>
       </div>
@@ -23,7 +23,7 @@ export default function DemoStatsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-xs space-y-1">
           <div className="flex items-center gap-2 text-slate-500 text-xs font-semibold uppercase tracking-wider">
-            <BarChart2 className="w-4 h-4 text-blue-600" />
+            <BarChart2 className="w-4 h-4 text-accent" />
             <span>Batch Average Attendance</span>
           </div>
           <p className="text-3xl font-extrabold text-slate-900">{demoBatchStats.batch_average_attendance_pct}%</p>
@@ -32,7 +32,7 @@ export default function DemoStatsPage() {
 
         <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-xs space-y-1">
           <div className="flex items-center gap-2 text-slate-500 text-xs font-semibold uppercase tracking-wider">
-            <Users className="w-4 h-4 text-blue-600" />
+            <Users className="w-4 h-4 text-accent" />
             <span>Active Students</span>
           </div>
           <p className="text-3xl font-extrabold text-slate-900">{demoBatchStats.active_students_30d}</p>
@@ -47,10 +47,10 @@ export default function DemoStatsPage() {
             <div key={s.subject_code} className="space-y-1">
               <div className="flex items-center justify-between text-xs font-bold">
                 <span className="text-slate-800">{s.subject_name}</span>
-                <span className="text-blue-700">{s.avg_pct}%</span>
+                <span className="text-accent-text">{s.avg_pct}%</span>
               </div>
               <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full bg-blue-600 rounded-full" style={{ width: `${s.avg_pct}%` }} />
+                <div className="h-full bg-accent rounded-full" style={{ width: `${s.avg_pct}%` }} />
               </div>
             </div>
           ))}

@@ -21,8 +21,8 @@ export default async function AdminDonationsPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-1">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-pink-50 dark:bg-pink-950/50 text-pink-600 dark:text-pink-400 flex items-center justify-center">
-            <Heart className="w-4 h-4 fill-pink-600" />
+          <div className="w-8 h-8 rounded-lg bg-pink-50 dark:bg-pink-950/50 text-accent dark:text-accent flex items-center justify-center">
+            <Heart className="w-4 h-4 fill-accent" />
           </div>
           <h1 className="text-2xl font-bold text-text">
             Supporters & Donations

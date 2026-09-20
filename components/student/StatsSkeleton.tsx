@@ -10,7 +10,7 @@ export function StatsSkeleton() {
       </div>
 
       {/* Privacy Notice Banner Skeleton */}
-      <div className="p-4 bg-blue-50/50 dark:bg-blue-950/20 border border-blue-100/50 dark:border-blue-900/30 rounded-xl flex items-start gap-3">
+      <div className="p-4 bg-accent-soft/50 dark:bg-blue-950/20 border border-blue-100/50 dark:border-blue-900/30 rounded-xl flex items-start gap-3">
         <Skeleton className="h-4 w-4 rounded-full flex-shrink-0 mt-0.5" />
         <Skeleton className="h-4 w-full rounded" />
       </div>

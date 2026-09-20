@@ -170,10 +170,10 @@ export default function StudentHomePage() {
 
       {/* Supporter Recognition Banner (Only if donations exist) */}
       {donationCount > 0 && (
-        <section className="rounded-2xl border border-pink-200/60 dark:border-pink-900/30 bg-gradient-to-br from-pink-50/60 via-white to-rose-50/40 dark:from-slate-900 dark:via-slate-900 dark:to-pink-950/20 p-4 shadow-xs">
+        <section className="rounded-2xl border border-accent/20 bg-gradient-to-br from-accent-soft/60 via-bg-elevated to-accent-soft/40 p-4 shadow-xs">
           <div className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-xl bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center shrink-0">
-              <Heart className="w-4 h-4 text-pink-600 dark:text-pink-400 fill-pink-600" />
+            <div className="w-9 h-9 rounded-xl bg-accent-soft flex items-center justify-center shrink-0">
+              <Heart className="w-4 h-4 text-accent fill-accent" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-bold text-text">
@@ -227,7 +227,7 @@ export default function StudentHomePage() {
           </h2>
           <Link
             href="/schedule"
-            className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1"
+            className="text-xs font-semibold text-accent hover:text-accent-text flex items-center gap-1"
           >
             <span>Full Schedule</span>
             <ChevronRight className="w-3.5 h-3.5" />
@@ -248,7 +248,7 @@ export default function StudentHomePage() {
                   </div>
                   <div className="border-l-2 border-border pl-3 space-y-0.5">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-blue-700">
+                      <span className="text-xs font-bold text-accent-text">
                         {c.subject?.code || "MBBS"}
                       </span>
                       <span className="text-[11px] font-medium text-text-muted">
@@ -302,7 +302,7 @@ export default function StudentHomePage() {
           </div>
           <Link
             href="/attendance"
-            className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1"
+            className="text-xs font-semibold text-accent hover:text-accent-text flex items-center gap-1"
           >
             <span>Details</span>
             <ChevronRight className="w-3.5 h-3.5" />

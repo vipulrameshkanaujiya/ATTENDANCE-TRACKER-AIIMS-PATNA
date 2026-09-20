@@ -115,7 +115,7 @@ export function BulkAttendanceClient({ currentData }: { currentData: any[] }) {
             <Upload className="w-5 h-5 text-emerald-600" />
             Upload CSV
           </h2>
-          <a href="/templates/bulk-attendance-template.csv" download className="text-xs font-semibold text-blue-600 hover:underline flex items-center gap-1">
+          <a href="/templates/bulk-attendance-template.csv" download className="text-xs font-semibold text-accent hover:underline flex items-center gap-1">
             <Download className="w-4 h-4" /> Template
           </a>
         </div>
@@ -125,7 +125,7 @@ export function BulkAttendanceClient({ currentData }: { currentData: any[] }) {
             type="file" 
             accept=".csv" 
             onChange={handleFileChange}
-            className="block w-full text-sm text-text-muted file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-slate-800 dark:file:text-slate-300 cursor-pointer"
+            className="block w-full text-sm text-text-muted file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-accent-soft file:text-accent-text hover:file:bg-blue-100 dark:file:bg-slate-800 dark:file:text-slate-300 cursor-pointer"
           />
         </div>
 
@@ -190,7 +190,7 @@ export function BulkAttendanceClient({ currentData }: { currentData: any[] }) {
       <div className="bg-bg-elevated border border-border rounded-xl p-5 shadow-xs">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold text-text flex items-center gap-2">
-            <FileSpreadsheet className="w-5 h-5 text-blue-600" />
+            <FileSpreadsheet className="w-5 h-5 text-accent" />
             Current Bulk Data ({Object.keys(groupedData).length} students)
           </h2>
           <button 

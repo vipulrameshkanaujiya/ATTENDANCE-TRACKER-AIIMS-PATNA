@@ -33,7 +33,7 @@ export default function DemoAdminExamsPage() {
 
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
         <h2 className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
-          <Clock className="w-4 h-4 text-blue-600" />
+          <Clock className="w-4 h-4 text-accent" />
           <span>Configured Exam Record</span>
         </h2>
 
@@ -71,7 +71,7 @@ export default function DemoAdminExamsPage() {
           <div className="sm:col-span-3">
             <button
               type="submit"
-              className="py-2.5 px-5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition shadow-xs flex items-center gap-2"
+              className="py-2.5 px-5 bg-accent hover:bg-accent-hover text-white rounded-lg text-xs font-bold transition shadow-xs flex items-center gap-2"
             >
               <Save className="w-4 h-4" />
               <span>Update Exam Record</span>

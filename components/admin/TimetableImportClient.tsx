@@ -115,7 +115,7 @@ export function TimetableImportClient({
       {/* Upload Dropzone */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
         <h2 className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
-          <Upload className="w-4 h-4 text-blue-600" />
+          <Upload className="w-4 h-4 text-accent" />
           <span>Upload Teaching Schedule PDF</span>
         </h2>
 
@@ -124,14 +124,14 @@ export function TimetableImportClient({
             type="file"
             accept=".pdf"
             onChange={handleFileChange}
-            className="w-full text-xs text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
+            className="w-full text-xs text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-accent-soft file:text-accent-text hover:file:bg-blue-100 cursor-pointer"
           />
 
           <button
             type="button"
             onClick={handleParse}
             disabled={!file || isParsing}
-            className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-xs transition shadow-xs flex items-center justify-center gap-2 disabled:opacity-50 whitespace-nowrap"
+            className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-accent hover:bg-accent-hover active:bg-blue-800 text-white font-semibold text-xs transition shadow-xs flex items-center justify-center gap-2 disabled:opacity-50 whitespace-nowrap"
           >
             {isParsing ? (
               <>
@@ -180,7 +180,7 @@ export function TimetableImportClient({
                 <span className="text-sm font-bold text-slate-900">
                   Preview Staging Grid ({editableRows.length} sessions detected)
                 </span>
-                <span className="text-[10px] font-bold uppercase bg-blue-100 text-blue-800 px-2 py-0.5 rounded-md">
+                <span className="text-[10px] font-bold uppercase bg-blue-100 text-accent-text px-2 py-0.5 rounded-md">
                   {parseResult?.month_year}
                 </span>
               </div>
@@ -250,11 +250,11 @@ export function TimetableImportClient({
                     <td className="p-2.5 whitespace-nowrap font-mono text-slate-500">
                       {row.start_time.slice(0, 5)} - {row.end_time.slice(0, 5)}
                     </td>
-                    <td className="p-2.5 font-bold text-blue-700">
+                    <td className="p-2.5 font-bold text-accent-text">
                       <select
                         value={row.subject_code}
                         onChange={(e) => handleUpdateRow(idx, "subject_code", e.target.value)}
-                        className="text-xs font-bold text-blue-700 bg-transparent border-0 p-0 focus:ring-0 cursor-pointer"
+                        className="text-xs font-bold text-accent-text bg-transparent border-0 p-0 focus:ring-0 cursor-pointer"
                       >
                         <option value="UNKNOWN">UNKNOWN</option>
                         <option value="CLINICAL">CLINICAL</option>

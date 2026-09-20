@@ -196,7 +196,7 @@ export function AdminHistoricalAttendanceModal({
         type="button"
         onClick={handleOpen}
         title="Admin Override: View & Edit Historical Attendance"
-        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md border border-blue-200 text-blue-700 bg-blue-50 hover:bg-blue-100 text-[11px] font-semibold transition shadow-xs"
+        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md border border-accent/30 text-accent-text bg-accent-soft hover:bg-blue-100 text-[11px] font-semibold transition shadow-xs"
       >
         <History className="w-3 h-3" />
         <span>Historical Data</span>
@@ -211,7 +211,7 @@ export function AdminHistoricalAttendanceModal({
             {/* Modal Header */}
             <div className="px-5 py-4 border-b border-slate-200 flex items-center justify-between bg-bg">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-blue-100 border border-blue-200 flex items-center justify-center text-blue-700">
+                <div className="w-8 h-8 rounded-lg bg-blue-100 border border-accent/30 flex items-center justify-center text-accent-text">
                   <History className="w-4 h-4" />
                 </div>
                 <div>
@@ -235,11 +235,11 @@ export function AdminHistoricalAttendanceModal({
 
             {/* Modal Content */}
             <div className="p-5 overflow-y-auto space-y-4">
-              <div className="p-3 bg-blue-50/70 border border-blue-200 rounded-xl flex items-start gap-2.5 text-xs text-blue-900">
-                <ShieldAlert className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
+              <div className="p-3 bg-accent-soft/70 border border-accent/30 rounded-xl flex items-start gap-2.5 text-xs text-accent-text">
+                <ShieldAlert className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="font-semibold">Administrative Record Override</p>
-                  <p className="text-[11px] text-blue-800/90">
+                  <p className="text-[11px] text-accent-text/90">
                     Modifying these values will update the student's pre-September baseline and record your admin user ID as the editor.
                   </p>
                 </div>
@@ -261,7 +261,7 @@ export function AdminHistoricalAttendanceModal({
 
               {isLoading ? (
                 <div className="py-12 flex flex-col items-center justify-center text-slate-400 gap-2">
-                  <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+                  <Loader2 className="w-6 h-6 animate-spin text-accent" />
                   <p className="text-xs font-medium">Loading historical records...</p>
                 </div>
               ) : (
@@ -303,7 +303,7 @@ export function AdminHistoricalAttendanceModal({
                                     onChange={(e) =>
                                       handleInputChange(sub.code, "theoryAttended", e.target.value)
                                     }
-                                    className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 rounded-lg focus:ring-1 focus:ring-blue-500 font-mono"
+                                    className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 rounded-lg focus:ring-1 focus:ring-accent font-mono"
                                     placeholder="Att"
                                   />
                                   <span className="text-slate-400 font-bold">/</span>
@@ -319,7 +319,7 @@ export function AdminHistoricalAttendanceModal({
                                   onChange={(e) =>
                                     handleInputChange(sub.code, "theoryTotal", e.target.value)
                                   }
-                                  className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 rounded-lg focus:ring-1 focus:ring-blue-500 font-mono"
+                                  className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 rounded-lg focus:ring-1 focus:ring-accent font-mono"
                                   placeholder="Total"
                                 />
                               </td>
@@ -336,7 +336,7 @@ export function AdminHistoricalAttendanceModal({
                                     onChange={(e) =>
                                       handleInputChange(sub.code, "practicalAttended", e.target.value)
                                     }
-                                    className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 rounded-lg focus:ring-1 focus:ring-blue-500 font-mono"
+                                    className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 rounded-lg focus:ring-1 focus:ring-accent font-mono"
                                     placeholder="Att"
                                   />
                                   <span className="text-slate-400 font-bold">/</span>
@@ -352,7 +352,7 @@ export function AdminHistoricalAttendanceModal({
                                   onChange={(e) =>
                                     handleInputChange(sub.code, "practicalTotal", e.target.value)
                                   }
-                                  className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 rounded-lg focus:ring-1 focus:ring-blue-500 font-mono"
+                                  className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 rounded-lg focus:ring-1 focus:ring-accent font-mono"
                                   placeholder="Total"
                                 />
                               </td>
@@ -369,7 +369,7 @@ export function AdminHistoricalAttendanceModal({
                       id="isOneTimeSet"
                       checked={isOneTimeSet}
                       onChange={(e) => setIsOneTimeSet(e.target.checked)}
-                      className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                      className="w-4 h-4 rounded border-slate-300 text-accent focus:ring-accent"
                     />
                     <label htmlFor="isOneTimeSet" className="text-xs text-slate-700 font-medium">
                       Lock as one-time entry (student cannot modify directly)
@@ -393,7 +393,7 @@ export function AdminHistoricalAttendanceModal({
                 type="submit"
                 form="admin-historical-form"
                 disabled={isPending || isLoading}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition shadow-xs disabled:opacity-50"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-accent hover:bg-accent-hover text-white text-xs font-semibold transition shadow-xs disabled:opacity-50"
               >
                 {isPending ? (
                   <>

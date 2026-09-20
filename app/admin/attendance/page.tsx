@@ -51,7 +51,7 @@ export default async function AdminAttendancePage() {
                     <div className="text-[10px] text-slate-400 font-sans font-normal">{log.student?.full_name || log.student?.email}</div>
                   </td>
                   <td className="p-3">
-                    <span className="font-bold text-blue-700">{log.class?.subject?.code || "MBBS"}</span>
+                    <span className="font-bold text-accent-text">{log.class?.subject?.code || "MBBS"}</span>
                     <p className="font-medium text-slate-800">{log.class?.topic || "Session"}</p>
                     <p className="text-[11px] text-slate-400">{log.class?.date} · {log.class?.class_type}</p>
                   </td>

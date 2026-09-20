@@ -44,12 +44,12 @@ export default function DemoAdminAttendancePage() {
               {logs.map((log) => (
                 <tr key={log.id} className="hover:bg-bg">
                   <td className="p-3">
-                    <span className="font-bold text-blue-700">{log.code}</span>
+                    <span className="font-bold text-accent-text">{log.code}</span>
                     <p className="font-semibold text-slate-800">{log.topic}</p>
                     <p className="text-[11px] text-slate-400">{log.date} · {log.time}</p>
                   </td>
                   <td className="p-3">
-                    <span className="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-bold">{log.batch}</span>
+                    <span className="px-2 py-0.5 rounded bg-accent-soft text-accent-text font-bold">{log.batch}</span>
                   </td>
                   <td className="p-3">
                     <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${log.status === "PRESENT" ? "bg-emerald-100 text-emerald-800" : "bg-rose-100 text-rose-800"}`}>

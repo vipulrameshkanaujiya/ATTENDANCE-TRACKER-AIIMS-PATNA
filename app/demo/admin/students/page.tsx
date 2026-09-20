@@ -52,7 +52,7 @@ export default function DemoAdminStudentsPage() {
                     <select
                       value={s.batch}
                       onChange={(e) => updateBatch(s.id, e.target.value)}
-                      className="text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 rounded-lg px-2 py-1"
+                      className="text-xs font-bold bg-accent-soft text-accent-text border border-accent/30 rounded-lg px-2 py-1"
                     >
                       <option value="Batch A">Batch A (Roll 1-40)</option>
                       <option value="Batch B">Batch B (Roll 41-80)</option>

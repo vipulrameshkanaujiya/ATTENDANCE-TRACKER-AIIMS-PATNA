@@ -46,7 +46,7 @@ export default function DemoAdminSchedulePage() {
 
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
         <h2 className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
-          <Plus className="w-4 h-4 text-blue-600" />
+          <Plus className="w-4 h-4 text-accent" />
           <span>Add New Scheduled Class</span>
         </h2>
 
@@ -88,7 +88,7 @@ export default function DemoAdminSchedulePage() {
           <div className="flex items-end">
             <button
               type="submit"
-              className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition shadow-xs"
+              className="w-full py-2.5 px-4 bg-accent hover:bg-accent-hover text-white rounded-lg text-xs font-bold transition shadow-xs"
             >
               Add Session
             </button>
@@ -120,7 +120,7 @@ export default function DemoAdminSchedulePage() {
                     <div>{c.date}</div>
                     <div className="text-[11px] text-slate-400">{c.start_time.slice(0, 5)} - {c.end_time.slice(0, 5)}</div>
                   </td>
-                  <td className="p-3 font-bold text-blue-700">{c.subject_code}</td>
+                  <td className="p-3 font-bold text-accent-text">{c.subject_code}</td>
                   <td className="p-3 font-medium text-slate-900">{c.topic}</td>
                   <td className="p-3 whitespace-nowrap">
                     <span className="font-semibold text-slate-700">{c.class_type}</span>

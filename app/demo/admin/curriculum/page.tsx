@@ -34,7 +34,7 @@ export default function DemoAdminCurriculumPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-3">
           <h2 className="text-xs font-bold uppercase text-slate-800 flex items-center gap-1.5">
-            <Plus className="w-4 h-4 text-blue-600" />
+            <Plus className="w-4 h-4 text-accent" />
             <span>Add Subject</span>
           </h2>
           <form onSubmit={handleAddSubject} className="space-y-2">
@@ -52,7 +52,7 @@ export default function DemoAdminCurriculumPage() {
               onChange={(e) => setNewSubName(e.target.value)}
               className="w-full px-2.5 py-1.5 text-xs bg-bg border border-slate-300 rounded-lg"
             />
-            <button type="submit" className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition">
+            <button type="submit" className="w-full py-2 bg-accent hover:bg-accent-hover text-white rounded-lg text-xs font-bold transition">
               Add Subject
             </button>
           </form>

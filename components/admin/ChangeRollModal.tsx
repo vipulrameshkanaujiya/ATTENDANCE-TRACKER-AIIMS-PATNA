@@ -39,7 +39,7 @@ export function ChangeRollModal({ studentId, currentRoll }: ChangeRollModalProps
       <button
         onClick={() => setIsOpen(true)}
         title="Change Roll Number"
-        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md border border-blue-200 text-blue-700 bg-blue-50 hover:bg-blue-100 text-[11px] font-semibold transition"
+        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md border border-accent/30 text-accent-text bg-accent-soft hover:bg-blue-100 text-[11px] font-semibold transition"
       >
         <Edit2 className="w-3 h-3" />
         <span>Change Roll</span>
@@ -76,7 +76,7 @@ export function ChangeRollModal({ studentId, currentRoll }: ChangeRollModalProps
                   value={newRoll}
                   onChange={(e) => setNewRoll(e.target.value.trim())}
                   placeholder="e.g. 24001"
-                  className="w-full px-3 py-2 text-sm font-mono border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-950 text-text focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 text-sm font-mono border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-950 text-text focus:outline-none focus:ring-2 focus:ring-accent"
                 />
               </div>
 
@@ -92,7 +92,7 @@ export function ChangeRollModal({ studentId, currentRoll }: ChangeRollModalProps
                 <button
                   type="submit"
                   disabled={isPending || newRoll.length !== 5}
-                  className="px-4 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition flex items-center gap-2 disabled:opacity-50"
+                  className="px-4 py-2 text-xs font-semibold text-white bg-accent hover:bg-accent-hover rounded-lg transition flex items-center gap-2 disabled:opacity-50"
                 >
                   {isPending && <Loader2 className="w-3 h-3 animate-spin" />}
                   Update Roll Number

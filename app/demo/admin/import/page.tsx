@@ -40,7 +40,7 @@ export default function DemoAdminImportPage() {
 
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
         <h2 className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
-          <Upload className="w-4 h-4 text-blue-600" />
+          <Upload className="w-4 h-4 text-accent" />
           <span>Upload Teaching Schedule PDF</span>
         </h2>
 
@@ -108,7 +108,7 @@ export default function DemoAdminImportPage() {
                 <tr key={r.id} className="hover:bg-bg">
                   <td className="p-2.5 font-mono whitespace-nowrap">{r.date}</td>
                   <td className="p-2.5 font-mono text-slate-500 whitespace-nowrap">{r.time}</td>
-                  <td className="p-2.5 font-bold text-blue-700">{r.subject}</td>
+                  <td className="p-2.5 font-bold text-accent-text">{r.subject}</td>
                   <td className="p-2.5 max-w-[200px] truncate font-medium text-slate-900">{r.topic}</td>
                   <td className="p-2.5 text-slate-500 max-w-[140px] truncate">{r.faculty}</td>
                   <td className="p-2.5">{r.type}</td>

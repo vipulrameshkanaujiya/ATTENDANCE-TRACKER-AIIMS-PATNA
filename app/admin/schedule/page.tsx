@@ -37,7 +37,7 @@ export default async function AdminSchedulePage() {
       {/* Add New Session Form */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
         <h2 className="text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
-          <Plus className="w-4 h-4 text-blue-600" />
+          <Plus className="w-4 h-4 text-accent" />
           <span>Add New Scheduled Class</span>
         </h2>
 
@@ -49,7 +49,7 @@ export default async function AdminSchedulePage() {
               type="date"
               required
               defaultValue={todayStr}
-              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-accent"
             />
           </div>
 
@@ -60,7 +60,7 @@ export default async function AdminSchedulePage() {
               type="time"
               required
               defaultValue="08:00"
-              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-accent"
             />
           </div>
 
@@ -71,7 +71,7 @@ export default async function AdminSchedulePage() {
               type="time"
               required
               defaultValue="09:00"
-              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-accent"
             />
           </div>
 
@@ -79,7 +79,7 @@ export default async function AdminSchedulePage() {
             <label className="text-xs font-semibold text-slate-700">Subject</label>
             <select
               name="subject_id"
-              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-accent"
             >
               <option value="">-- General / Other --</option>
               {(subjects || []).map((s) => (
@@ -97,7 +97,7 @@ export default async function AdminSchedulePage() {
               type="text"
               required
               placeholder="e.g. Iron Deficiency Anemia"
-              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-accent"
             />
           </div>
 
@@ -107,7 +107,7 @@ export default async function AdminSchedulePage() {
               name="faculty"
               type="text"
               placeholder="e.g. Dr. Alok"
-              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-accent"
             />
           </div>
 
@@ -117,7 +117,7 @@ export default async function AdminSchedulePage() {
               name="venue"
               type="text"
               defaultValue="Lecture Hall 2"
-              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-accent"
             />
           </div>
 
@@ -127,7 +127,7 @@ export default async function AdminSchedulePage() {
               name="class_type"
               required
               defaultValue="Lecture"
-              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-accent"
             >
               {["Lecture", "SDL", "Tutorial", "Practical", "Clinical Posting", "Seminar", "Integration", "Exam", "Other"].map((t) => (
                 <option key={t} value={t}>{t}</option>
@@ -141,7 +141,7 @@ export default async function AdminSchedulePage() {
               name="batch_scope"
               required
               defaultValue="ALL"
-              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-accent"
             >
               <option value="ALL">ALL (Full Batch)</option>
               <option value="Batch A">Batch A</option>
@@ -153,7 +153,7 @@ export default async function AdminSchedulePage() {
           <div className="sm:col-span-2 flex items-end">
             <button
               type="submit"
-              className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition shadow-xs"
+              className="w-full py-2.5 px-4 bg-accent hover:bg-accent-hover text-white rounded-lg text-xs font-bold transition shadow-xs"
             >
               Save Class to Schedule
             </button>

@@ -162,7 +162,7 @@ export function DonationsManager({ initialDonations }: { initialDonations: Donat
       {/* Add Donation Form Card */}
       <div className="bg-bg-elevated border border-border rounded-2xl p-5 sm:p-6 shadow-xs space-y-4">
         <div className="flex items-center gap-2 pb-2 border-b border-slate-100 dark:border-slate-800">
-          <div className="w-8 h-8 rounded-xl bg-pink-50 dark:bg-pink-950/50 text-pink-600 dark:text-pink-400 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-xl bg-pink-50 dark:bg-pink-950/50 text-accent dark:text-accent flex items-center justify-center">
             <Plus className="w-4 h-4" />
           </div>
           <div>
@@ -225,7 +225,7 @@ export function DonationsManager({ initialDonations }: { initialDonations: Donat
                 type="checkbox"
                 checked={isPublic}
                 onChange={(e) => setIsPublic(e.target.checked)}
-                className="w-4 h-4 rounded text-pink-600 focus:ring-pink-500 border-slate-300 dark:border-slate-700"
+                className="w-4 h-4 rounded text-accent focus:ring-pink-500 border-slate-300 dark:border-slate-700"
               />
               <span>Display publicly on Home & Help pages</span>
             </label>
@@ -269,7 +269,7 @@ export function DonationsManager({ initialDonations }: { initialDonations: Donat
       <div className="bg-bg-elevated border border-border rounded-2xl shadow-xs overflow-hidden">
         <div className="p-4 sm:p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Heart className="w-4 h-4 text-pink-600 dark:text-pink-400 fill-pink-600" />
+            <Heart className="w-4 h-4 text-accent dark:text-accent fill-accent" />
             <h3 className="text-sm font-bold text-text">
               Supporters & Donations ({donations.length})
             </h3>
@@ -278,7 +278,7 @@ export function DonationsManager({ initialDonations }: { initialDonations: Donat
 
         {donations.length === 0 ? (
           <div className="text-center py-16 px-4">
-            <div className="w-12 h-12 rounded-2xl bg-pink-50 dark:bg-pink-950/40 text-pink-600 dark:text-pink-400 flex items-center justify-center mx-auto mb-3">
+            <div className="w-12 h-12 rounded-2xl bg-pink-50 dark:bg-pink-950/40 text-accent dark:text-accent flex items-center justify-center mx-auto mb-3">
               <Heart className="w-6 h-6" />
             </div>
             <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">
@@ -443,7 +443,7 @@ export function DonationsManager({ initialDonations }: { initialDonations: Donat
                   id="edit-public"
                   checked={editForm.is_public}
                   onChange={(e) => setEditForm((prev) => ({ ...prev, is_public: e.target.checked }))}
-                  className="w-4 h-4 rounded text-pink-600 focus:ring-pink-500 border-slate-300 dark:border-slate-700 cursor-pointer"
+                  className="w-4 h-4 rounded text-accent focus:ring-pink-500 border-slate-300 dark:border-slate-700 cursor-pointer"
                 />
                 <label htmlFor="edit-public" className="text-xs text-slate-700 dark:text-slate-300 cursor-pointer">
                   Show publicly on Home & Help pages

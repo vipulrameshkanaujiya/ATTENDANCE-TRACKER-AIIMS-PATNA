@@ -152,7 +152,7 @@ export function BulkAttendanceVerification({
           </div>
 
           <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-start gap-2 text-xs text-text-muted bg-slate-50/70 dark:bg-slate-900/70 p-3 rounded-xl">
-            <Info className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" />
+            <Info className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
             <p>
               <strong>Note:</strong> Pre-September data is permanently locked to prevent accidental changes. If you notice a clerical error, please contact an Admin to request a correction.
             </p>

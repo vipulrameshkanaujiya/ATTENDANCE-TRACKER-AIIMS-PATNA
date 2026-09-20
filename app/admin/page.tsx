@@ -35,7 +35,7 @@ export default async function AdminOverviewPage() {
       sub: "Enrolled MBBS students with linked roll numbers",
       icon: Users,
       href: "/admin/students",
-      color: "text-blue-600 bg-blue-50 border-blue-100",
+      color: "text-accent bg-accent-soft border-blue-100",
     },
     {
       label: "Classes This Month",
@@ -104,13 +104,13 @@ export default async function AdminOverviewPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           <Link
             href="/admin/import"
-            className="p-4 rounded-xl border border-blue-200 bg-blue-50/50 hover:bg-blue-50 transition flex items-start gap-3 group"
+            className="p-4 rounded-xl border border-accent/30 bg-accent-soft/50 hover:bg-accent-soft transition flex items-start gap-3 group"
           >
-            <div className="p-2.5 rounded-xl bg-blue-600 text-white flex-shrink-0 shadow-xs">
+            <div className="p-2.5 rounded-xl bg-accent text-white flex-shrink-0 shadow-xs">
               <FileUp className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-700 flex items-center gap-1">
+              <h3 className="text-sm font-bold text-slate-900 group-hover:text-accent-text flex items-center gap-1">
                 <span>Timetable PDF Importer</span>
                 <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition" />
               </h3>
@@ -128,7 +128,7 @@ export default async function AdminOverviewPage() {
               <Calendar className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 flex items-center gap-1">
+              <h3 className="text-sm font-bold text-slate-900 group-hover:text-accent flex items-center gap-1">
                 <span>Schedule & Classes</span>
                 <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition" />
               </h3>
@@ -146,7 +146,7 @@ export default async function AdminOverviewPage() {
               <BookOpen className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 flex items-center gap-1">
+              <h3 className="text-sm font-bold text-slate-900 group-hover:text-accent flex items-center gap-1">
                 <span>Curriculum & Topics</span>
                 <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition" />
               </h3>
@@ -164,7 +164,7 @@ export default async function AdminOverviewPage() {
               <Layers className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 flex items-center gap-1">
+              <h3 className="text-sm font-bold text-slate-900 group-hover:text-accent flex items-center gap-1">
                 <span>Batch Configuration</span>
                 <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition" />
               </h3>
@@ -182,7 +182,7 @@ export default async function AdminOverviewPage() {
               <Clock className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 flex items-center gap-1">
+              <h3 className="text-sm font-bold text-slate-900 group-hover:text-accent flex items-center gap-1">
                 <span>Exam Countdowns</span>
                 <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition" />
               </h3>
@@ -200,7 +200,7 @@ export default async function AdminOverviewPage() {
               <Users className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 flex items-center gap-1">
+              <h3 className="text-sm font-bold text-slate-900 group-hover:text-accent flex items-center gap-1">
                 <span>Student Directory</span>
                 <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition" />
               </h3>

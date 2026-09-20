@@ -22,7 +22,7 @@ export function SubjectAttendanceCard({ stat, isSelected = false }: SubjectAtten
         className={clsx(
           "p-4 rounded-xl border transition-all text-left bg-bg-elevated shadow-xs space-y-3",
           isSelected
-            ? "border-blue-500 ring-2 ring-blue-500/20"
+            ? "border-accent ring-2 ring-accent/20"
             : "border-border hover:border-slate-300"
         )}
       >
@@ -143,7 +143,7 @@ export function SubjectAttendanceCard({ stat, isSelected = false }: SubjectAtten
       className={clsx(
         "p-4 rounded-xl border transition-all text-left bg-bg-elevated shadow-xs",
         isSelected
-          ? "border-blue-500 ring-2 ring-blue-500/20"
+          ? "border-accent ring-2 ring-accent/20"
           : "border-border hover:border-slate-300"
       )}
     >

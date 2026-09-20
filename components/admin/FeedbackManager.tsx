@@ -177,8 +177,8 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
         );
       case "REVIEWED":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-950/50 dark:text-blue-300 border border-blue-300/60 dark:border-blue-700/50">
-            <Eye className="w-3 h-3 text-blue-500" />
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-accent-text dark:bg-blue-950/50 dark:text-blue-300 border border-blue-300/60 dark:border-blue-700/50">
+            <Eye className="w-3 h-3 text-accent" />
             Reviewed
           </span>
         );
@@ -239,7 +239,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
                 <span
                   className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
                     isActive
-                      ? "bg-indigo-700 text-white"
+                      ? "bg-accent-hover text-white"
                       : "bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300"
                   }`}
                 >
@@ -451,7 +451,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
                     onClick={() => setEditStatus(st)}
                     className={`py-2 px-2.5 rounded-xl text-xs font-bold transition text-center border ${
                       editStatus === st
-                        ? "bg-accent text-white border-indigo-600 shadow-xs"
+                        ? "bg-accent text-white border-accent/30 shadow-xs"
                         : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-bg"
                     }`}
                   >

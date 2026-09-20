@@ -90,7 +90,7 @@ export default async function AdminStudentsPage() {
       {/* Add Student to Roster Card */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 space-y-4">
         <div className="flex items-center gap-2">
-          <UserPlus className="w-4 h-4 text-blue-600" />
+          <UserPlus className="w-4 h-4 text-accent" />
           <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
             Add Allowed Roll Number to Roster
           </h2>
@@ -107,7 +107,7 @@ export default async function AdminStudentsPage() {
               required
               maxLength={5}
               placeholder="24151"
-              className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:ring-1 focus:ring-blue-500 font-mono"
+              className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:ring-1 focus:ring-accent font-mono"
             />
           </div>
 
@@ -119,7 +119,7 @@ export default async function AdminStudentsPage() {
               type="text"
               name="full_name"
               placeholder="e.g. Rahul Sharma"
-              className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:ring-1 focus:ring-blue-500"
+              className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:ring-1 focus:ring-accent"
             />
           </div>
 
@@ -129,7 +129,7 @@ export default async function AdminStudentsPage() {
             </label>
             <select
               name="batch_id"
-              className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:ring-1 focus:ring-blue-500 bg-white"
+              className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:ring-1 focus:ring-accent bg-white"
             >
               {(batches || []).map((b: any) => (
                 <option key={b.id} value={b.id}>
@@ -142,7 +142,7 @@ export default async function AdminStudentsPage() {
           <div>
             <button
               type="submit"
-              className="w-full py-2 px-4 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition shadow-xs"
+              className="w-full py-2 px-4 rounded-lg bg-accent hover:bg-accent-hover text-white text-xs font-semibold transition shadow-xs"
             >
               Whitelist Roll Number
             </button>
@@ -159,7 +159,7 @@ export default async function AdminStudentsPage() {
           </h2>
         </div>
         <p className="text-xs text-slate-500">
-          Paste roll numbers, names, and optional batches (one per line). Format: <code className="bg-slate-100 px-1 py-0.5 rounded text-blue-700 font-mono">24001, Student Name, Batch A</code> or simply list roll numbers.
+          Paste roll numbers, names, and optional batches (one per line). Format: <code className="bg-slate-100 px-1 py-0.5 rounded text-accent-text font-mono">24001, Student Name, Batch A</code> or simply list roll numbers.
         </p>
 
         <form action={bulkImportRosterAction} className="space-y-3">
@@ -222,7 +222,7 @@ export default async function AdminStudentsPage() {
                       )}
                     </td>
                     <td className="p-3">
-                      <span className="px-2.5 py-1 rounded-md text-xs font-bold bg-blue-50 text-blue-700 border border-blue-100">
+                      <span className="px-2.5 py-1 rounded-md text-xs font-bold bg-accent-soft text-accent-text border border-blue-100">
                         {r.batch?.name || "Auto-assigned"}
                       </span>
                     </td>
@@ -283,7 +283,7 @@ export default async function AdminStudentsPage() {
                       <p className="text-[11px] text-slate-400 font-mono">{s.email}</p>
                     </td>
                     <td className="p-3">
-                      <span className="px-2.5 py-1 rounded-md text-xs font-bold bg-blue-50 text-blue-700 border border-blue-100">
+                      <span className="px-2.5 py-1 rounded-md text-xs font-bold bg-accent-soft text-accent-text border border-blue-100">
                         {s.batch?.name || "Unassigned"}
                       </span>
                     </td>
