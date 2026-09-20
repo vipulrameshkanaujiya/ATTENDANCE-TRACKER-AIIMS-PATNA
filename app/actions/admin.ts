@@ -1144,38 +1144,55 @@ export async function getAllStudentsAttendanceAction() {
       let totalOverallAttended = 0;
       let totalOverallClasses = 0;
 
-      const perSubject = [];
-      const targetSubjects = ["PATH", "PHARMA", "MICRO"];
+      const perSubject: Record<string, any> = {};
 
       for (const sub of Object.values(breakdownMap)) {
          totalOverallAttended += sub.attended;
          totalOverallClasses += sub.total;
 
-         if (targetSubjects.includes(sub.code)) {
-            const futureTheoryClasses = futureClasses.filter((c: any) => c.subject_code === sub.code && (c.class_type === "Lecture" || c.class_type === "Tutorial" || c.class_type === "Integration" || c.class_type === "SDL"));
-            const futurePracticalClasses = futureClasses.filter((c: any) => c.subject_code === sub.code && c.class_type === "Practical");
-            
-            const predictedFutureTheory = futureTheoryClasses.reduce((sum: number, c: any) => sum + (c.units || 1), 0);
-            const predictedFuturePractical = futurePracticalClasses.reduce((sum: number, c: any) => sum + (c.units || 1), 0);
-            
-            const path = computePathTo76(
-              sub,
-              { theory: predictedFutureTheory, practical: predictedFuturePractical },
-              0.76
-            );
+         const futureTheoryClasses = futureClasses.filter((c: any) => c.subject_code === sub.code && (c.class_type === "Lecture" || c.class_type === "Tutorial" || c.class_type === "Integration" || c.class_type === "SDL"));
+         const futurePracticalClasses = futureClasses.filter((c: any) => c.subject_code === sub.code && c.class_type === "Practical");
+         
+         const predictedFutureTheory = futureTheoryClasses.reduce((sum: number, c: any) => sum + (c.units || 1), 0);
+         const predictedFuturePractical = futurePracticalClasses.reduce((sum: number, c: any) => sum + (c.units || 1), 0);
+         
+         const path = computePathTo76(
+           sub,
+           { theory: predictedFutureTheory, practical: predictedFuturePractical },
+           0.76
+         );
 
-            totalNeed += (path.theory.need + path.practical.need);
-            totalPredicted += (path.theory.predicted_future + path.practical.predicted_future);
+         totalNeed += (path.theory.need + path.practical.need);
+         totalPredicted += (path.theory.predicted_future + path.practical.predicted_future);
 
-            perSubject.push({
-               code: sub.code,
-               name: sub.name,
-               theory: path.theory,
-               practical: path.practical,
-               current_attended: sub.attended,
-               current_total: sub.total,
-            });
-         }
+         const hasSplit = !!(sub.theory || sub.practical);
+
+         perSubject[sub.code] = {
+            code: sub.code,
+            name: sub.name,
+            percentage: sub.percentage,
+            attended: sub.attended,
+            total: sub.total,
+            need: (!hasSplit && path.theory.need > 0) ? path.theory.need : undefined, // If non-split, computePathTo76 might put everything in theory
+            ...(hasSplit && sub.theory && {
+              theory: {
+                attended: sub.theory.attended || 0,
+                total: sub.theory.total || 0,
+                percentage: sub.theory.percentage || 0,
+                need: path.theory.need,
+                predicted_future: path.theory.predicted_future
+              }
+            }),
+            ...(hasSplit && sub.practical && {
+              practical: {
+                attended: sub.practical.attended || 0,
+                total: sub.practical.total || 0,
+                percentage: sub.practical.percentage || 0,
+                need: path.practical.need,
+                predicted_future: path.practical.predicted_future
+              }
+            })
+         };
       }
 
       const overallPct = totalOverallClasses > 0 ? (totalOverallAttended / totalOverallClasses) * 100 : 0;
