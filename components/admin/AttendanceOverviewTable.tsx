@@ -35,9 +35,9 @@ export function AttendanceOverviewTable({ students }: { students: StudentRow[] }
     let list = [...students];
     if (search) {
       const s = search.toLowerCase();
-      list = list.filter(s =>
-        (s.roll_number || "").toLowerCase().includes(s) ||
-        (s.full_name || "").toLowerCase().includes(s)
+      list = list.filter(student =>
+        (student.roll_number || "").toLowerCase().includes(s) ||
+        (student.full_name || "").toLowerCase().includes(s)
       );
     }
     if (batchFilter !== "ALL") {
