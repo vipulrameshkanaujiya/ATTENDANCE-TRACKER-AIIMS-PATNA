@@ -39,7 +39,7 @@ export default async function AdminCurriculumPage() {
                 type="text"
                 required
                 placeholder="FMT"
-                className="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white"
+                className="w-full px-2.5 py-1.5 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white"
               />
             </div>
             <div>
@@ -49,7 +49,7 @@ export default async function AdminCurriculumPage() {
                 type="text"
                 required
                 placeholder="Forensic Medicine"
-                className="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white"
+                className="w-full px-2.5 py-1.5 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white"
               />
             </div>
             <button
@@ -73,7 +73,7 @@ export default async function AdminCurriculumPage() {
               <select
                 name="subject_id"
                 required
-                className="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white"
+                className="w-full px-2.5 py-1.5 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white"
               >
                 {(subjects || []).map((s) => (
                   <option key={s.id} value={s.id}>{s.name} ({s.code})</option>
@@ -88,14 +88,14 @@ export default async function AdminCurriculumPage() {
                   type="number"
                   defaultValue={1}
                   required
-                  className="px-2 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg"
+                  className="px-2 py-1.5 text-xs bg-bg border border-slate-300 rounded-lg"
                 />
                 <input
                   name="title"
                   type="text"
                   placeholder="e.g. Toxicology"
                   required
-                  className="col-span-3 px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg"
+                  className="col-span-3 px-2.5 py-1.5 text-xs bg-bg border border-slate-300 rounded-lg"
                 />
               </div>
             </div>
@@ -120,7 +120,7 @@ export default async function AdminCurriculumPage() {
               <select
                 name="unit_id"
                 required
-                className="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white"
+                className="w-full px-2.5 py-1.5 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white"
               >
                 {(subjects || []).flatMap((s) =>
                   (s.units || []).map((u: any) => (
@@ -138,7 +138,7 @@ export default async function AdminCurriculumPage() {
                 type="text"
                 placeholder="e.g. Snake Bite Envenomation"
                 required
-                className="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white"
+                className="w-full px-2.5 py-1.5 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white"
               />
             </div>
             <button
@@ -173,7 +173,7 @@ export default async function AdminCurriculumPage() {
 
             <div className="space-y-2">
               {(s.units || []).map((u: any) => (
-                <div key={u.id} className="p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
+                <div key={u.id} className="p-3 bg-bg rounded-xl border border-slate-100 space-y-1">
                   <p className="text-xs font-bold text-slate-800">
                     Unit {u.unit_number}: {u.title}
                   </p>

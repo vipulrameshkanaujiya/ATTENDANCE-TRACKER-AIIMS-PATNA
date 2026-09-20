@@ -14,7 +14,7 @@ export function HomeSkeleton() {
       </div>
 
       {/* 2. Auto-Present Card Skeleton */}
-      <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 flex items-center justify-between">
+      <div className="rounded-xl border border-border bg-bg-elevated p-4 flex items-center justify-between">
         <div className="space-y-2">
           <Skeleton className="h-4 w-28 rounded-md" />
           <Skeleton className="h-3 w-44 rounded-md" />
@@ -26,7 +26,7 @@ export function HomeSkeleton() {
       </div>
 
       {/* 3. Batch Photo Skeleton */}
-      <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+      <div className="rounded-2xl overflow-hidden border border-border bg-bg-elevated">
         <Skeleton className="w-full h-48 sm:h-64 rounded-none" />
         <div className="p-3 flex justify-center">
           <Skeleton className="h-3 w-56 rounded-md" />
@@ -44,14 +44,14 @@ export function HomeSkeleton() {
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+              className="bg-bg-elevated rounded-xl border border-border p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
             >
               <div className="flex items-start gap-3 flex-1">
                 <div className="w-14 space-y-1.5 flex-shrink-0 pt-1">
                   <Skeleton className="h-4 w-12 rounded" />
                   <Skeleton className="h-3 w-10 rounded" />
                 </div>
-                <div className="border-l-2 border-slate-200 dark:border-slate-800 pl-3 space-y-2 flex-1">
+                <div className="border-l-2 border-border pl-3 space-y-2 flex-1">
                   <div className="flex items-center gap-2">
                     <Skeleton className="h-4 w-16 rounded" />
                     <Skeleton className="h-3 w-24 rounded" />
@@ -69,7 +69,7 @@ export function HomeSkeleton() {
       </div>
 
       {/* 5. My Attendance Summary Skeleton */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 space-y-4">
+      <div className="bg-bg-elevated rounded-2xl border border-border p-5 space-y-4">
         <div className="flex items-center justify-between">
           <div className="space-y-1.5">
             <Skeleton className="h-5 w-48 rounded-md" />

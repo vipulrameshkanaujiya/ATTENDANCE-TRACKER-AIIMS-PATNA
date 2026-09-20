@@ -160,16 +160,16 @@ export function DonationsManager({ initialDonations }: { initialDonations: Donat
   return (
     <div className="space-y-6">
       {/* Add Donation Form Card */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-xs space-y-4">
+      <div className="bg-bg-elevated border border-border rounded-2xl p-5 sm:p-6 shadow-xs space-y-4">
         <div className="flex items-center gap-2 pb-2 border-b border-slate-100 dark:border-slate-800">
           <div className="w-8 h-8 rounded-xl bg-pink-50 dark:bg-pink-950/50 text-pink-600 dark:text-pink-400 flex items-center justify-center">
             <Plus className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+            <h3 className="text-sm font-bold text-text">
               Record a Supporter / Donation
             </h3>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400">
+            <p className="text-[11px] text-text-muted">
               Add someone who supported BunkBuddy via UPI or Buy Me a Coffee.
             </p>
           </div>
@@ -187,7 +187,7 @@ export function DonationsManager({ initialDonations }: { initialDonations: Donat
                 value={donorName}
                 onChange={(e) => setDonorName(e.target.value)}
                 required
-                className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500"
+                className="w-full px-3.5 py-2 bg-bg dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500"
               />
             </div>
 
@@ -201,7 +201,7 @@ export function DonationsManager({ initialDonations }: { initialDonations: Donat
                 placeholder="e.g. 150"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500"
+                className="w-full px-3.5 py-2 bg-bg dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500"
               />
             </div>
 
@@ -214,7 +214,7 @@ export function DonationsManager({ initialDonations }: { initialDonations: Donat
                 placeholder="e.g. Thanks for BunkBuddy!"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500"
+                className="w-full px-3.5 py-2 bg-bg dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500"
               />
             </div>
           </div>
@@ -266,11 +266,11 @@ export function DonationsManager({ initialDonations }: { initialDonations: Donat
       </div>
 
       {/* Donations List Table */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xs overflow-hidden">
+      <div className="bg-bg-elevated border border-border rounded-2xl shadow-xs overflow-hidden">
         <div className="p-4 sm:p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Heart className="w-4 h-4 text-pink-600 dark:text-pink-400 fill-pink-600" />
-            <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+            <h3 className="text-sm font-bold text-text">
               Supporters & Donations ({donations.length})
             </h3>
           </div>
@@ -284,7 +284,7 @@ export function DonationsManager({ initialDonations }: { initialDonations: Donat
             <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">
               No supporters recorded yet
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">
+            <p className="text-xs text-text-muted mt-1 max-w-sm mx-auto">
               When students or batchmates support BunkBuddy via UPI or Buy Me a Coffee, add them above. The thank-you card on Home will only appear when at least one supporter exists.
             </p>
           </div>
@@ -292,7 +292,7 @@ export function DonationsManager({ initialDonations }: { initialDonations: Donat
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/75 dark:bg-slate-800/40 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                <tr className="border-b border-border bg-slate-50/75 dark:bg-slate-800/40 text-[11px] font-bold text-text-muted uppercase tracking-wider">
                   <th className="py-3 px-4">Date</th>
                   <th className="py-3 px-4">Donor Name</th>
                   <th className="py-3 px-4">Amount</th>
@@ -314,10 +314,10 @@ export function DonationsManager({ initialDonations }: { initialDonations: Donat
                       key={item.id}
                       className="hover:bg-slate-50/60 dark:hover:bg-slate-800/30 transition-colors"
                     >
-                      <td className="py-3 px-4 text-slate-500 dark:text-slate-400 whitespace-nowrap font-mono text-[11px]">
+                      <td className="py-3 px-4 text-text-muted whitespace-nowrap font-mono text-[11px]">
                         {formatDate(item.created_at)}
                       </td>
-                      <td className="py-3 px-4 font-bold text-slate-900 dark:text-slate-100">
+                      <td className="py-3 px-4 font-bold text-text">
                         {item.donor_name}
                       </td>
                       <td className="py-3 px-4 whitespace-nowrap">
@@ -376,9 +376,9 @@ export function DonationsManager({ initialDonations }: { initialDonations: Donat
       {/* Edit Donation Modal */}
       {editingDonation && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-6 space-y-4">
+          <div className="w-full max-w-md bg-bg-elevated rounded-2xl shadow-xl border border-border p-6 space-y-4">
             <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
-              <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
+              <h3 className="text-base font-bold text-text">
                 Edit Donation
               </h3>
               <button
@@ -399,7 +399,7 @@ export function DonationsManager({ initialDonations }: { initialDonations: Donat
                   type="text"
                   value={editForm.donor_name}
                   onChange={(e) => setEditForm((prev) => ({ ...prev, donor_name: e.target.value }))}
-                  className="w-full px-3.5 py-2 mt-1 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500"
+                  className="w-full px-3.5 py-2 mt-1 bg-bg dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500"
                   required
                 />
               </div>
@@ -418,7 +418,7 @@ export function DonationsManager({ initialDonations }: { initialDonations: Donat
                       amount: e.target.value === "" ? null : parseFloat(e.target.value),
                     }))
                   }
-                  className="w-full px-3.5 py-2 mt-1 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500"
+                  className="w-full px-3.5 py-2 mt-1 bg-bg dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500"
                 />
                 <p className="text-[10px] text-slate-500 mt-1">
                   Tip: If the same user donated multiple times, update this to the cumulative amount.
@@ -433,7 +433,7 @@ export function DonationsManager({ initialDonations }: { initialDonations: Donat
                   value={editForm.message ?? ""}
                   onChange={(e) => setEditForm((prev) => ({ ...prev, message: e.target.value }))}
                   rows={2}
-                  className="w-full px-3.5 py-2 mt-1 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500"
+                  className="w-full px-3.5 py-2 mt-1 bg-bg dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500"
                 />
               </div>
 

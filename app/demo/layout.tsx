@@ -35,7 +35,7 @@ export default function DemoLayout({
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50">
+    <div className="min-h-screen flex flex-col bg-bg">
       {/* Prominent Local Demo Banner */}
       <div className="bg-amber-500 text-slate-950 font-bold px-4 py-2 text-xs flex flex-wrap items-center justify-between gap-2 shadow-xs border-b border-amber-600">
         <div className="flex items-center gap-2">
@@ -90,7 +90,7 @@ export default function DemoLayout({
               })}
             </nav>
 
-            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+            <div className="p-3 bg-bg border border-slate-200 rounded-xl space-y-2">
               <p className="text-[11px] font-bold text-slate-700">Preview Mode Switcher</p>
               <Link
                 href="/demo/admin"

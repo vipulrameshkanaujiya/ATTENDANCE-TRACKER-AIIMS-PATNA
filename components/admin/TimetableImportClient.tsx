@@ -223,7 +223,7 @@ export function TimetableImportClient({
 
           <div className="overflow-x-auto max-h-[500px]">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider border-b border-slate-200 sticky top-0 z-10">
+              <thead className="bg-bg text-slate-500 uppercase tracking-wider border-b border-slate-200 sticky top-0 z-10">
                 <tr>
                   <th className="p-2.5">Date</th>
                   <th className="p-2.5">Time</th>

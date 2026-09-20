@@ -9,14 +9,14 @@ export default function BlockedPage() {
   const adminEmail = getAdminEmail();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 p-4">
-      <div className="max-w-md w-full bg-white dark:bg-slate-900 rounded-2xl border border-red-200 dark:border-red-900/30 shadow-lg p-8 text-center space-y-6">
+    <div className="min-h-screen flex items-center justify-center bg-bg dark:bg-slate-950 p-4">
+      <div className="max-w-md w-full bg-bg-elevated rounded-2xl border border-red-200 dark:border-red-900/30 shadow-lg p-8 text-center space-y-6">
         <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto">
           <ShieldAlert className="w-8 h-8 text-red-600 dark:text-red-400" />
         </div>
         
         <div className="space-y-2">
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Access Revoked</h1>
+          <h1 className="text-2xl font-bold text-text">Access Revoked</h1>
           <p className="text-slate-600 dark:text-slate-400">
             Your access to this application has been revoked by the administrator.
           </p>

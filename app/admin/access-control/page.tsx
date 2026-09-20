@@ -23,8 +23,8 @@ export default async function AccessControlPage() {
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Access Control</h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
+        <h1 className="text-2xl font-bold text-text">Access Control</h1>
+        <p className="text-sm text-text-muted">
           Manage user access, block accounts, force logouts, and permanently remove students.
         </p>
       </div>

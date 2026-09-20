@@ -136,7 +136,7 @@ export function AttendanceToggle({ classId, initialStatus, compact = false }: At
 
   return (
     <div className="flex flex-col items-end sm:items-start gap-1">
-      <div className={clsx("flex items-center gap-1.5", compact ? "p-0.5" : "p-1 bg-slate-100 dark:bg-slate-800 rounded-xl")}>
+      <div className={clsx("flex items-center gap-1.5", compact ? "p-0.5" : "p-1 bg-bg-subtle rounded-xl")}>
         <button
           type="button"
           disabled={isSaving}
@@ -148,8 +148,8 @@ export function AttendanceToggle({ classId, initialStatus, compact = false }: At
               ? "px-2.5 py-1 text-xs rounded-lg min-h-[36px]"
               : "px-3.5 py-2 text-xs rounded-lg min-h-[44px] min-w-[70px]",
             status === "PRESENT"
-              ? "bg-emerald-600 text-white shadow-xs"
-              : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800"
+              ? "bg-easy hover:bg-easy/90 text-white shadow-xs"
+              : "bg-bg-subtle text-text-muted hover:bg-bg-elevated border border-border"
           )}
         >
           <Check className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -167,8 +167,8 @@ export function AttendanceToggle({ classId, initialStatus, compact = false }: At
               ? "px-2.5 py-1 text-xs rounded-lg min-h-[36px]"
               : "px-3.5 py-2 text-xs rounded-lg min-h-[44px] min-w-[70px]",
             status === "ABSENT"
-              ? "bg-rose-600 text-white shadow-xs"
-              : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800"
+              ? "bg-hard hover:bg-hard/90 text-white shadow-xs"
+              : "bg-bg-subtle text-text-muted hover:bg-bg-elevated border border-border"
           )}
         >
           <X className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -176,7 +176,7 @@ export function AttendanceToggle({ classId, initialStatus, compact = false }: At
         </button>
 
         {isSaving && (
-          <span className="text-[10px] text-slate-400 dark:text-slate-500 ml-1 animate-pulse font-medium whitespace-nowrap">
+          <span className="text-[10px] text-text-faint ml-1 animate-pulse font-medium whitespace-nowrap">
             Saving...
           </span>
         )}

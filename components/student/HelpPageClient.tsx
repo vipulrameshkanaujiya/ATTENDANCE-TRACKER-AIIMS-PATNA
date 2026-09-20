@@ -114,7 +114,7 @@ export function HelpPageClient({
       {/* SECTION A: HERO */}
       <section className="text-center pt-4 pb-2 space-y-4">
         <div className="inline-block relative">
-          <div className="absolute inset-0 rounded-3xl bg-indigo-500/20 blur-xl animate-pulse" />
+          <div className="absolute inset-0 rounded-3xl bg-accent/20 blur-xl animate-pulse" />
           <img
             src="/logo.png"
             alt="BunkBuddy Logo"
@@ -122,14 +122,14 @@ export function HelpPageClient({
           />
         </div>
         <div className="space-y-1.5">
-          <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-black text-text tracking-tight">
             BunkBuddy
           </h1>
           <p className="text-sm sm:text-base font-medium text-slate-600 dark:text-slate-400 max-w-md mx-auto">
             Your attendance companion for AIIMS Patna MBBS 2024
           </p>
           <div className="pt-1">
-            <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800/60">
+            <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-accent-soft dark:bg-accent-soft/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800/60">
               <Heart className="w-3 h-3 text-rose-500 fill-rose-500" />
               Built by Vipul K
             </span>
@@ -141,7 +141,7 @@ export function HelpPageClient({
       <section className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
         <a
           href="#how-to-use"
-          className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-indigo-400 dark:hover:border-indigo-600 transition shadow-xs flex flex-col items-center text-center gap-2 group cursor-pointer"
+          className="p-4 rounded-2xl border border-border bg-bg-elevated hover:border-indigo-400 dark:hover:border-indigo-600 transition shadow-xs flex flex-col items-center text-center gap-2 group cursor-pointer"
         >
           <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center group-hover:scale-110 transition">
             <BookOpen className="w-5 h-5" />
@@ -151,7 +151,7 @@ export function HelpPageClient({
 
         <a
           href="#feedback"
-          className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-indigo-400 dark:hover:border-indigo-600 transition shadow-xs flex flex-col items-center text-center gap-2 group cursor-pointer"
+          className="p-4 rounded-2xl border border-border bg-bg-elevated hover:border-indigo-400 dark:hover:border-indigo-600 transition shadow-xs flex flex-col items-center text-center gap-2 group cursor-pointer"
         >
           <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition">
             <MessageSquare className="w-5 h-5" />
@@ -161,7 +161,7 @@ export function HelpPageClient({
 
         <a
           href="#support"
-          className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-amber-400 dark:hover:border-amber-600 transition shadow-xs flex flex-col items-center text-center gap-2 group cursor-pointer"
+          className="p-4 rounded-2xl border border-border bg-bg-elevated hover:border-amber-400 dark:hover:border-amber-600 transition shadow-xs flex flex-col items-center text-center gap-2 group cursor-pointer"
         >
           <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-600 flex items-center justify-center group-hover:scale-110 transition">
             <Coffee className="w-5 h-5" />
@@ -173,9 +173,9 @@ export function HelpPageClient({
           href="https://github.com/vipulrameshkanaujiya/ATTENDANCE-TRACKER-AIIMS-PATNA"
           target="_blank"
           rel="noopener noreferrer"
-          className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-400 dark:hover:border-slate-600 transition shadow-xs flex flex-col items-center text-center gap-2 group cursor-pointer"
+          className="p-4 rounded-2xl border border-border bg-bg-elevated hover:border-slate-400 dark:hover:border-slate-600 transition shadow-xs flex flex-col items-center text-center gap-2 group cursor-pointer"
         >
-          <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 flex items-center justify-center group-hover:scale-110 transition">
+          <div className="w-10 h-10 rounded-xl bg-bg-subtle text-slate-800 dark:text-slate-200 flex items-center justify-center group-hover:scale-110 transition">
             <GithubIcon className="w-5 h-5" />
           </div>
           <span className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1">
@@ -187,10 +187,10 @@ export function HelpPageClient({
       {/* SECTION C: HOW TO USE */}
       <section id="how-to-use" className="space-y-4 scroll-mt-20">
         <div>
-          <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <h2 className="text-lg sm:text-xl font-bold text-text flex items-center gap-2">
             <span>📖 How to Use BunkBuddy</span>
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="text-xs text-text-muted mt-0.5">
             Everything you need to master your MBBS Phase-2 attendance tracking
           </p>
         </div>
@@ -250,17 +250,17 @@ export function HelpPageClient({
             return (
               <div
                 key={item.step}
-                className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs flex items-start gap-3.5"
+                className="p-4 rounded-2xl border border-border bg-bg-elevated shadow-xs flex items-start gap-3.5"
               >
-                <div className="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 font-black text-xs flex items-center justify-center shrink-0 border border-indigo-100 dark:border-indigo-900/30">
+                <div className="w-8 h-8 rounded-xl bg-accent-soft dark:bg-accent-soft/50 text-accent-text dark:text-accent font-black text-xs flex items-center justify-center shrink-0 border border-indigo-100 dark:border-indigo-900/30">
                   {item.step}
                 </div>
                 <div className="space-y-0.5 min-w-0">
-                  <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
+                  <h3 className="text-sm font-bold text-text flex items-center gap-1.5">
                     <Icon className="w-3.5 h-3.5 text-indigo-500" />
                     <span>{item.title}</span>
                   </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                  <p className="text-xs text-text-muted leading-relaxed">
                     {item.desc}
                   </p>
                 </div>
@@ -273,10 +273,10 @@ export function HelpPageClient({
       {/* SECTION D: FEATURES GRID */}
       <section className="space-y-4">
         <div>
-          <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <h2 className="text-lg sm:text-xl font-bold text-text flex items-center gap-2">
             <span>✨ Features & Capabilities</span>
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="text-xs text-text-muted mt-0.5">
             Designed specifically for the MBBS curriculum workflow at AIIMS Patna
           </p>
         </div>
@@ -336,15 +336,15 @@ export function HelpPageClient({
             return (
               <div
                 key={feat.title}
-                className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs space-y-2"
+                className="p-4 rounded-2xl border border-border bg-bg-elevated shadow-xs space-y-2"
               >
                 <div className="flex items-center gap-2">
                   <Icon className={`w-4 h-4 ${feat.color}`} />
-                  <h3 className="text-xs font-bold text-slate-900 dark:text-slate-100">
+                  <h3 className="text-xs font-bold text-text">
                     {feat.title}
                   </h3>
                 </div>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                <p className="text-[11px] text-text-muted leading-relaxed">
                   {feat.desc}
                 </p>
               </div>
@@ -356,10 +356,10 @@ export function HelpPageClient({
       {/* SECTION E: FAQ ACCORDION */}
       <section className="space-y-4">
         <div>
-          <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <h2 className="text-lg sm:text-xl font-bold text-text flex items-center gap-2">
             <span>❓ Frequently Asked Questions</span>
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="text-xs text-text-muted mt-0.5">
             Quick answers to common questions about roll numbers, attendance, and privacy
           </p>
         </div>
@@ -397,11 +397,11 @@ export function HelpPageClient({
           ].map((item, idx) => (
             <details
               key={idx}
-              className="group rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 transition-all open:shadow-xs"
+              className="group rounded-2xl border border-border bg-bg-elevated p-4 transition-all open:shadow-xs"
             >
               <summary className="flex items-center justify-between font-semibold text-xs sm:text-sm text-slate-800 dark:text-slate-200 cursor-pointer select-none list-none">
                 <span className="flex items-center gap-2">
-                  <span className="text-indigo-600 dark:text-indigo-400 font-bold">Q:</span>
+                  <span className="text-accent-text dark:text-accent font-bold">Q:</span>
                   {item.q}
                 </span>
                 <ChevronDown className="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform duration-200 shrink-0 ml-2" />
@@ -417,15 +417,15 @@ export function HelpPageClient({
       {/* SECTION F: FEEDBACK FORM */}
       <section id="feedback" className="space-y-4 scroll-mt-20">
         <div>
-          <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <h2 className="text-lg sm:text-xl font-bold text-text flex items-center gap-2">
             <span>💬 Send Feedback or Report a Bug</span>
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="text-xs text-text-muted mt-0.5">
             Your ideas and bug reports help make BunkBuddy better for the whole batch
           </p>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 sm:p-6">
+        <div className="bg-bg-elevated rounded-2xl border border-border shadow-sm p-5 sm:p-6">
           {feedbackSuccess && (
             <div className="mb-5 p-4 rounded-xl border-2 border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-800 dark:text-emerald-200 flex items-center gap-3 animate-fade-in">
               <Check className="w-5 h-5 text-emerald-600 shrink-0" />
@@ -450,7 +450,7 @@ export function HelpPageClient({
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 p-2.5 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 p-2.5 text-text focus:outline-none focus:ring-2 focus:ring-accent"
               >
                 <option value="general">💬 General Feedback</option>
                 <option value="bug">🐛 Report a Bug / Wrong Attendance</option>
@@ -473,19 +473,19 @@ export function HelpPageClient({
                 onChange={(e) => setMessage(e.target.value.slice(0, 500))}
                 rows={4}
                 placeholder="Explain the bug, ask a question, or suggest a new feature..."
-                className="w-full text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 p-3 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                className="w-full text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 p-3 text-text focus:outline-none focus:ring-2 focus:ring-accent placeholder:text-slate-400"
                 required
               />
             </div>
 
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2">
-              <p className="text-[11px] text-slate-400 dark:text-slate-500">
+              <p className="text-[11px] text-text-faint">
                 Submitted as: <strong className="font-mono text-slate-600 dark:text-slate-300">{profile?.roll_number || "Guest"}</strong> ({profile?.email || "Signed in"})
               </p>
               <button
                 type="submit"
                 disabled={isPending || message.trim().length < 5}
-                className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+                className="px-6 py-2.5 rounded-xl bg-accent hover:bg-accent-hover disabled:opacity-50 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm cursor-pointer"
               >
                 {isPending ? (
                   <>
@@ -507,17 +507,17 @@ export function HelpPageClient({
       {/* SECTION G: SUPPORT THE DEVELOPER */}
       <section id="support" className="space-y-4 scroll-mt-20">
         <div>
-          <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <h2 className="text-lg sm:text-xl font-bold text-text flex items-center gap-2">
             <span>☕ Support the Developer</span>
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="text-xs text-text-muted mt-0.5">
             BunkBuddy is free, ad-free, and always will be.
           </p>
         </div>
 
         <div className="rounded-2xl border border-amber-200/80 dark:border-amber-900/40 bg-gradient-to-br from-amber-50/60 via-white to-amber-50/40 dark:from-slate-900 dark:via-slate-900 dark:to-amber-950/20 p-6 shadow-sm space-y-6">
           <div className="max-w-xl space-y-2">
-            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <h3 className="text-base font-bold text-text flex items-center gap-2">
               <span>If BunkBuddy saved your attendance...</span>
             </h3>
             <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
@@ -527,7 +527,7 @@ export function HelpPageClient({
 
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 pt-2">
             {/* UPI QR Code Container */}
-            <div className="bg-white dark:bg-slate-950 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md flex flex-col items-center gap-2">
+            <div className="bg-white dark:bg-slate-950 p-3 rounded-2xl border border-border shadow-md flex flex-col items-center gap-2">
               <img
                 src="/upi-qr.png"
                 alt="UPI QR Code - 9825739419@NAVIAXIS"
@@ -545,12 +545,12 @@ export function HelpPageClient({
                   Direct UPI ID
                 </label>
                 <div className="flex items-center justify-center sm:justify-start gap-2">
-                  <span className="font-mono text-xs font-bold px-3 py-2 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 select-all">
+                  <span className="font-mono text-xs font-bold px-3 py-2 rounded-xl bg-white dark:bg-slate-950 border border-border text-text select-all">
                     9825739419@NAVIAXIS
                   </span>
                   <button
                     onClick={handleCopyUpi}
-                    className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition flex items-center gap-1 text-xs font-semibold cursor-pointer"
+                    className="p-2 rounded-xl bg-bg-subtle hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition flex items-center gap-1 text-xs font-semibold cursor-pointer"
                     title="Copy UPI ID"
                   >
                     {copied ? (
@@ -597,18 +597,18 @@ export function HelpPageClient({
                 </a>
               </div>
 
-              <p className="text-[10px] text-slate-500 dark:text-slate-400 text-center sm:text-left mt-2">
+              <p className="text-[10px] text-text-muted text-center sm:text-left mt-2">
                 UPI · Buy Me a Coffee · Get Me Chai — choose whichever is easiest for you 💛
               </p>
 
               {donationCount > 0 && (
-                <div className="pt-3 border-t border-slate-200 dark:border-slate-800 space-y-2">
+                <div className="pt-3 border-t border-border space-y-2">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                     <p className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center justify-center sm:justify-start gap-1.5">
                       <Heart className="w-3.5 h-3.5 text-pink-500 fill-pink-500" />
                       <span>Supporters ({donationCount})</span>
                     </p>
-                    <span className="text-[10px] text-slate-400 dark:text-slate-500 text-center sm:text-right">
+                    <span className="text-[10px] text-text-faint text-center sm:text-right">
                       Supporters are listed by contribution amount (highest first).
                     </span>
                   </div>
@@ -623,14 +623,14 @@ export function HelpPageClient({
                       .map((d: any, idx: number) => (
                         <div
                           key={idx}
-                          className="text-xs text-slate-600 dark:text-slate-400 flex items-center justify-between py-1.5 px-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800"
+                          className="text-xs text-slate-600 dark:text-slate-400 flex items-center justify-between py-1.5 px-3 rounded-xl bg-bg dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800"
                         >
                           <span className="font-semibold text-slate-800 dark:text-slate-200">
                             {d.donor_name}
                           </span>
                           <div className="flex items-center gap-2">
                             {d.message && (
-                              <span className="text-[11px] italic text-slate-500 dark:text-slate-400">
+                              <span className="text-[11px] italic text-text-muted">
                                 "{d.message}"
                               </span>
                             )}
@@ -652,12 +652,12 @@ export function HelpPageClient({
 
       {/* SECTION H: OPEN SOURCE */}
       <section className="space-y-4">
-        <div className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="p-6 rounded-2xl border border-border bg-bg-elevated shadow-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="space-y-1">
-            <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <h3 className="text-sm font-bold text-text flex items-center gap-2">
               <span>🐙 BunkBuddy is Open Source</span>
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-text-muted">
               Built with Next.js 15, Supabase, Tailwind CSS, and TypeScript under the MIT License.
             </p>
           </div>
@@ -676,7 +676,7 @@ export function HelpPageClient({
       </section>
 
       {/* SECTION I: FOOTER */}
-      <footer className="pt-6 border-t border-slate-200 dark:border-slate-800 text-center space-y-2 text-xs text-slate-400 dark:text-slate-500">
+      <footer className="pt-6 border-t border-border text-center space-y-2 text-xs text-text-faint">
         <p className="font-medium text-slate-600 dark:text-slate-400">
           Made with 🩺 by Vipul K · AIIMS Patna MBBS 2024
         </p>
@@ -687,7 +687,7 @@ export function HelpPageClient({
           For bugs or urgent issues:{" "}
           <a
             href="mailto:vipulrameshkanaujiya@gmail.com"
-            className="text-indigo-600 dark:text-indigo-400 underline hover:text-indigo-700"
+            className="text-accent-text dark:text-accent underline hover:text-indigo-700"
           >
             vipulrameshkanaujiya@gmail.com
           </a>

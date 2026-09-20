@@ -53,7 +53,7 @@ export default async function AdminBatchesPage() {
                     name="roll_min"
                     type="number"
                     defaultValue={b.roll_min}
-                    className="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    className="w-full px-2.5 py-1.5 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
                 <div>
@@ -62,7 +62,7 @@ export default async function AdminBatchesPage() {
                     name="roll_max"
                     type="number"
                     defaultValue={b.roll_max}
-                    className="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    className="w-full px-2.5 py-1.5 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
               </div>

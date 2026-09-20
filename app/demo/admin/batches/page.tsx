@@ -55,7 +55,7 @@ export default function DemoAdminBatchesPage() {
                     type="number"
                     defaultValue={b.roll_min}
                     id={`min-${b.id}`}
-                    className="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg"
+                    className="w-full px-2.5 py-1.5 text-xs bg-bg border border-slate-300 rounded-lg"
                   />
                 </div>
                 <div>
@@ -64,7 +64,7 @@ export default function DemoAdminBatchesPage() {
                     type="number"
                     defaultValue={b.roll_max}
                     id={`max-${b.id}`}
-                    className="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg"
+                    className="w-full px-2.5 py-1.5 text-xs bg-bg border border-slate-300 rounded-lg"
                   />
                 </div>
               </div>

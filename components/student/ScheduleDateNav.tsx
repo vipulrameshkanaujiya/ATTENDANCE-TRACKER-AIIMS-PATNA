@@ -58,10 +58,10 @@ export function ScheduleDateNav({
       {/* 1. Header & View Tabs */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-bold text-text tracking-tight">
             Class Schedule
           </h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+          <p className="text-xs text-text-muted font-medium">
             AIIMS Patna MBBS Batch 2024 (Phase-2)
           </p>
         </div>
@@ -75,7 +75,7 @@ export function ScheduleDateNav({
               onClick={() => handleViewChange(view)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition ${
                 currentView === view
-                  ? "bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 shadow-xs"
+                  ? "bg-white dark:bg-slate-800 text-text shadow-xs"
                   : "text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100"
               }`}
             >
@@ -89,7 +89,7 @@ export function ScheduleDateNav({
       <div className="flex items-center justify-between gap-2">
         <button
           onClick={() => handleDateChange(todayD)}
-          className="px-3 py-1.5 text-xs font-bold rounded-lg bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900 transition"
+          className="px-3 py-1.5 text-xs font-bold rounded-lg bg-accent-soft text-accent-text hover:bg-accent hover:text-white transition"
         >
           Today
         </button>
@@ -100,12 +100,12 @@ export function ScheduleDateNav({
           onChange={(e) => {
             if (e.target.value) handleDateChange(new Date(e.target.value));
           }}
-          className="px-3 py-1.5 text-xs font-medium rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="px-3 py-1.5 text-xs font-medium rounded-lg border border-border bg-bg-elevated text-text focus:outline-none focus:ring-2 focus:ring-accent"
         />
       </div>
 
       {/* Row 2: Swipeable Date Slider */}
-      <div className="relative bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs py-3">
+      <div className="relative bg-bg-elevated rounded-xl border border-border shadow-xs py-3">
         {/* Gradient fades on edges */}
         <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white dark:from-slate-900 to-transparent z-10 pointer-events-none rounded-l-xl" />
         <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white dark:from-slate-900 to-transparent z-10 pointer-events-none rounded-r-xl" />
@@ -126,13 +126,13 @@ export function ScheduleDateNav({
                 onClick={() => handleDateChange(day)}
                 className={`flex flex-col items-center justify-center min-w-[56px] h-[72px] rounded-2xl snap-center transition-all ${
                   isActive
-                    ? "bg-indigo-600 text-white shadow-md scale-105"
-                    : "bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
+                    ? "bg-accent text-white shadow-md scale-105"
+                    : "bg-bg-subtle text-text-muted hover:bg-bg-elevated"
                 }`}
               >
                 <span
                   className={`text-[10px] uppercase font-bold tracking-wider ${
-                    isActive ? "text-indigo-200" : "text-slate-400 dark:text-slate-500"
+                    isActive ? "text-white/90" : "text-text-faint"
                   }`}
                 >
                   {format(day, "EEE")}
@@ -141,7 +141,7 @@ export function ScheduleDateNav({
                   {format(day, "d")}
                 </span>
                 {isToday && !isActive && (
-                  <span className="w-1 h-1 rounded-full bg-indigo-500 mt-0.5" />
+                  <span className="w-1 h-1 rounded-full bg-accent mt-0.5" />
                 )}
               </button>
             );

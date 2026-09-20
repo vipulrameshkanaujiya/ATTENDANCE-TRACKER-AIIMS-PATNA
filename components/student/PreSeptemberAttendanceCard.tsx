@@ -165,17 +165,17 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
           </div>
         )}
 
-        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 sm:p-6 space-y-4 animate-fade-in">
+        <div className="bg-bg-elevated rounded-2xl border border-border shadow-sm p-5 sm:p-6 space-y-4 animate-fade-in">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-900/30 flex items-center justify-center text-emerald-600">
               <Lock className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider">
+              <h3 className="text-sm font-bold text-text uppercase tracking-wider">
                 Pre-September Attendance History
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-text-muted">
                 Official historical baseline before September 2026
               </p>
             </div>
@@ -204,10 +204,10 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
                 className="py-2.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 text-xs"
               >
                 <div className="font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2">
-                  <span className="w-16 font-bold text-slate-900 dark:text-slate-100">{sub.shortName}:</span>
+                  <span className="w-16 font-bold text-text">{sub.shortName}:</span>
                   <span className="text-slate-600 dark:text-slate-400 font-normal">
                     Theory{" "}
-                    <strong className="text-slate-900 dark:text-slate-100 font-semibold">
+                    <strong className="text-text font-semibold">
                       {tAtt}/{tTot}
                     </strong>{" "}
                     ({tPct}%)
@@ -215,13 +215,13 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
                   <span className="text-slate-300">|</span>
                   <span className="text-slate-600 dark:text-slate-400 font-normal">
                     Practical{" "}
-                    <strong className="text-slate-900 dark:text-slate-100 font-semibold">
+                    <strong className="text-text font-semibold">
                       {pAtt}/{pTot}
                     </strong>{" "}
                     ({pPct}%)
                   </span>
                 </div>
-                <div className="text-[11px] text-slate-400 dark:text-slate-500">
+                <div className="text-[11px] text-text-faint">
                   Total: {tAtt + pAtt}/{tTot + pTot} (
                   {tTot + pTot > 0
                     ? (((tAtt + pAtt) / (tTot + pTot)) * 100).toFixed(1)
@@ -233,7 +233,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
           })}
         </div>
 
-        <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-start gap-2 text-xs text-slate-500 dark:text-slate-400 bg-slate-50/70 dark:bg-slate-900/70 p-3 rounded-xl">
+        <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-start gap-2 text-xs text-text-muted bg-slate-50/70 dark:bg-slate-900/70 p-3 rounded-xl">
           <Info className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" />
           <p>
             <strong>Note:</strong> Pre-September data is permanently locked to prevent accidental changes. If you notice a clerical error, please contact an Admin to request a correction.
@@ -246,13 +246,13 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
 
   // 2. EDITABLE INITIAL ENTRY VIEW
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-2xl border-2 border-blue-500/20 shadow-sm p-5 sm:p-6 space-y-4">
+    <div className="bg-bg-elevated rounded-2xl border-2 border-blue-500/20 shadow-sm p-5 sm:p-6 space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
         <div>
-          <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider">
+          <h3 className="text-sm font-bold text-text uppercase tracking-wider">
             Pre-September Attendance History
           </h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-xs text-text-muted">
             Enter your total attended and total conducted classes prior to September 2026
           </p>
         </div>
@@ -300,7 +300,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 dark:bg-slate-950 text-slate-600 dark:text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
+            <thead className="bg-bg dark:bg-slate-950 text-slate-600 dark:text-slate-400 uppercase tracking-wider border-b border-border">
               <tr>
                 <th className="p-2.5 font-semibold">Subject</th>
                 <th className="p-2.5 font-semibold text-center" colSpan={2}>
@@ -317,8 +317,8 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
                 return (
                   <tr key={sub.code} className="hover:bg-slate-50/70">
                     <td className="p-2.5 font-medium text-slate-800 dark:text-slate-200">
-                      <div className="font-bold text-slate-900 dark:text-slate-100">{sub.name}</div>
-                      <span className="text-[10px] text-slate-400 dark:text-slate-500 font-mono uppercase">{sub.code}</span>
+                      <div className="font-bold text-text">{sub.name}</div>
+                      <span className="text-[10px] text-text-faint font-mono uppercase">{sub.code}</span>
                     </td>
 
                     {/* Theory Inputs */}
@@ -334,7 +334,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
                           className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-1 focus:ring-blue-500 font-mono"
                           placeholder="Att"
                         />
-                        <span className="text-slate-400 dark:text-slate-500 font-bold">/</span>
+                        <span className="text-text-faint font-bold">/</span>
                       </div>
                     </td>
                     <td className="p-2.5 text-left w-20">
@@ -363,7 +363,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
                           className="w-16 px-2 py-1.5 text-xs text-center border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-1 focus:ring-blue-500 font-mono"
                           placeholder="Att"
                         />
-                        <span className="text-slate-400 dark:text-slate-500 font-bold">/</span>
+                        <span className="text-text-faint font-bold">/</span>
                       </div>
                     </td>
                     <td className="p-2.5 text-left w-20">

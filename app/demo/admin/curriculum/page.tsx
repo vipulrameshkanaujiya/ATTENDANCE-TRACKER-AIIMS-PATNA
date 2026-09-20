@@ -43,14 +43,14 @@ export default function DemoAdminCurriculumPage() {
               placeholder="Code (e.g. FMT)"
               value={newSubCode}
               onChange={(e) => setNewSubCode(e.target.value)}
-              className="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg"
+              className="w-full px-2.5 py-1.5 text-xs bg-bg border border-slate-300 rounded-lg"
             />
             <input
               type="text"
               placeholder="Subject Name"
               value={newSubName}
               onChange={(e) => setNewSubName(e.target.value)}
-              className="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg"
+              className="w-full px-2.5 py-1.5 text-xs bg-bg border border-slate-300 rounded-lg"
             />
             <button type="submit" className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition">
               Add Subject
@@ -64,10 +64,10 @@ export default function DemoAdminCurriculumPage() {
             <span>Add Unit</span>
           </h2>
           <div className="space-y-2 text-xs">
-            <select className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg">
+            <select className="w-full px-2.5 py-1.5 bg-bg border border-slate-300 rounded-lg">
               {curriculum.map((c) => <option key={c.code} value={c.code}>{c.name} ({c.code})</option>)}
             </select>
-            <input type="text" placeholder="Unit Title (e.g. Hematology)" className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg" />
+            <input type="text" placeholder="Unit Title (e.g. Hematology)" className="w-full px-2.5 py-1.5 bg-bg border border-slate-300 rounded-lg" />
             <button className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition">
               Add Unit
             </button>
@@ -80,7 +80,7 @@ export default function DemoAdminCurriculumPage() {
             <span>Add Topic</span>
           </h2>
           <div className="space-y-2 text-xs">
-            <input type="text" placeholder="Topic Title" className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg" />
+            <input type="text" placeholder="Topic Title" className="w-full px-2.5 py-1.5 bg-bg border border-slate-300 rounded-lg" />
             <button className="w-full py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold transition">
               Add Topic
             </button>
@@ -97,7 +97,7 @@ export default function DemoAdminCurriculumPage() {
             </div>
             <div className="space-y-2">
               {s.units.map((u) => (
-                <div key={u.unit_number} className="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                <div key={u.unit_number} className="p-3 bg-bg rounded-xl border border-slate-100">
                   <p className="text-xs font-bold text-slate-800">Unit {u.unit_number}: {u.title}</p>
                   <p className="text-[11px] text-slate-500 mt-1">
                     {u.topics.map((t) => t.title).join(", ")}

@@ -3,8 +3,56 @@
 @tailwind utilities;
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  /* Backgrounds */
+  --bg:            #FAF7F2;   /* warm cream page background */
+  --bg-elevated:   #FFFFFF;   /* cards, modals */
+  --bg-subtle:     #F2ECE3;   /* subtle sections, filter chips */
+
+  /* Text */
+  --text:          #1A1613;   /* warm near-black */
+  --text-muted:    #6B6259;   /* secondary text */
+  --text-faint:    #9C948B;   /* tertiary */
+
+  /* Borders */
+  --border:        #EDE5D9;
+  --border-strong: #DFD4C2;
+
+  /* Accent (primary orange) */
+  --accent:        #F5A623;
+  --accent-hover:  #E08F0A;
+  --accent-soft:   #FFF3DE;   /* badge backgrounds */
+  --accent-text:   #7A4A00;   /* text on accent-soft */
+
+  /* Semantic */
+  --hard:          #DC2626;
+  --medium:        #F59E0B;
+  --easy:          #16A34A;
+  --verified:      #16A34A;
+  --pending:       #D97706;
+}
+
+.dark {
+  --bg:            #0F0C09;   /* very dark warm brown */
+  --bg-elevated:   #1A1510;
+  --bg-subtle:     #241C14;
+
+  --text:          #F5F1EB;
+  --text-muted:    #A89E92;
+  --text-faint:    #756B60;
+
+  --border:        #2A2018;
+  --border-strong: #3A2E22;
+
+  --accent:        #F5A623;   /* same orange pops on dark */
+  --accent-hover:  #FFB93A;
+  --accent-soft:   #2A1F10;
+  --accent-text:   #FFD9A0;
+
+  --hard:          #F87171;
+  --medium:        #FBBF24;
+  --easy:          #4ADE80;
+  --verified:      #4ADE80;
+  --pending:       #FBBF24;
 }
 
 html {
@@ -12,8 +60,9 @@ html {
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  background: var(--bg);
+  color: var(--text);
+  transition: background-color 200ms ease, color 200ms ease;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;

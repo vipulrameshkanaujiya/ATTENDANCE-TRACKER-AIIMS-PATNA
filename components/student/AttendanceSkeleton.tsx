@@ -10,7 +10,7 @@ export function AttendanceSkeleton() {
       </div>
 
       {/* Pre-September Historical Card Skeleton */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 space-y-4 shadow-xs">
+      <div className="bg-bg-elevated rounded-2xl border border-border p-5 space-y-4 shadow-xs">
         <div className="flex items-center justify-between">
           <div className="space-y-1.5">
             <Skeleton className="h-5 w-44 rounded-md" />
@@ -20,7 +20,7 @@ export function AttendanceSkeleton() {
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-2">
           {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="p-3 bg-slate-50 dark:bg-slate-950 rounded-xl space-y-2 border border-slate-100 dark:border-slate-800">
+            <div key={i} className="p-3 bg-bg dark:bg-slate-950 rounded-xl space-y-2 border border-slate-100 dark:border-slate-800">
               <Skeleton className="h-3 w-12 rounded" />
               <Skeleton className="h-5 w-16 rounded" />
             </div>
@@ -36,7 +36,7 @@ export function AttendanceSkeleton() {
           {[1, 2, 3, 4, 5].map((i) => (
             <div
               key={i}
-              className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs space-y-3"
+              className="p-4 rounded-2xl border border-border bg-bg-elevated shadow-xs space-y-3"
             >
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
@@ -66,7 +66,7 @@ export function AttendanceSkeleton() {
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs space-y-2.5"
+              className="p-4 rounded-2xl border border-border bg-bg-elevated shadow-xs space-y-2.5"
             >
               <Skeleton className="h-4 w-28 rounded" />
               <Skeleton className="h-3 w-full rounded" />

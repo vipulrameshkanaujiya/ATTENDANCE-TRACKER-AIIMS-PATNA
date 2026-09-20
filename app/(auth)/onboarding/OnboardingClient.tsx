@@ -52,7 +52,7 @@ export default function OnboardingClient() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center px-4 py-12 bg-slate-50">
+    <div className="min-h-screen flex flex-col justify-center items-center px-4 py-12 bg-bg">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-slate-200 p-8 space-y-7">
         <div className="text-center space-y-2">
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-50 text-blue-600 mb-1 border border-blue-100">
@@ -93,7 +93,7 @@ export default function OnboardingClient() {
                   setRollNumber(e.target.value.trim());
                   setError(null);
                 }}
-                className="w-full px-4 py-3.5 text-lg font-mono font-semibold tracking-widest text-slate-900 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                className="w-full px-4 py-3.5 text-lg font-mono font-semibold tracking-widest text-slate-900 bg-bg border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
               />
               {isValid && (
                 <div className="absolute right-3.5 top-3.5 text-emerald-600">

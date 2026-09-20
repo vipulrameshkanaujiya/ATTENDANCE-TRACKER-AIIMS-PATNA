@@ -113,7 +113,7 @@ export default function DemoHomePage() {
                   className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
                     nextClass.attendance_status === "PRESENT"
                       ? "bg-emerald-600 text-white shadow-xs"
-                      : "bg-white text-slate-600 hover:bg-slate-50"
+                      : "bg-white text-slate-600 hover:bg-bg"
                   }`}
                 >
                   <Check className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -125,7 +125,7 @@ export default function DemoHomePage() {
                   className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
                     nextClass.attendance_status === "ABSENT"
                       ? "bg-rose-600 text-white shadow-xs"
-                      : "bg-white text-slate-600 hover:bg-slate-50"
+                      : "bg-white text-slate-600 hover:bg-bg"
                   }`}
                 >
                   <X className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -189,7 +189,7 @@ export default function DemoHomePage() {
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition ${
                     c.attendance_status === "PRESENT"
                       ? "bg-emerald-600 text-white shadow-xs"
-                      : "bg-white text-slate-600 hover:bg-slate-50"
+                      : "bg-white text-slate-600 hover:bg-bg"
                   }`}
                 >
                   <Check className="w-3.5 h-3.5" />
@@ -201,7 +201,7 @@ export default function DemoHomePage() {
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition ${
                     c.attendance_status === "ABSENT"
                       ? "bg-rose-600 text-white shadow-xs"
-                      : "bg-white text-slate-600 hover:bg-slate-50"
+                      : "bg-white text-slate-600 hover:bg-bg"
                   }`}
                 >
                   <X className="w-3.5 h-3.5" />

@@ -32,7 +32,7 @@ export default function DemoAdminAttendancePage() {
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider border-b border-slate-200">
+            <thead className="bg-bg text-slate-500 uppercase tracking-wider border-b border-slate-200">
               <tr>
                 <th className="p-3">Session & Date</th>
                 <th className="p-3">Student Batch</th>
@@ -42,7 +42,7 @@ export default function DemoAdminAttendancePage() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {logs.map((log) => (
-                <tr key={log.id} className="hover:bg-slate-50">
+                <tr key={log.id} className="hover:bg-bg">
                   <td className="p-3">
                     <span className="font-bold text-blue-700">{log.code}</span>
                     <p className="font-semibold text-slate-800">{log.topic}</p>

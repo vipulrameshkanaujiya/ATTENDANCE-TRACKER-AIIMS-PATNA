@@ -34,7 +34,7 @@ export default async function AdminAttendancePage() {
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider border-b border-slate-200">
+            <thead className="bg-bg text-slate-500 uppercase tracking-wider border-b border-slate-200">
               <tr>
                 <th className="p-3">Student Roll</th>
                 <th className="p-3">Session & Date</th>
@@ -45,7 +45,7 @@ export default async function AdminAttendancePage() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {(attendanceLogs || []).map((log: any) => (
-                <tr key={log.id} className="hover:bg-slate-50">
+                <tr key={log.id} className="hover:bg-bg">
                   <td className="p-3 font-mono font-bold text-slate-900">
                     <div>{log.student?.roll_number || "Unset"}</div>
                     <div className="text-[10px] text-slate-400 font-sans font-normal">{log.student?.full_name || log.student?.email}</div>

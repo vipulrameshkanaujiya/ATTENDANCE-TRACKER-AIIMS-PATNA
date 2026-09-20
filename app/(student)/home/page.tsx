@@ -55,10 +55,10 @@ function AutoPresentCard({ initialPref }: { initialPref: any }) {
   };
 
   return (
-    <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 mt-4 flex items-center justify-between transition-colors">
+    <div className="rounded-xl border border-border bg-bg-elevated p-4 mt-4 flex items-center justify-between transition-colors">
       <div>
-        <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">Auto-Present</h3>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+        <h3 className="text-sm font-semibold text-text">Auto-Present</h3>
+        <p className="text-xs text-text-muted mt-0.5">
           {optimisticAutoPresent
             ? "Active — marking all past classes present."
             : "Inactive — tap to enable auto-marking."}
@@ -93,7 +93,7 @@ function AutoPresentCard({ initialPref }: { initialPref: any }) {
           className={`text-lg font-black uppercase tracking-wider transition-colors duration-300 ${
             optimisticAutoPresent
               ? "text-emerald-500"
-              : "text-slate-400 dark:text-slate-500"
+              : "text-text-faint"
           }`}
         >
           {optimisticAutoPresent ? "ON" : "OFF"}
@@ -138,30 +138,30 @@ export default function StudentHomePage() {
       {/* 1. Header Greeting */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-text tracking-tight flex items-center gap-2">
             <span>Good Morning</span>
             <span className="text-2xl">👋</span>
           </h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400 font-medium pt-0.5">
+          <p className="text-sm text-text-muted font-medium pt-0.5">
             {dateStr}
           </p>
         </div>
 
         {/* Exam Countdown Widget */}
         {activeExam && countdownDays !== null && (
-          <div className="rounded-2xl bg-gradient-to-br from-amber-500 via-orange-500 to-rose-500 text-white p-4 shadow-md mt-2 sm:mt-0">
+          <div className="rounded-2xl bg-accent text-white p-4 shadow-md mt-2 sm:mt-0">
             <div className="flex items-center justify-between sm:justify-start gap-4">
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-wider text-amber-100">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-white/80">
                   {activeExam.title}
                 </p>
                 <p className="text-2xl font-black mt-1">
                   {countdownDays} <span className="text-sm font-bold">days left</span>
                 </p>
               </div>
-              <div className="text-right sm:text-left border-l border-amber-400/40 pl-3">
+              <div className="text-right sm:text-left border-l border-white/20 pl-3">
                 <p className="text-xs font-bold">{new Date(activeExam.exam_date).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })}</p>
-                <p className="text-[10px] text-amber-100">Pre-Prof Exam</p>
+                <p className="text-[10px] text-white/80">Pre-Prof Exam</p>
               </div>
             </div>
           </div>
@@ -176,7 +176,7 @@ export default function StudentHomePage() {
               <Heart className="w-4 h-4 text-pink-600 dark:text-pink-400 fill-pink-600" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-slate-900 dark:text-slate-100">
+              <p className="text-xs font-bold text-text">
                 🎉 Thank you to our {donationCount} supporter{donationCount > 1 ? "s" : ""}!
               </p>
               <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
@@ -198,7 +198,7 @@ export default function StudentHomePage() {
       <AutoPresentCard initialPref={autoPresentPref} />
 
       {data?.batchPhoto?.url && (
-        <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs">
+        <div className="rounded-2xl overflow-hidden border border-border bg-bg-elevated shadow-xs">
           <Image 
             src={data.batchPhoto.url} 
             alt="MBBS 2024 Batch" 
@@ -209,7 +209,7 @@ export default function StudentHomePage() {
             sizes="(max-width: 768px) 100vw, 800px"
           />
           {data.batchPhoto.caption && (
-            <p className="text-xs text-slate-500 dark:text-slate-400 px-4 py-3 text-center">
+            <p className="text-xs text-text-muted px-4 py-3 text-center">
               {data.batchPhoto.caption}
             </p>
           )}
@@ -219,9 +219,9 @@ export default function StudentHomePage() {
       {/* 3. TODAY'S SESSIONS TIMELINE */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2">
+          <h2 className="text-base font-bold text-text tracking-tight flex items-center gap-2">
             <span>Today's Sessions</span>
-            <span className="text-xs font-semibold px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full">
+            <span className="text-xs font-semibold px-2 py-0.5 bg-bg-subtle text-slate-600 dark:text-slate-400 rounded-full">
               {todayClasses.length}
             </span>
           </h2>
@@ -239,27 +239,27 @@ export default function StudentHomePage() {
             {todayClasses.map((c: any) => (
               <div
                 key={c.id}
-                className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-slate-300 transition"
+                className="bg-bg-elevated rounded-xl border border-border shadow-xs p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-slate-300 transition"
               >
                 <div className="flex items-start gap-3">
                   <div className="w-14 text-center flex-shrink-0 pt-0.5">
-                    <p className="text-xs font-bold text-slate-900 dark:text-slate-100">{c.start_time.slice(0, 5)}</p>
-                    <p className="text-[11px] text-slate-400 dark:text-slate-500">{c.end_time.slice(0, 5)}</p>
+                    <p className="text-xs font-bold text-text">{c.start_time.slice(0, 5)}</p>
+                    <p className="text-[11px] text-text-faint">{c.end_time.slice(0, 5)}</p>
                   </div>
-                  <div className="border-l-2 border-slate-200 dark:border-slate-800 pl-3 space-y-0.5">
+                  <div className="border-l-2 border-border pl-3 space-y-0.5">
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-bold text-blue-700">
                         {c.subject?.code || "MBBS"}
                       </span>
-                      <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                      <span className="text-[11px] font-medium text-text-muted">
                         {c.class_type} · {c.batch_scope}
                       </span>
                     </div>
-                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 leading-tight">
+                    <p className="text-sm font-semibold text-text leading-tight">
                       {c.topic || c.subject?.name}
                     </p>
                     {c.faculty && (
-                      <p className="text-xs text-slate-500 dark:text-slate-400">{c.faculty}</p>
+                      <p className="text-xs text-text-muted">{c.faculty}</p>
                     )}
                   </div>
                 </div>
@@ -275,8 +275,8 @@ export default function StudentHomePage() {
             ))}
           </div>
         ) : (
-          <div className="p-6 text-center bg-white dark:bg-slate-900 rounded-xl border border-dashed border-slate-300 dark:border-slate-700">
-            <p className="text-xs text-slate-500 dark:text-slate-400">No classes listed for today.</p>
+          <div className="p-6 text-center bg-bg-elevated rounded-xl border border-dashed border-slate-300 dark:border-slate-700">
+            <p className="text-xs text-text-muted">No classes listed for today.</p>
           </div>
         )}
       </div>
@@ -292,13 +292,13 @@ export default function StudentHomePage() {
       )}
 
       {/* 4. MY ATTENDANCE SUMMARY */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 space-y-4">
+      <div className="bg-bg-elevated rounded-2xl border border-border shadow-sm p-5 space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+            <h2 className="text-base font-bold text-text tracking-tight">
               My Attendance Summary
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Official NMC minimum requirement is 75%</p>
+            <p className="text-xs text-text-muted">Official NMC minimum requirement is 75%</p>
           </div>
           <Link
             href="/attendance"
@@ -324,7 +324,7 @@ export default function StudentHomePage() {
                       <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
                         {sub.subject_name}
                       </span>
-                      <span className="text-[10px] font-semibold text-slate-400 dark:text-slate-500">
+                      <span className="text-[10px] font-semibold text-text-faint">
                         Combined: {sub.percentage}%
                       </span>
                     </div>
@@ -334,10 +334,10 @@ export default function StudentHomePage() {
                       <div className="flex items-center justify-between text-xs">
                         <span className="font-semibold text-slate-700 dark:text-slate-300">
                           Theory:{" "}
-                          <span className="font-bold text-slate-900 dark:text-slate-100">
+                          <span className="font-bold text-text">
                             {sub.theory?.total ? `${theoryPct}%` : "—"}
                           </span>{" "}
-                          <span className="text-[11px] font-normal text-slate-500 dark:text-slate-400">
+                          <span className="text-[11px] font-normal text-text-muted">
                             ({sub.theory?.attended || 0}/{sub.theory?.total || 0})
                           </span>
                         </span>
@@ -374,10 +374,10 @@ export default function StudentHomePage() {
                       <div className="flex items-center justify-between text-xs">
                         <span className="font-semibold text-slate-700 dark:text-slate-300">
                           Practical:{" "}
-                          <span className="font-bold text-slate-900 dark:text-slate-100">
+                          <span className="font-bold text-text">
                             {sub.practical?.total ? `${practicalPct}%` : "—"}
                           </span>{" "}
-                          <span className="text-[11px] font-normal text-slate-500 dark:text-slate-400">
+                          <span className="text-[11px] font-normal text-text-muted">
                             ({sub.practical?.attended || 0}/{sub.practical?.total || 0})
                           </span>
                         </span>
@@ -445,7 +445,7 @@ export default function StudentHomePage() {
                       style={{ width: `${Math.min(100, sub.percentage)}%` }}
                     />
                   </div>
-                  <p className="text-[11px] text-slate-400 dark:text-slate-500">
+                  <p className="text-[11px] text-text-faint">
                     {sub.attended} attended / {sub.total} sessions
                   </p>
                 </div>
@@ -453,7 +453,7 @@ export default function StudentHomePage() {
             })}
           </div>
         ) : (
-          <p className="text-xs text-slate-400 dark:text-slate-500 italic">
+          <p className="text-xs text-text-faint italic">
             Attendance percentages will calculate automatically once classes are marked.
           </p>
         )}

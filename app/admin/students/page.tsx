@@ -193,7 +193,7 @@ export default async function AdminStudentsPage() {
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider border-b border-slate-200">
+            <thead className="bg-bg text-slate-500 uppercase tracking-wider border-b border-slate-200">
               <tr>
                 <th className="p-3">Roll No</th>
                 <th className="p-3">Student / Claim Details</th>
@@ -205,7 +205,7 @@ export default async function AdminStudentsPage() {
             <tbody className="divide-y divide-slate-100">
               {rosterEntries && rosterEntries.length > 0 ? (
                 rosterEntries.map((r: any) => (
-                  <tr key={r.id} className="hover:bg-slate-50">
+                  <tr key={r.id} className="hover:bg-bg">
                     <td className="p-3 font-mono font-bold text-slate-900">
                       {r.roll_number}
                     </td>
@@ -274,7 +274,7 @@ export default async function AdminStudentsPage() {
                 ))
               ) : (
                 (users || []).map((s: any) => (
-                  <tr key={s.id} className="hover:bg-slate-50">
+                  <tr key={s.id} className="hover:bg-bg">
                     <td className="p-3 font-mono font-bold text-slate-900">
                       {s.roll_number || "Pending"}
                     </td>

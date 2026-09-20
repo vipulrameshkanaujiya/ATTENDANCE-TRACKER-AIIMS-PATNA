@@ -14,45 +14,28 @@ export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
-  if (!mounted) return <div className="w-16 h-8" />;
+  if (!mounted) return <div className="w-14 h-7" />;
 
   const isDark = theme === "dark";
 
   return (
     <button
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="relative flex items-center gap-1 p-1 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 transition-colors"
+      className="relative w-14 h-7 rounded-full border border-border bg-bg-subtle transition-colors flex items-center px-1"
       aria-label="Toggle theme"
     >
-      {/* Sun slot */}
+      {/* Sliding circle knob */}
       <div
-        className={`flex items-center justify-center w-7 h-7 rounded-full transition-all duration-300 ${
-          isDark
-            ? "bg-transparent"
-            : "bg-amber-400 shadow-sm"
+        className={`w-5 h-5 rounded-full bg-accent transition-transform duration-300 ease-out ${
+          isDark ? "translate-x-7" : "translate-x-0"
         }`}
-      >
-        <Sun
-          className={`w-4 h-4 transition-colors ${
-            isDark ? "text-slate-400" : "text-white"
-          }`}
-        />
-      </div>
-
-      {/* Moon slot */}
-      <div
-        className={`flex items-center justify-center w-7 h-7 rounded-full transition-all duration-300 ${
-          isDark
-            ? "bg-white shadow-sm"
-            : "bg-transparent"
-        }`}
-      >
-        <Moon
-          className={`w-4 h-4 transition-colors ${
-            isDark ? "text-slate-900" : "text-slate-400"
-          }`}
-        />
-      </div>
+      />
+      
+      {/* Sun icon (left) */}
+      <Sun className={`absolute left-1.5 w-3.5 h-3.5 transition-colors ${isDark ? "text-text-faint" : "text-white"}`} />
+      
+      {/* Moon icon (right) */}
+      <Moon className={`absolute right-1.5 w-3.5 h-3.5 transition-colors ${isDark ? "text-white" : "text-text-faint"}`} />
     </button>
   );
 }
@@ -66,7 +49,7 @@ export function TopHeader({ profile }: TopHeaderProps) {
   useEffect(() => setMounted(true), []);
 
   return (
-    <header className="sticky top-0 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-3 sm:px-6">
+    <header className="sticky top-0 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-border px-4 py-3 sm:px-6">
       <div className="w-full max-w-5xl mx-auto flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5 min-w-0 flex-1 overflow-hidden">
           <img 
@@ -75,7 +58,7 @@ export function TopHeader({ profile }: TopHeaderProps) {
             className="w-8 h-8 rounded-lg object-cover flex-shrink-0"
           />
           <div className="min-w-0 flex-1 overflow-hidden">
-            <h1 className="text-sm font-bold text-slate-900 dark:text-slate-100 leading-none truncate">
+            <h1 className="text-sm font-bold text-text leading-none truncate">
               BunkBuddy
             </h1>
             <p className="text-[10px] font-semibold text-blue-600 dark:text-blue-400 tracking-wider uppercase truncate mt-0.5">
@@ -118,7 +101,7 @@ export function TopHeader({ profile }: TopHeaderProps) {
           <Link
             href="/profile"
             prefetch={true}
-            className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-8 h-8 rounded-full bg-bg-subtle border border-slate-300 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500"
             title="My Profile"
           >
             {profile?.avatar_url ? (

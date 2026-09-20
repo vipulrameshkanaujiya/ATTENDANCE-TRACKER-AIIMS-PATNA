@@ -44,7 +44,7 @@ export default function DemoAdminImportPage() {
           <span>Upload Teaching Schedule PDF</span>
         </h2>
 
-        <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
+        <div className="p-4 bg-bg border border-slate-200 rounded-xl flex items-center justify-between">
           <div>
             <p className="text-xs font-bold text-slate-800">
               AIIMS_Patna_MBBS_2024_Teaching_Schedule_Sept_2026 (2).pdf
@@ -90,7 +90,7 @@ export default function DemoAdminImportPage() {
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider border-b border-slate-200">
+            <thead className="bg-bg text-slate-500 uppercase tracking-wider border-b border-slate-200">
               <tr>
                 <th className="p-2.5">Date</th>
                 <th className="p-2.5">Time</th>
@@ -105,7 +105,7 @@ export default function DemoAdminImportPage() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {rows.map((r) => (
-                <tr key={r.id} className="hover:bg-slate-50">
+                <tr key={r.id} className="hover:bg-bg">
                   <td className="p-2.5 font-mono whitespace-nowrap">{r.date}</td>
                   <td className="p-2.5 font-mono text-slate-500 whitespace-nowrap">{r.time}</td>
                   <td className="p-2.5 font-bold text-blue-700">{r.subject}</td>

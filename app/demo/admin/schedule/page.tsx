@@ -53,15 +53,15 @@ export default function DemoAdminSchedulePage() {
         <form onSubmit={handleAdd} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
           <div>
             <label className="text-xs font-semibold text-slate-700">Date</label>
-            <input type="date" defaultValue="2026-09-08" className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg" />
+            <input type="date" defaultValue="2026-09-08" className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg" />
           </div>
           <div>
             <label className="text-xs font-semibold text-slate-700">Time</label>
-            <input type="text" defaultValue="08:00 - 09:00" className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg" />
+            <input type="text" defaultValue="08:00 - 09:00" className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg" />
           </div>
           <div>
             <label className="text-xs font-semibold text-slate-700">Subject</label>
-            <select className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg">
+            <select className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg">
               <option value="PATH">Pathology (PATH)</option>
               <option value="PHARMA">Pharmacology (PHARMA)</option>
               <option value="MICRO">Microbiology (MICRO)</option>
@@ -69,7 +69,7 @@ export default function DemoAdminSchedulePage() {
           </div>
           <div>
             <label className="text-xs font-semibold text-slate-700">Class Type</label>
-            <select className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg">
+            <select className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg">
               <option value="Lecture">Lecture</option>
               <option value="Practical">Practical</option>
               <option value="Tutorial">Tutorial</option>
@@ -82,7 +82,7 @@ export default function DemoAdminSchedulePage() {
               value={newTopic}
               onChange={(e) => setNewTopic(e.target.value)}
               placeholder="e.g. Antifungal Drugs - I"
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white"
+              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white"
             />
           </div>
           <div className="flex items-end">
@@ -103,7 +103,7 @@ export default function DemoAdminSchedulePage() {
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider border-b border-slate-200">
+            <thead className="bg-bg text-slate-500 uppercase tracking-wider border-b border-slate-200">
               <tr>
                 <th className="p-3">Date & Time</th>
                 <th className="p-3">Subject</th>
@@ -115,7 +115,7 @@ export default function DemoAdminSchedulePage() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {classes.map((c) => (
-                <tr key={c.id} className="hover:bg-slate-50">
+                <tr key={c.id} className="hover:bg-bg">
                   <td className="p-3 whitespace-nowrap font-medium text-slate-800">
                     <div>{c.date}</div>
                     <div className="text-[11px] text-slate-400">{c.start_time.slice(0, 5)} - {c.end_time.slice(0, 5)}</div>

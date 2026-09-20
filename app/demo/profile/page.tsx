@@ -29,7 +29,7 @@ export default function DemoProfilePage() {
         </div>
 
         <div className="space-y-3">
-          <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
+          <div className="flex items-center justify-between p-3 rounded-xl bg-bg border border-slate-100">
             <div className="flex items-center gap-2 text-xs text-slate-500">
               <Hash className="w-4 h-4 text-blue-600" />
               <span>MBBS Roll Number</span>
@@ -37,7 +37,7 @@ export default function DemoProfilePage() {
             <span className="text-sm font-bold font-mono text-slate-900">{demoStudent.roll_number}</span>
           </div>
 
-          <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
+          <div className="flex items-center justify-between p-3 rounded-xl bg-bg border border-slate-100">
             <div className="flex items-center gap-2 text-xs text-slate-500">
               <Layers className="w-4 h-4 text-blue-600" />
               <span>Assigned Batch</span>
@@ -47,7 +47,7 @@ export default function DemoProfilePage() {
             </span>
           </div>
 
-          <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
+          <div className="flex items-center justify-between p-3 rounded-xl bg-bg border border-slate-100">
             <div className="flex items-center gap-2 text-xs text-slate-500">
               <Mail className="w-4 h-4 text-slate-400" />
               <span>Google Account</span>
@@ -66,7 +66,7 @@ export default function DemoProfilePage() {
           </Link>
           <Link
             href="/login"
-            className="w-full py-2.5 rounded-xl border border-slate-200 text-slate-600 text-xs font-semibold flex items-center justify-center gap-2 hover:bg-slate-50 transition"
+            className="w-full py-2.5 rounded-xl border border-slate-200 text-slate-600 text-xs font-semibold flex items-center justify-center gap-2 hover:bg-bg transition"
           >
             <LogOut className="w-4 h-4" />
             <span>Exit Demo Mode to /login</span>

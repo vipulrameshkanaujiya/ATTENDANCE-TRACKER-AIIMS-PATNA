@@ -44,7 +44,7 @@ export default function DemoAdminExamsPage() {
               type="text"
               value={exam.title}
               onChange={(e) => setExam({ ...exam, title: e.target.value })}
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white"
+              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white"
             />
           </div>
 
@@ -54,7 +54,7 @@ export default function DemoAdminExamsPage() {
               type="date"
               value={exam.exam_date}
               onChange={(e) => setExam({ ...exam, exam_date: e.target.value })}
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white"
+              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white"
             />
           </div>
 
@@ -64,7 +64,7 @@ export default function DemoAdminExamsPage() {
               type="text"
               value={exam.description}
               onChange={(e) => setExam({ ...exam, description: e.target.value })}
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white"
+              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white"
             />
           </div>
 

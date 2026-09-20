@@ -9,15 +9,15 @@ export default async function ProfilePage() {
   return (
     <div className="space-y-6 max-w-lg mx-auto">
       <div>
-        <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+        <h1 className="text-xl sm:text-2xl font-bold text-text tracking-tight">
           Student Profile
         </h1>
-        <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+        <p className="text-xs text-text-muted font-medium">
           Account details and batch assignment
         </p>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 space-y-6">
+      <div className="bg-bg-elevated rounded-2xl border border-border shadow-sm p-6 space-y-6">
         {/* Avatar & Name */}
         <div className="flex items-center gap-4 border-b border-slate-100 dark:border-slate-800 pb-5">
           <div className="w-16 h-16 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xl border-2 border-blue-200 dark:border-blue-900/30 flex-shrink-0">
@@ -32,10 +32,10 @@ export default async function ProfilePage() {
             )}
           </div>
           <div>
-            <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">
+            <h2 className="text-base font-bold text-text">
               {profile?.full_name || "Medical Student"}
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+            <p className="text-xs text-text-muted font-mono">
               {user.email}
             </p>
             {profile?.role === "admin" && (
@@ -49,18 +49,18 @@ export default async function ProfilePage() {
 
         {/* Info Rows */}
         <div className="space-y-3.5">
-          <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800">
-            <div className="flex items-center gap-2.5 text-xs text-slate-500 dark:text-slate-400 font-medium">
+          <div className="flex items-center justify-between p-3 rounded-xl bg-bg dark:bg-slate-950 border border-slate-100 dark:border-slate-800">
+            <div className="flex items-center gap-2.5 text-xs text-text-muted font-medium">
               <Hash className="w-4 h-4 text-blue-600" />
               <span>MBBS Roll Number</span>
             </div>
-            <span className="text-sm font-bold font-mono text-slate-900 dark:text-slate-100">
+            <span className="text-sm font-bold font-mono text-text">
               {profile?.roll_number || "Not set"}
             </span>
           </div>
 
-          <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800">
-            <div className="flex items-center gap-2.5 text-xs text-slate-500 dark:text-slate-400 font-medium">
+          <div className="flex items-center justify-between p-3 rounded-xl bg-bg dark:bg-slate-950 border border-slate-100 dark:border-slate-800">
+            <div className="flex items-center gap-2.5 text-xs text-text-muted font-medium">
               <Layers className="w-4 h-4 text-blue-600" />
               <span>Assigned Batch</span>
             </div>
@@ -69,9 +69,9 @@ export default async function ProfilePage() {
             </span>
           </div>
 
-          <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800">
-            <div className="flex items-center gap-2.5 text-xs text-slate-500 dark:text-slate-400 font-medium">
-              <Mail className="w-4 h-4 text-slate-400 dark:text-slate-500" />
+          <div className="flex items-center justify-between p-3 rounded-xl bg-bg dark:bg-slate-950 border border-slate-100 dark:border-slate-800">
+            <div className="flex items-center gap-2.5 text-xs text-text-muted font-medium">
+              <Mail className="w-4 h-4 text-text-faint" />
               <span>Google Account</span>
             </div>
             <span className="text-xs text-slate-700 dark:text-slate-300 font-medium truncate max-w-[180px]">

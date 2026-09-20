@@ -18,7 +18,7 @@ export default async function AdminBulkAttendancePage() {
         <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
           Bulk Pre-September Attendance
         </h1>
-        <p className="text-slate-500 dark:text-slate-400 mt-1">
+        <p className="text-text-muted mt-1">
           Upload official attendance records via CSV. Students will be prompted to verify and lock this data.
         </p>
       </div>

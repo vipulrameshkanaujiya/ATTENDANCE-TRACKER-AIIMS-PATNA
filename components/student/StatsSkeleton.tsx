@@ -20,7 +20,7 @@ export function StatsSkeleton() {
         {[1, 2].map((i) => (
           <div
             key={i}
-            className="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3"
+            className="p-5 bg-bg-elevated rounded-2xl border border-border shadow-xs space-y-3"
           >
             <div className="flex items-center gap-2">
               <Skeleton className="h-4 w-4 rounded" />
@@ -33,7 +33,7 @@ export function StatsSkeleton() {
       </div>
 
       {/* Subject-Wise Batch Benchmarks */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 space-y-4">
+      <div className="bg-bg-elevated rounded-2xl border border-border shadow-sm p-5 space-y-4">
         <div className="space-y-1.5">
           <Skeleton className="h-5 w-48 rounded" />
           <Skeleton className="h-3 w-56 rounded" />

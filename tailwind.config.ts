@@ -10,18 +10,21 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-        medical: {
-          50: "#eff6ff",
-          100: "#dbeafe",
-          200: "#bfdbfe",
-          500: "#3b82f6",
-          600: "#2563eb",
-          700: "#1d4ed8",
-          800: "#1e40af",
-          900: "#1e3a8a",
-        }
+        bg:              'var(--bg)',
+        'bg-elevated':   'var(--bg-elevated)',
+        'bg-subtle':     'var(--bg-subtle)',
+        text:            'var(--text)',
+        'text-muted':    'var(--text-muted)',
+        'text-faint':    'var(--text-faint)',
+        border:          'var(--border)',
+        'border-strong': 'var(--border-strong)',
+        accent:          'var(--accent)',
+        'accent-hover':  'var(--accent-hover)',
+        'accent-soft':   'var(--accent-soft)',
+        'accent-text':   'var(--accent-text)',
+        hard:            'var(--hard)',
+        medium:          'var(--medium)',
+        easy:            'var(--easy)',
       },
     },
   },

@@ -38,7 +38,7 @@ export default async function AdminExamsPage() {
               type="text"
               required
               placeholder="e.g. PRE-PROF"
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white"
+              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white"
             />
           </div>
 
@@ -49,7 +49,7 @@ export default async function AdminExamsPage() {
               type="date"
               required
               defaultValue="2026-11-04"
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white"
+              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white"
             />
           </div>
 
@@ -59,7 +59,7 @@ export default async function AdminExamsPage() {
               name="description"
               type="text"
               placeholder="e.g. 2nd Professional Examination"
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white"
+              className="w-full px-3 py-2 text-xs bg-bg border border-slate-300 rounded-lg focus:bg-white"
             />
           </div>
 

@@ -99,10 +99,10 @@ export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocke
   return (
     <div className="space-y-8">
       {/* 1. Add Pre-emptive Block */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-xs">
+      <div className="bg-bg-elevated border border-border rounded-xl p-5 shadow-xs">
         <div className="flex items-center gap-2 mb-4">
           <ShieldAlert className="w-5 h-5 text-red-600" />
-          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Add New Block (Pre-emptive)</h2>
+          <h2 className="text-lg font-bold text-text">Add New Block (Pre-emptive)</h2>
         </div>
         <form onSubmit={handleBlockSubmit} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
           <div className="space-y-1">
@@ -111,7 +111,7 @@ export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocke
               type="email" 
               value={blockForm.email} 
               onChange={e => setBlockForm(prev => ({...prev, email: e.target.value}))}
-              className="w-full text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 px-3 py-2 text-slate-900 dark:text-slate-100"
+              className="w-full text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-bg dark:bg-slate-950 px-3 py-2 text-text"
               placeholder="e.g. student@aiimspatna.org"
             />
           </div>
@@ -121,7 +121,7 @@ export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocke
               type="text" 
               value={blockForm.rollNumber} 
               onChange={e => setBlockForm(prev => ({...prev, rollNumber: e.target.value}))}
-              className="w-full text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 px-3 py-2 text-slate-900 dark:text-slate-100"
+              className="w-full text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-bg dark:bg-slate-950 px-3 py-2 text-text"
               placeholder="e.g. 24001"
             />
           </div>
@@ -131,7 +131,7 @@ export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocke
               type="text" 
               value={blockForm.reason} 
               onChange={e => setBlockForm(prev => ({...prev, reason: e.target.value}))}
-              className="w-full text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 px-3 py-2 text-slate-900 dark:text-slate-100"
+              className="w-full text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-bg dark:bg-slate-950 px-3 py-2 text-text"
               placeholder="e.g. Suspended"
             />
           </div>
@@ -146,11 +146,11 @@ export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocke
       </div>
 
       {/* 2. Currently Blocked */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-xs">
-        <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-4">Currently Blocked Users</h2>
+      <div className="bg-bg-elevated border border-border rounded-xl p-5 shadow-xs">
+        <h2 className="text-lg font-bold text-text mb-4">Currently Blocked Users</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
-            <thead className="bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
+            <thead className="bg-bg dark:bg-slate-800 text-text-muted">
               <tr>
                 <th className="px-4 py-3 font-semibold rounded-tl-lg">Identifier</th>
                 <th className="px-4 py-3 font-semibold">Reason</th>
@@ -160,9 +160,9 @@ export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocke
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               {initialBlocked.map(b => (
-                <tr key={b.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                <tr key={b.id} className="hover:bg-bg dark:hover:bg-slate-800/50">
                   <td className="px-4 py-3">
-                    <div className="font-medium text-slate-900 dark:text-slate-100">{b.email || b.roll_number}</div>
+                    <div className="font-medium text-text">{b.email || b.roll_number}</div>
                     <div className="text-xs text-slate-500">{b.email && b.roll_number ? `${b.roll_number} (${b.email})` : ""}</div>
                   </td>
                   <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{b.reason || "-"}</td>
@@ -181,7 +181,7 @@ export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocke
               ))}
               {initialBlocked.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-4 py-8 text-center text-slate-500 dark:text-slate-400">
+                  <td colSpan={4} className="px-4 py-8 text-center text-text-muted">
                     No blocked users found.
                   </td>
                 </tr>
@@ -192,9 +192,9 @@ export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocke
       </div>
 
       {/* 3. All Students */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-xs">
+      <div className="bg-bg-elevated border border-border rounded-xl p-5 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">All Registered Students</h2>
+          <h2 className="text-lg font-bold text-text">All Registered Students</h2>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input 
@@ -202,13 +202,13 @@ export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocke
               placeholder="Search roll, email, name..."
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
-              className="pl-9 pr-4 py-2 text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-64"
+              className="pl-9 pr-4 py-2 text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-bg dark:bg-slate-950 text-text focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-64"
             />
           </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
-            <thead className="bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
+            <thead className="bg-bg dark:bg-slate-800 text-text-muted">
               <tr>
                 <th className="px-4 py-3 font-semibold rounded-tl-lg">Roll</th>
                 <th className="px-4 py-3 font-semibold">Name</th>
@@ -220,9 +220,9 @@ export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocke
               {filteredUsers.map(u => {
                 const isBlocked = initialBlocked.some(b => (b.email && b.email === u.email) || (b.roll_number && b.roll_number === u.roll_number) || (b.user_id === u.id));
                 return (
-                  <tr key={u.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                    <td className="px-4 py-3 font-semibold text-slate-900 dark:text-slate-100">{u.roll_number || "-"}</td>
-                    <td className="px-4 py-3 text-slate-900 dark:text-slate-100">{u.full_name || "-"}</td>
+                  <tr key={u.id} className="hover:bg-bg dark:hover:bg-slate-800/50">
+                    <td className="px-4 py-3 font-semibold text-text">{u.roll_number || "-"}</td>
+                    <td className="px-4 py-3 text-text">{u.full_name || "-"}</td>
                     <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{u.email}</td>
                     <td className="px-4 py-3 text-right">
                       <div className="flex items-center justify-end gap-2">
@@ -274,7 +274,7 @@ export function AccessControlTable({ initialBlocked, allUsers }: { initialBlocke
               })}
               {filteredUsers.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-4 py-8 text-center text-slate-500 dark:text-slate-400">
+                  <td colSpan={4} className="px-4 py-8 text-center text-text-muted">
                     No students found.
                   </td>
                 </tr>

@@ -20,14 +20,14 @@ export default async function AdminFeedbackPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-1">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-accent-soft dark:bg-accent-soft/50 text-accent-text dark:text-accent flex items-center justify-center">
             <MessageSquare className="w-4 h-4" />
           </div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+          <h1 className="text-2xl font-bold text-text">
             Student Feedback & Bug Reports
           </h1>
         </div>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
+        <p className="text-sm text-text-muted">
           Review, investigate, and triage bugs, feature requests, and inquiries submitted by students.
         </p>
       </div>

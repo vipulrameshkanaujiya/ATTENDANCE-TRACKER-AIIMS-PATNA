@@ -219,9 +219,9 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
   return (
     <div className="space-y-6">
       {/* Search & Filter Controls */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xs space-y-4">
+      <div className="bg-bg-elevated border border-border rounded-2xl p-4 sm:p-5 shadow-xs space-y-4">
         {/* Status Tabs */}
-        <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
+        <div className="flex flex-wrap items-center gap-2 border-b border-border pb-3">
           {STATUS_TABS.map((tab) => {
             const count = counts[tab];
             const isActive = activeTab === tab;
@@ -231,8 +231,8 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
                 onClick={() => setActiveTab(tab)}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
                   isActive
-                    ? "bg-indigo-600 text-white shadow-xs"
-                    : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
+                    ? "bg-accent text-white shadow-xs"
+                    : "bg-bg-subtle text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
                 }`}
               >
                 <span>{tab}</span>
@@ -259,7 +259,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
               placeholder="Search by roll number, email, message, notes..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+              className="w-full pl-9 pr-4 py-2 bg-bg dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
             />
           </div>
 
@@ -268,7 +268,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="px-3 py-2 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+              className="px-3 py-2 bg-bg dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
             >
               <option value="ALL">All Categories</option>
               <option value="general">General</option>
@@ -281,16 +281,16 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
       </div>
 
       {/* Table Container */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xs overflow-hidden">
+      <div className="bg-bg-elevated border border-border rounded-2xl shadow-xs overflow-hidden">
         {filteredItems.length === 0 ? (
           <div className="text-center py-16 px-4">
-            <div className="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mx-auto mb-3">
+            <div className="w-12 h-12 rounded-2xl bg-accent-soft dark:bg-accent-soft/40 text-accent-text dark:text-accent flex items-center justify-center mx-auto mb-3">
               <MessageSquare className="w-6 h-6" />
             </div>
             <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">
               No feedback found
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            <p className="text-xs text-text-muted mt-1">
               {searchQuery || categoryFilter !== "ALL" || activeTab !== "ALL"
                 ? "Try clearing filters to see more entries."
                 : "No student feedback has been submitted yet."}
@@ -300,7 +300,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/75 dark:bg-slate-800/40 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                <tr className="border-b border-border bg-slate-50/75 dark:bg-slate-800/40 text-[11px] font-bold text-text-muted uppercase tracking-wider">
                   <th className="py-3 px-4">Date</th>
                   <th className="py-3 px-4">Student</th>
                   <th className="py-3 px-4">Category</th>
@@ -315,7 +315,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
                     key={item.id}
                     className="hover:bg-slate-50/60 dark:hover:bg-slate-800/30 transition-colors"
                   >
-                    <td className="py-3 px-4 text-slate-500 dark:text-slate-400 whitespace-nowrap font-mono text-[11px]">
+                    <td className="py-3 px-4 text-text-muted whitespace-nowrap font-mono text-[11px]">
                       {formatDate(item.created_at)}
                     </td>
                     <td className="py-3 px-4">
@@ -327,7 +327,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
                         ) : (
                           <span className="text-slate-400 italic">No roll</span>
                         )}
-                        <span className="text-[11px] text-slate-500 dark:text-slate-400 truncate max-w-[150px]">
+                        <span className="text-[11px] text-text-muted truncate max-w-[150px]">
                           {item.email || "Anonymous"}
                         </span>
                       </div>
@@ -352,7 +352,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
                       <div className="inline-flex items-center gap-1.5">
                         <button
                           onClick={() => handleOpenModal(item)}
-                          className="px-2.5 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/40 dark:hover:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 font-semibold text-xs transition inline-flex items-center gap-1"
+                          className="px-2.5 py-1.5 rounded-lg bg-accent-soft hover:bg-indigo-100 dark:bg-accent-soft/40 dark:hover:bg-indigo-900/50 text-accent-text dark:text-accent font-semibold text-xs transition inline-flex items-center gap-1"
                           title="View and edit"
                         >
                           <Edit3 className="w-3.5 h-3.5" />
@@ -378,18 +378,18 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
       {/* Detail / Edit Modal */}
       {selectedItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto space-y-5">
+          <div className="bg-bg-elevated border border-border rounded-2xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto space-y-5">
             {/* Modal Header */}
             <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-xl bg-accent-soft dark:bg-accent-soft/50 text-accent-text dark:text-accent flex items-center justify-center">
                   <MessageSquare className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
+                  <h3 className="text-base font-bold text-text">
                     Feedback Details
                   </h3>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                  <p className="text-[11px] text-text-muted">
                     Submitted on {formatDate(selectedItem.created_at)}
                   </p>
                 </div>
@@ -403,7 +403,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
             </div>
 
             {/* Submitter Info Grid */}
-            <div className="grid grid-cols-2 gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/70 dark:border-slate-800">
+            <div className="grid grid-cols-2 gap-3 p-3 rounded-xl bg-bg dark:bg-slate-800/40 border border-slate-200/70 dark:border-slate-800">
               <div>
                 <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">
                   Roll Number
@@ -433,7 +433,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
                 Message Content
               </label>
-              <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-xs text-slate-800 dark:text-slate-200 whitespace-pre-wrap leading-relaxed max-h-60 overflow-y-auto">
+              <div className="p-3.5 rounded-xl bg-bg dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-xs text-slate-800 dark:text-slate-200 whitespace-pre-wrap leading-relaxed max-h-60 overflow-y-auto">
                 {selectedItem.message}
               </div>
             </div>
@@ -451,8 +451,8 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
                     onClick={() => setEditStatus(st)}
                     className={`py-2 px-2.5 rounded-xl text-xs font-bold transition text-center border ${
                       editStatus === st
-                        ? "bg-indigo-600 text-white border-indigo-600 shadow-xs"
-                        : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-50"
+                        ? "bg-accent text-white border-indigo-600 shadow-xs"
+                        : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-bg"
                     }`}
                   >
                     {st}
@@ -471,7 +471,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
                 onChange={(e) => setEditNotes(e.target.value)}
                 placeholder="Add notes about actions taken, investigation status, etc..."
                 rows={3}
-                className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                className="w-full px-3.5 py-2.5 bg-bg dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
               />
             </div>
 
@@ -514,7 +514,7 @@ export function FeedbackManager({ initialData }: { initialData: FeedbackItem[] }
                   type="button"
                   onClick={handleSaveModal}
                   disabled={isPending}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 transition shadow-xs inline-flex items-center gap-1.5"
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-accent hover:bg-accent-hover disabled:opacity-50 transition shadow-xs inline-flex items-center gap-1.5"
                 >
                   {isPending ? (
                     <>

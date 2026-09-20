@@ -20,10 +20,10 @@ export function SubjectAttendanceCard({ stat, isSelected = false }: SubjectAtten
       <Link
         href={`/attendance?subject=${isSelected ? "ALL" : stat.id}`}
         className={clsx(
-          "p-4 rounded-xl border transition-all text-left bg-white dark:bg-slate-900 shadow-xs space-y-3",
+          "p-4 rounded-xl border transition-all text-left bg-bg-elevated shadow-xs space-y-3",
           isSelected
             ? "border-blue-500 ring-2 ring-blue-500/20"
-            : "border-slate-200 dark:border-slate-800 hover:border-slate-300"
+            : "border-border hover:border-slate-300"
         )}
       >
         <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
@@ -31,7 +31,7 @@ export function SubjectAttendanceCard({ stat, isSelected = false }: SubjectAtten
             <span className="text-sm font-bold text-slate-800 dark:text-slate-200">
               {stat.name}
             </span>
-            <span className="text-[10px] text-slate-400 dark:text-slate-500 font-medium">
+            <span className="text-[10px] text-text-faint font-medium">
               Combined: {stat.total > 0 ? `${pct}%` : "No data"}
             </span>
           </div>
@@ -54,10 +54,10 @@ export function SubjectAttendanceCard({ stat, isSelected = false }: SubjectAtten
           <div className="flex items-center justify-between text-xs">
             <span className="font-semibold text-slate-700 dark:text-slate-300">
               Theory:{" "}
-              <span className="font-bold text-slate-900 dark:text-slate-100">
+              <span className="font-bold text-text">
                 {stat.theory?.total ? `${theoryPct}%` : "—"}
               </span>{" "}
-              <span className="text-[11px] font-normal text-slate-500 dark:text-slate-400">
+              <span className="text-[11px] font-normal text-text-muted">
                 ({stat.theory?.attended || 0}/{stat.theory?.total || 0})
               </span>
             </span>
@@ -76,7 +76,7 @@ export function SubjectAttendanceCard({ stat, isSelected = false }: SubjectAtten
               </span>
             )}
           </div>
-          <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+          <div className="w-full h-1.5 bg-bg-subtle rounded-full overflow-hidden">
             <div
               className={clsx(
                 "h-full rounded-full transition-all",
@@ -96,10 +96,10 @@ export function SubjectAttendanceCard({ stat, isSelected = false }: SubjectAtten
           <div className="flex items-center justify-between text-xs">
             <span className="font-semibold text-slate-700 dark:text-slate-300">
               Practical:{" "}
-              <span className="font-bold text-slate-900 dark:text-slate-100">
+              <span className="font-bold text-text">
                 {stat.practical?.total ? `${practicalPct}%` : "—"}
               </span>{" "}
-              <span className="text-[11px] font-normal text-slate-500 dark:text-slate-400">
+              <span className="text-[11px] font-normal text-text-muted">
                 ({stat.practical?.attended || 0}/{stat.practical?.total || 0})
               </span>
             </span>
@@ -118,7 +118,7 @@ export function SubjectAttendanceCard({ stat, isSelected = false }: SubjectAtten
               </span>
             )}
           </div>
-          <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+          <div className="w-full h-1.5 bg-bg-subtle rounded-full overflow-hidden">
             <div
               className={clsx(
                 "h-full rounded-full transition-all",
@@ -141,10 +141,10 @@ export function SubjectAttendanceCard({ stat, isSelected = false }: SubjectAtten
     <Link
       href={`/attendance?subject=${isSelected ? "ALL" : stat.id}`}
       className={clsx(
-        "p-4 rounded-xl border transition-all text-left bg-white dark:bg-slate-900 shadow-xs",
+        "p-4 rounded-xl border transition-all text-left bg-bg-elevated shadow-xs",
         isSelected
           ? "border-blue-500 ring-2 ring-blue-500/20"
-          : "border-slate-200 dark:border-slate-800 hover:border-slate-300"
+          : "border-border hover:border-slate-300"
       )}
     >
       <div className="flex items-center justify-between mb-2">
@@ -165,7 +165,7 @@ export function SubjectAttendanceCard({ stat, isSelected = false }: SubjectAtten
         </span>
       </div>
 
-      <div className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden mb-2">
+      <div className="w-full h-2 bg-bg-subtle rounded-full overflow-hidden mb-2">
         <div
           className={clsx(
             "h-full rounded-full transition-all",
@@ -175,7 +175,7 @@ export function SubjectAttendanceCard({ stat, isSelected = false }: SubjectAtten
         />
       </div>
 
-      <p className="text-[11px] text-slate-400 dark:text-slate-500">
+      <p className="text-[11px] text-text-faint">
         {stat.attended} attended / {stat.total} recorded
       </p>
     </Link>

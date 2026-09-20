@@ -37,7 +37,7 @@ export default function BatchPhotoAdminPage() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-text flex items-center gap-2">
           <Camera className="w-6 h-6 text-blue-600" />
           Batch Photo
         </h1>
@@ -46,7 +46,7 @@ export default function BatchPhotoAdminPage() {
         </p>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-xs">
+      <div className="bg-bg-elevated border border-border rounded-xl p-5 shadow-xs">
         <form onSubmit={handleUpload} className="space-y-4">
           <div>
             <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">

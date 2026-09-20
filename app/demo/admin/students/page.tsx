@@ -32,7 +32,7 @@ export default function DemoAdminStudentsPage() {
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider border-b border-slate-200">
+            <thead className="bg-bg text-slate-500 uppercase tracking-wider border-b border-slate-200">
               <tr>
                 <th className="p-3">Roll No</th>
                 <th className="p-3">Name & Email</th>
@@ -42,7 +42,7 @@ export default function DemoAdminStudentsPage() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {students.map((s) => (
-                <tr key={s.id} className="hover:bg-slate-50">
+                <tr key={s.id} className="hover:bg-bg">
                   <td className="p-3 font-mono font-bold text-slate-900">{s.roll}</td>
                   <td className="p-3">
                     <p className="font-semibold text-slate-800">{s.name}</p>

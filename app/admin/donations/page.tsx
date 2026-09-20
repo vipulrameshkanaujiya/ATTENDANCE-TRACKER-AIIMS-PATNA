@@ -24,11 +24,11 @@ export default async function AdminDonationsPage() {
           <div className="w-8 h-8 rounded-lg bg-pink-50 dark:bg-pink-950/50 text-pink-600 dark:text-pink-400 flex items-center justify-center">
             <Heart className="w-4 h-4 fill-pink-600" />
           </div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+          <h1 className="text-2xl font-bold text-text">
             Supporters & Donations
           </h1>
         </div>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
+        <p className="text-sm text-text-muted">
           Manage and recognize batchmates and supporters who contributed via UPI or Buy Me a Coffee.
         </p>
       </div>

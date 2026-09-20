@@ -109,9 +109,9 @@ export function BulkAttendanceClient({ currentData }: { currentData: any[] }) {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-xs">
+      <div className="bg-bg-elevated border border-border rounded-xl p-5 shadow-xs">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <h2 className="text-lg font-bold text-text flex items-center gap-2">
             <Upload className="w-5 h-5 text-emerald-600" />
             Upload CSV
           </h2>
@@ -125,7 +125,7 @@ export function BulkAttendanceClient({ currentData }: { currentData: any[] }) {
             type="file" 
             accept=".csv" 
             onChange={handleFileChange}
-            className="block w-full text-sm text-slate-500 dark:text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-slate-800 dark:file:text-slate-300 cursor-pointer"
+            className="block w-full text-sm text-text-muted file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-slate-800 dark:file:text-slate-300 cursor-pointer"
           />
         </div>
 
@@ -159,7 +159,7 @@ export function BulkAttendanceClient({ currentData }: { currentData: any[] }) {
             
             <div className="overflow-x-auto border border-slate-200 dark:border-slate-700 rounded-lg">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
+                <thead className="bg-bg dark:bg-slate-800 text-text-muted">
                   <tr>
                     <th className="p-2">Roll</th>
                     <th className="p-2">Subj</th>
@@ -187,9 +187,9 @@ export function BulkAttendanceClient({ currentData }: { currentData: any[] }) {
         )}
       </div>
 
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-xs">
+      <div className="bg-bg-elevated border border-border rounded-xl p-5 shadow-xs">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <h2 className="text-lg font-bold text-text flex items-center gap-2">
             <FileSpreadsheet className="w-5 h-5 text-blue-600" />
             Current Bulk Data ({Object.keys(groupedData).length} students)
           </h2>
@@ -206,9 +206,9 @@ export function BulkAttendanceClient({ currentData }: { currentData: any[] }) {
           </button>
         </div>
 
-        <div className="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-lg">
+        <div className="overflow-x-auto border border-border rounded-lg">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
+            <thead className="bg-bg dark:bg-slate-800 text-text-muted">
               <tr>
                 <th className="p-3">Roll</th>
                 <th className="p-3">Subjects (Th / Pr)</th>
@@ -217,12 +217,12 @@ export function BulkAttendanceClient({ currentData }: { currentData: any[] }) {
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               {Object.entries(groupedData).map(([roll, rows]: [string, any]) => (
-                <tr key={roll} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                  <td className="p-3 font-mono font-bold text-slate-900 dark:text-slate-100">{roll}</td>
+                <tr key={roll} className="hover:bg-bg dark:hover:bg-slate-800/50">
+                  <td className="p-3 font-mono font-bold text-text">{roll}</td>
                   <td className="p-3">
                     <div className="flex flex-wrap gap-2">
                       {rows.map((r: any) => (
-                        <span key={r.subject_code} className="inline-flex items-center gap-1 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-[10px]">
+                        <span key={r.subject_code} className="inline-flex items-center gap-1 bg-bg-subtle px-2 py-1 rounded text-[10px]">
                           <strong className="text-slate-700 dark:text-slate-300">{r.subject_code}</strong>
                           <span className="text-slate-500">T:{r.theory_attended}/{r.theory_total}</span>
                           <span className="text-slate-500">P:{r.practical_attended}/{r.practical_total}</span>

@@ -209,7 +209,7 @@ export function AdminHistoricalAttendanceModal({
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="px-5 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+            <div className="px-5 py-4 border-b border-slate-200 flex items-center justify-between bg-bg">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-lg bg-blue-100 border border-blue-200 flex items-center justify-center text-blue-700">
                   <History className="w-4 h-4" />
@@ -268,7 +268,7 @@ export function AdminHistoricalAttendanceModal({
                 <form id="admin-historical-form" onSubmit={handleSubmit} className="space-y-4">
                   <div className="overflow-x-auto border border-slate-200 rounded-xl">
                     <table className="w-full text-left text-xs">
-                      <thead className="bg-slate-50 text-slate-600 uppercase tracking-wider border-b border-slate-200">
+                      <thead className="bg-bg text-slate-600 uppercase tracking-wider border-b border-slate-200">
                         <tr>
                           <th className="p-2.5 font-semibold">Subject</th>
                           <th className="p-2.5 font-semibold text-center" colSpan={2}>
@@ -380,7 +380,7 @@ export function AdminHistoricalAttendanceModal({
             </div>
 
             {/* Modal Footer */}
-            <div className="px-5 py-3.5 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-2">
+            <div className="px-5 py-3.5 bg-bg border-t border-slate-200 flex items-center justify-end gap-2">
               <button
                 type="button"
                 onClick={handleClose}

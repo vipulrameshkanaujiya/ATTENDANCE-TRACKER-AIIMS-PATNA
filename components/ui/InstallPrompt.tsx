@@ -35,19 +35,19 @@ export function InstallPrompt() {
   if (!show) return null;
 
   return (
-    <div className="fixed bottom-24 left-4 right-4 z-40 md:left-auto md:right-4 md:w-80 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-4 flex items-start gap-3 animate-slide-up">
-      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shrink-0">
+    <div className="fixed bottom-24 left-4 right-4 z-40 md:left-auto md:right-4 md:w-80 bg-bg-elevated border border-border rounded-2xl shadow-2xl p-4 flex items-start gap-3 animate-slide-up">
+      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent to-accent-hover flex items-center justify-center shrink-0">
         <Download className="w-5 h-5 text-white" />
       </div>
       <div className="flex-1">
-        <p className="text-sm font-bold text-slate-900 dark:text-slate-100">Install BunkBuddy</p>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+        <p className="text-sm font-bold text-text">Install BunkBuddy</p>
+        <p className="text-xs text-text-muted mt-0.5">
           Add to home screen for quick access
         </p>
         <div className="flex gap-2 mt-3">
           <button
             onClick={handleInstall}
-            className="text-xs font-semibold px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition"
+            className="text-xs font-semibold px-3 py-1.5 bg-accent hover:bg-accent-hover text-white rounded-lg transition"
           >
             Install
           </button>

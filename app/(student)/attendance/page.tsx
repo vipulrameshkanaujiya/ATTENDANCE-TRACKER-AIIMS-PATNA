@@ -58,10 +58,10 @@ export default function AttendancePage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+        <h1 className="text-xl sm:text-2xl font-bold text-text tracking-tight">
           Attendance Tracker
         </h1>
-        <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+        <p className="text-xs text-text-muted font-medium">
           Personal attendance record for MBBS 2nd Professional
         </p>
       </div>
@@ -149,7 +149,7 @@ export default function AttendancePage() {
                     </Link>
                     <Link
                       href="/home"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-slate-900 border border-amber-300 dark:border-amber-900/50 text-amber-800 dark:text-amber-300 text-xs font-bold hover:bg-amber-50 dark:hover:bg-amber-950/40 transition cursor-pointer"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-bg-elevated border border-amber-300 dark:border-amber-900/50 text-amber-800 dark:text-amber-300 text-xs font-bold hover:bg-amber-50 dark:hover:bg-amber-950/40 transition cursor-pointer"
                     >
                       <Zap className="w-4 h-4" />
                       <span>Enable Auto-Present</span>
