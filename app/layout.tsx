@@ -32,14 +32,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="bg-bg">
       <head>
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="theme-color" content="#4F46E5" />
+        <meta name="theme-color" content="#F5A623" />
       </head>
-      <body className="min-h-screen bg-bg text-slate-900 antialiased selection:bg-blue-100 selection:text-blue-900 transition-colors duration-200 dark:bg-slate-950 dark:text-slate-100">
+      <body className="min-h-screen bg-bg text-text antialiased selection:bg-accent-soft selection:text-accent-text transition-colors duration-200">
         <SplashScreen />
         <Providers>
           {children}

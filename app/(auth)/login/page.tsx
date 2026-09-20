@@ -32,19 +32,19 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center px-4 py-12 sm:px-6 lg:px-8 bg-bg">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-slate-200 p-8 space-y-8">
+      <div className="w-full max-w-md bg-bg-elevated rounded-2xl shadow-sm border border-border p-8 space-y-8">
         {/* Header Branding */}
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 mb-2 border border-blue-100">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-accent-soft text-accent-text mb-2 border border-border">
             <Stethoscope className="w-7 h-7" />
           </div>
-          <h1 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight leading-snug">
+          <h1 className="text-lg sm:text-xl font-bold text-text tracking-tight leading-snug">
             BunkBuddy
           </h1>
-          <p className="text-xs font-semibold tracking-wider text-blue-600 uppercase">
+          <p className="text-xs font-semibold tracking-wider text-accent-text uppercase">
             AIIMS Patna
           </p>
-          <p className="text-sm text-slate-500 pt-1">
+          <p className="text-sm text-text-muted pt-1">
             Student daily utility portal: schedule, 1-tap attendance, and syllabus tracking.
           </p>
         </div>
@@ -61,7 +61,7 @@ export default function LoginPage() {
             type="button"
             onClick={handleGoogleLogin}
             disabled={isLoading}
-            className="w-full flex items-center justify-center gap-3 py-3.5 px-4 rounded-xl border border-slate-300 bg-white hover:bg-bg active:bg-slate-100 text-slate-700 font-medium text-sm transition shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 disabled:opacity-60"
+            className="w-full flex items-center justify-center gap-3 py-3.5 px-4 rounded-xl border border-transparent bg-accent hover:bg-accent-hover text-white font-medium text-sm transition shadow-sm focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-1 disabled:opacity-60"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path

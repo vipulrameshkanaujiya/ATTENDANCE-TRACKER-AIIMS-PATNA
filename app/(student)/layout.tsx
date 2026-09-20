@@ -15,7 +15,7 @@ export default async function StudentLayout({
   return (
     <StudentDataProvider>
       <OfflineBanner />
-      <div className="min-h-screen flex flex-col md:flex-row bg-bg dark:bg-slate-950 transition-colors duration-200">
+      <div className="min-h-screen flex flex-col md:flex-row bg-bg text-text transition-colors duration-200">
         <BottomNav />
         <div className="flex-1 min-w-0 flex flex-col">
           <TopHeader profile={profile} />
