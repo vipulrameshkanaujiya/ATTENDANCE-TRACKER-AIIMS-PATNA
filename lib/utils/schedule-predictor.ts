@@ -52,28 +52,16 @@ export function generateFutureClasses(
     return Math.floor((d.getDate() - firstDateWithThisWeekday) / 7) + 1;
   };
 
-  const addClass = (
-    dateStr: string,
-    start_time: string,
-    end_time: string,
-    subject_code: string,
-    class_type: "Lecture" | "Practical" | "Tutorial" | "Integration" | "SDL",
-    batch_scope: string
-  ) => {
-    let units = 1;
-    if (subject_code === "PHARMA" && class_type === "Integration") {
-      units = 2;
-    }
-    classes.push({
-      date: dateStr,
-      start_time,
-      end_time,
-      subject_code,
-      class_type,
-      batch_scope,
-      units,
-    });
-  };
+  let units = 1;
+if (subject_code === "PHARMA" && class_type === "Integration") {
+  units = 2;
+}
+if (subject_code === "MICRO" && class_type === "Integration") {
+  units = 2;
+}
+if (subject_code === "MICRO" && class_type === "Tutorial") {
+  units = 2;
+}
 
   let currentDate = new Date(start);
   while (currentDate <= end) {
