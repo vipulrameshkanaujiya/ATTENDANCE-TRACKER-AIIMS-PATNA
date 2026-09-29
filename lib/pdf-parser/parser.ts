@@ -1,3 +1,48 @@
+// Polyfill for pdfjs-dist on Vercel/Node.js serverless
+// pdfjs-dist requires browser APIs that don't exist on the server
+if (typeof globalThis.DOMMatrix === "undefined") {
+  (globalThis as any).DOMMatrix = class DOMMatrix {
+    constructor() {
+      this.a = 1; this.b = 0; this.c = 0; this.d = 1; this.e = 0; this.f = 0;
+    }
+    static fromMatrix() { return new (globalThis as any).DOMMatrix(); }
+    static fromFloat32Array() { return new (globalThis as any).DOMMatrix(); }
+    static fromFloat64Array() { return new (globalThis as any).DOMMatrix(); }
+    multiply() { return this; }
+    translate() { return this; }
+    scale() { return this; }
+    rotate() { return this; }
+    invertSelf() { return this; }
+  };
+}
+if (typeof globalThis.ImageData === "undefined") {
+  (globalThis as any).ImageData = class ImageData {
+    constructor(width: number, height: number) {
+      this.width = width;
+      this.height = height;
+      this.data = new Uint8ClampedArray(width * height * 4);
+    }
+    width: number;
+    height: number;
+    data: Uint8ClampedArray;
+  };
+}
+if (typeof globalThis.Path2D === "undefined") {
+  (globalThis as any).Path2D = class Path2D {
+    moveTo() {}
+    lineTo() {}
+    closePath() {}
+    rect() {}
+    arc() {}
+    bezierCurveTo() {}
+    quadraticCurveTo() {}
+  };
+}
+
+// ... rest of your existing imports below (do NOT change these)
+import { parseDateString } from "@/lib/utils/date";
+// etc.
+
 ﻿// @ts-ignore
 import { PDFParse } from "pdf-parse";
 import type { ClassType, BatchScope, TimetableImportRow } from "../../types/database.ts";
