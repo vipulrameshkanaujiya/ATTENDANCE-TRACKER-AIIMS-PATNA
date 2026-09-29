@@ -334,7 +334,7 @@ export async function getStudentDashboardData() {
   // Predict up to the day BEFORE the exam
   const adjustedEndDate = shiftDateString(examDate, -1);
   
-  const futureClasses = generateFutureClasses(todayStr, adjustedEndDate, batchName);
+  const futureClasses = generateFutureClasses(todayStr, adjustedEndDate, batchName, currentTimeStr);
 
   const pathTo76: Record<string, any> = {};
   const targetSubjects = ["PATH", "PHARMA", "MICRO"];
