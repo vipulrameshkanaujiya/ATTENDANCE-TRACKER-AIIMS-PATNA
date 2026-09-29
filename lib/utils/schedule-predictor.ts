@@ -3,7 +3,8 @@ import { parseDateString } from "@/lib/utils/date";
 export function generateFutureClasses(
   startDate: string,
   endDate: string,
-  batch: "Batch A" | "Batch B" | "Batch C" | string
+  batch: "Batch A" | "Batch B" | "Batch C" | string,
+  currentTimeStr?: string
 ): Array<{
   date: string;
   start_time: string;
@@ -125,7 +126,14 @@ export function generateFutureClasses(
       }
     }
 
-    currentDate.setDate(currentDate.getDate() + 1);
+        currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  if (currentTimeStr) {
+    return classes.filter((c) => {
+      if (c.date !== startDate) return true;
+      return c.end_time > currentTimeStr;
+    });
   }
 
   return classes;
