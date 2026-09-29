@@ -193,10 +193,14 @@ export function buildSubjectAttendanceBreakdown(
     const subjectCode = sub.code;
 
     // PHARMA Integration = 2 units (2-hour class)
-    // PHARMA SDL = 1 unit
-    // Everything else = 1 unit
-    const units = (subjectCode === 'PHARMA' && classType === 'Integration') ? 2 : 1;
-
+// PHARMA SDL = 1 unit
+// MICRO Integration = 2 units (2-hour class)
+// MICRO Tutorial = 2 units
+// Everything else = 1 unit
+let units = 1;
+if (subjectCode === 'PHARMA' && classType === 'Integration') units = 2;
+if (subjectCode === 'MICRO' && classType === 'Integration') units = 2;
+if (subjectCode === 'MICRO' && classType === 'Tutorial') units = 2;
     sub.total += units;
     if (isPresent) sub.attended += units;
 
