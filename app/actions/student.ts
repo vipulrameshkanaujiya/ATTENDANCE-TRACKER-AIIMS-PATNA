@@ -674,9 +674,10 @@ export async function toggleAutoPresent(isEnabled: boolean): Promise<{ success: 
   }
 }
 
-export async function processAutoPresent(userId: string, batchName: string) {
+export async function processAutoPresent(userId: string, batchName: string): Promise<{ newlyMarked: number }> {
   const supabase = await createClient();
   const todayStr = getTodayDateString();
+  const currentTimeStr = getCurrentTimeString();
 
   const { data: pref } = await supabase
     .from("student_auto_present_preferences")
@@ -684,40 +685,72 @@ export async function processAutoPresent(userId: string, batchName: string) {
     .eq("student_id", userId)
     .single();
 
-  if (!pref || !pref.is_enabled || !pref.enabled_from) return;
+  if (!pref || !pref.is_enabled || !pref.enabled_from) return { newlyMarked: 0 };
 
-  // Fetch all classes since enabled_from to STRICTLY BEFORE today
+  // Fetch classes: date >= enabled_from and date <= today
   const { data: classes } = await supabase
     .from("classes")
-    .select("id")
+    .select("id, date, end_time")
     .in("batch_scope", ["ALL", batchName])
     .gte("date", pref.enabled_from)
-    .lt("date", todayStr);
+    .lte("date", todayStr);
 
-  if (!classes || classes.length === 0) return;
+  if (!classes || classes.length === 0) return { newlyMarked: 0 };
 
-  // Fetch existing attendance records
-  const classIds = classes.map(c => c.id);
+  // Include past-dated classes AND today's classes that have already ended
+  const eligibleClasses = classes.filter((c: any) => {
+    if (c.date < todayStr) return true;
+    if (c.date === todayStr && c.end_time && c.end_time <= currentTimeStr) return true;
+    return false;
+  });
+
+  if (eligibleClasses.length === 0) return { newlyMarked: 0 };
+
+  const classIds = eligibleClasses.map((c: any) => c.id);
   const { data: existingAttendance } = await supabase
     .from("attendance")
     .select("class_id")
     .eq("student_id", userId)
     .in("class_id", classIds);
 
-  const existingIds = new Set(existingAttendance?.map(a => a.class_id) || []);
-  const missingClassIds = classIds.filter(id => !existingIds.has(id));
+  const existingIds = new Set(existingAttendance?.map((a: any) => a.class_id) || []);
+  const missingClassIds = classIds.filter((id: string) => !existingIds.has(id));
 
-  if (missingClassIds.length === 0) return;
+  if (missingClassIds.length === 0) return { newlyMarked: 0 };
 
-  // Insert PRESENT for missing classes
-  const toInsert = missingClassIds.map(classId => ({
+  const toInsert = missingClassIds.map((classId: string) => ({
     student_id: userId,
     class_id: classId,
     status: "PRESENT",
     updated_at: new Date().toISOString(),
   }));
 
-  await supabase.from("attendance").insert(toInsert);
+  const { error } = await supabase.from("attendance").insert(toInsert);
+  if (error) {
+    console.error("[processAutoPresent] Insert error:", error.message);
+    return { newlyMarked: 0 };
+  }
+
+  return { newlyMarked: missingClassIds.length };
+}
+
+export async function processAutoPresentAction(): Promise<{ success: boolean; newlyMarked: number }> {
+  try {
+    const user = await getCurrentUser();
+    if (!user) return { success: false, newlyMarked: 0 };
+    const profile = await getUserProfile(user.id);
+    if (!profile) return { success: false, newlyMarked: 0 };
+    const batchName = profile.batch?.name || "Batch A";
+    const result = await processAutoPresent(user.id, batchName);
+    if (result.newlyMarked > 0) {
+      revalidatePath("/home");
+      revalidatePath("/attendance");
+    }
+    return { success: true, newlyMarked: result.newlyMarked };
+  } catch (err: any) {
+    console.error("[processAutoPresentAction] Error:", err);
+    return { success: false, newlyMarked: 0 };
+  }
 }
 
 
