@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
-import { getStudentDashboardData, getDeferredStudentData, toggleAttendance } from "@/app/actions/student";
+import { getStudentDashboardData, getDeferredStudentData, toggleAttendance, processAutoPresentAction } from "@/app/actions/student";
 import { buildSubjectAttendanceBreakdown, computePathTo76 } from "@/lib/utils/attendance";
 import { getTodayDateString } from "@/lib/utils/date";
 
@@ -368,39 +368,56 @@ export function StudentDataProvider({ children }: { children: React.ReactNode })
     }
   }, [fetchAllData]);
 
-  // 4. Active day-change listener: detects when midnight passes or when PWA/tab regains focus on a new day
-  useEffect(() => {
-    const checkDayChange = () => {
-      const today = getTodayDateString();
-      if (globalCache.cachedDate && globalCache.cachedDate !== today) {
-        console.log("🔍 [StudentDataProvider] Day change detected, refreshing all data:", {
-          cachedDate: globalCache.cachedDate,
-          today,
-        });
-        clearStudentDataCache();
+  // 4. Active day-change + auto-present listener
+useEffect(() => {
+  const checkDayChange = () => {
+    const today = getTodayDateString();
+    if (globalCache.cachedDate && globalCache.cachedDate !== today) {
+      console.log("🔍 [StudentDataProvider] Day change detected, refreshing all data:", {
+        cachedDate: globalCache.cachedDate,
+        today,
+      });
+      clearStudentDataCache();
+      fetchAllData(false);
+    }
+  };
+
+  const checkAutoPresent = async () => {
+    try {
+      const result = await processAutoPresentAction();
+      if (result?.success && result.newlyMarked > 0) {
+        console.log("🔍 [AutoPresent] Marked", result.newlyMarked, "classes — refreshing");
         fetchAllData(false);
       }
-    };
+    } catch (e) {
+      // silent fail
+    }
+  };
 
-    // Check every 60 seconds
-    const intervalId = setInterval(checkDayChange, 60 * 1000);
+  const runChecks = () => {
+    checkDayChange();
+    checkAutoPresent();
+  };
 
-    // Check when window regains focus or visibility returns
-    const handleVisibilityOrFocus = () => {
-      if (typeof document !== "undefined" && document.visibilityState === "visible") {
-        checkDayChange();
-      }
-    };
+  // Check every 60 seconds
+  const intervalId = setInterval(runChecks, 60 * 1000);
 
-    window.addEventListener("focus", handleVisibilityOrFocus);
-    document.addEventListener("visibilitychange", handleVisibilityOrFocus);
+  // Check when window regains focus or visibility returns
+  const handleVisibilityOrFocus = () => {
+    if (typeof document !== "undefined" && document.visibilityState === "visible") {
+      runChecks();
+    }
+  };
 
-    return () => {
-      clearInterval(intervalId);
-      window.removeEventListener("focus", handleVisibilityOrFocus);
-      document.removeEventListener("visibilitychange", handleVisibilityOrFocus);
-    };
-  }, [fetchAllData]);
+  window.addEventListener("focus", handleVisibilityOrFocus);
+  document.addEventListener("visibilitychange", handleVisibilityOrFocus);
+
+  return () => {
+    clearInterval(intervalId);
+    window.removeEventListener("focus", handleVisibilityOrFocus);
+    document.removeEventListener("visibilitychange", handleVisibilityOrFocus);
+  };
+}, [fetchAllData]);
 
   const isStale =
     Boolean(globalCache.cachedDate && globalCache.cachedDate !== getTodayDateString()) ||
