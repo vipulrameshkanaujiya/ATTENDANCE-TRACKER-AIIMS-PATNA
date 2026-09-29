@@ -1,14 +1,6 @@
 import "@/lib/pdf-parser/polyfills";
-
 import { parseDateString } from "@/lib/utils/date";
 // @ts-ignore
-import { PDFParse } from "pdf-parse";
-
-// ... rest of your existing imports below (do NOT change these)
-import { parseDateString } from "@/lib/utils/date";
-// etc.
-
-﻿// @ts-ignore
 import { PDFParse } from "pdf-parse";
 import type { ClassType, BatchScope, TimetableImportRow } from "../../types/database.ts";
 
