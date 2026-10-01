@@ -433,7 +433,7 @@ export async function getDeferredStudentData() {
   const batchName = profile.batch?.name || "Batch A";
   const todayStr = getTodayDateString();
   const d = new Date(todayStr);
-  const startOfMonth = new Date(d.getFullYear(), d.getMonth(), 1).toISOString().split("T")[0];
+  const startOfMonth = new Date(d.getFullYear(), d.getMonth() - 1, 1).toISOString().split("T")[0];
   const endOfNextMonth = new Date(d.getFullYear(), d.getMonth() + 2, 0).toISOString().split("T")[0];
 
   const t0 = Date.now();
