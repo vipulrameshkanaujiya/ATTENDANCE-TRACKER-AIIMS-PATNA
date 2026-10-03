@@ -40,17 +40,17 @@ export default function DemoLayout({
       <div className="bg-amber-500 text-slate-950 font-bold px-4 py-2 text-xs flex flex-wrap items-center justify-between gap-2 shadow-xs border-b border-amber-600">
         <div className="flex items-center gap-2">
           <AlertOctagon className="w-4 h-4 flex-shrink-0" />
-          <span>LOCAL PREVIEW / DEMO MODE (Fake Demo Student: Roll 24001 · Batch A)</span>
+          <span>LOCAL PREVIEW / DEMO MODE (Fake Demo Student: Roll 24001 Â· Batch A)</span>
         </div>
         <div className="flex items-center gap-3">
           <span className="text-[11px] font-medium hidden sm:inline text-amber-950">
-            Isolated local mock data · Database & Google OAuth bypassed
+            Isolated local mock data Â· Database & Google OAuth bypassed
           </span>
           <Link
             href="/demo/admin"
             className="px-2.5 py-1 rounded bg-slate-950 text-white hover:bg-slate-800 text-[11px] font-bold uppercase tracking-wider transition"
           >
-            Preview Admin UI →
+            Preview Admin UI â†’
           </Link>
         </div>
       </div>
@@ -135,7 +135,7 @@ export default function DemoLayout({
 
               <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
                 <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-accent-soft text-accent-text border border-accent/30">
-                  Batch A · 24001
+                  Batch A Â· 24001
                 </span>
 
                 <Link

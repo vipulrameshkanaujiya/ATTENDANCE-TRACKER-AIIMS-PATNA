@@ -5,7 +5,7 @@ import { SplashScreen } from "@/components/ui/SplashScreen";
 
 export const metadata: Metadata = {
   title: "BunkBuddy",
-  description: "BunkBuddy — Attend smart.",
+  description: "BunkBuddy â€” Attend smart.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,

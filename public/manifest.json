@@ -1,7 +1,7 @@
 {
   "name": "BunkBuddy",
   "short_name": "BunkBuddy",
-  "description": "BunkBuddy — Attend smart.",
+  "description": "BunkBuddy â€” Attend smart.",
   "start_url": "/home",
   "display": "standalone",
   "background_color": "#0f172a",
