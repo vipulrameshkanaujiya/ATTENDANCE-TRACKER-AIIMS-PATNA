@@ -1,7 +1,7 @@
-﻿{
-  "name": "BunkBuddy — AIIMS Patna",
+{
+  "name": "BunkBuddy",
   "short_name": "BunkBuddy",
-  "description": "Attendance Tracker for MBBS 2024 Batch, AIIMS Patna",
+  "description": "BunkBuddy � Attend smart.",
   "start_url": "/home",
   "display": "standalone",
   "background_color": "#0f172a",

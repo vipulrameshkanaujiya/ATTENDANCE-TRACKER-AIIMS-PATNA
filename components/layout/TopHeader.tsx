@@ -75,8 +75,8 @@ export function TopHeader({ profile }: TopHeaderProps) {
             <h1 className="text-sm font-bold text-text leading-none truncate">
               BunkBuddy
             </h1>
-            <p className="text-[10px] font-semibold text-accent dark:text-accent-text tracking-wider uppercase truncate mt-0.5">
-              AIIMS Patna
+            <p className="text-[10px] font-semibold text-accent dark:text-accent-text tracking-wider truncate mt-0.5">
+              Attend smart.
             </p>
           </div>
         </div>

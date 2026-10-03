@@ -119,8 +119,8 @@ export function SplashScreen() {
           <h1 className="text-3xl font-black text-white tracking-tight">
             BunkBuddy
           </h1>
-          <p className="text-xs font-medium text-accent-text/80 uppercase tracking-[0.3em]">
-            AIIMS Patna
+          <p className="text-xs font-medium text-accent-text/80 tracking-[0.3em]">
+            Attend smart.
           </p>
         </div>
 

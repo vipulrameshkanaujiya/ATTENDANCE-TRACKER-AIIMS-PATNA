@@ -128,7 +128,7 @@ export default function DemoLayout({
                     </span>
                   </div>
                   <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium truncate whitespace-nowrap">
-                    AIIMS Patna · MBBS 2024 (Phase-2)
+                    Attend smart.
                   </p>
                 </div>
               </div>

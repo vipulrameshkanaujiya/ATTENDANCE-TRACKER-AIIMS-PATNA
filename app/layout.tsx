@@ -4,8 +4,8 @@ import { Providers } from "./providers";
 import { SplashScreen } from "@/components/ui/SplashScreen";
 
 export const metadata: Metadata = {
-  title: "BunkBuddy â€” AIIMS Patna",
-  description: "Attendance Tracker for MBBS 2024 Batch, AIIMS Patna",
+  title: "BunkBuddy",
+  description: "BunkBuddy — Attend smart.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -13,7 +13,12 @@ export const metadata: Metadata = {
     title: "BunkBuddy",
   },
   icons: {
-    icon: "/icon-192.png",
+    icon: [
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+      { url: "/logo.png", type: "image/png" },
+    ],
+    shortcut: "/icon-192.png",
     apple: "/apple-touch-icon.png",
   },
 };

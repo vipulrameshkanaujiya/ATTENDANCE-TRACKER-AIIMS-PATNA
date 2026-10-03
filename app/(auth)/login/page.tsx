@@ -41,8 +41,8 @@ export default function LoginPage() {
           <h1 className="text-lg sm:text-xl font-bold text-text tracking-tight leading-snug">
             BunkBuddy
           </h1>
-          <p className="text-xs font-semibold tracking-wider text-accent-text uppercase">
-            AIIMS Patna
+          <p className="text-xs font-semibold tracking-wider text-accent-text">
+            Attend smart.
           </p>
           <p className="text-sm text-text-muted pt-1">
             Student daily utility portal: schedule, 1-tap attendance, and syllabus tracking.

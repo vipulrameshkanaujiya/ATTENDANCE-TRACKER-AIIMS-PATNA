@@ -61,8 +61,8 @@ export function BottomNav() {
               >
                 BunkBuddy
               </h2>
-              <p className="text-[10px] font-semibold text-accent-text tracking-wider uppercase truncate whitespace-nowrap">
-                AIIMS Patna
+              <p className="text-[10px] font-semibold text-accent-text tracking-wider truncate whitespace-nowrap">
+                Attend smart.
               </p>
             </div>
           </div>
