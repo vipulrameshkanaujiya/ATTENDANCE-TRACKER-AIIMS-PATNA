@@ -1096,55 +1096,22 @@ export async function getAllStudentsAttendanceAction() {
       .from("subjects")
       .select("*");
 
-    const todayStr = getTodayDateString();
-    const currentTimeStr = new Date().toLocaleTimeString('en-GB', { timeZone: 'Asia/Kolkata', hour12: false }); // "HH:MM:SS"
-
-    const { data: rawAllClasses } = await supabase
-      .from("classes")
+    const { data: allAttendance, error: attError } = await supabase
+      .from("attendance")
       .select(`
-        id, date, start_time, end_time, class_type, batch_scope, subject_id,
-        subject:subjects(id, code, name, color_code)
-      `)
-      .lte("date", todayStr);
-
-    const allClasses = (rawAllClasses || []).filter(c => {
-      if (c.date < todayStr) return true;
-      if (c.date === todayStr && c.end_time && c.end_time <= currentTimeStr) return true;
-      return false;
-    });
-
-    // Supabase has a default max API limit of 1000 rows. We must paginate attendance records.
-    let allAttendance: any[] = [];
-    let hasMore = true;
-    let rangeStart = 0;
-    const rangeStep = 1000;
-
-    while (hasMore) {
-      const { data: chunk, error: attError } = await supabase
-        .from("attendance")
-        .select("student_id, status, class_id")
-        .range(rangeStart, rangeStart + rangeStep - 1);
-
-      if (attError) {
-        console.error("Error fetching attendance chunk:", attError);
-        break;
-      }
-
-      if (chunk && chunk.length > 0) {
-        allAttendance = allAttendance.concat(chunk);
-        if (chunk.length < rangeStep) {
-          hasMore = false;
-        } else {
-          rangeStart += rangeStep;
-        }
-      } else {
-        hasMore = false;
-      }
-    }
+        student_id, status, class_id,
+        class:classes(
+          id, date, class_type, subject_id,
+          subject:subjects(id, code, name, color_code)
+        )
+      `);
+    if (attError) console.error("Error fetching attendance:", attError);
 
     const { data: allHistorical } = await supabase
       .from("student_historical_attendance")
       .select("*");
+
+    const todayStr = getTodayDateString();
     
     // Fallback simple shift: examDate - 1 day roughly. For simplicity, just use todayStr to examDate in generateFutureClasses. 
     // generateFutureClasses predicts up to endDate.
@@ -1165,21 +1132,9 @@ export async function getAllStudentsAttendanceAction() {
       const studentHistorical = (allHistorical || []).filter(h => h.student_id === student.id) as any;
       const batchName = (student.batch as any)?.name || "Batch A";
 
-      const attendanceByClass = new Map<string, string>();
-      for (const a of studentAttendance) {
-        attendanceByClass.set(a.class_id, a.status);
-      }
-
-      const syntheticRecords = (allClasses || [])
-        .filter(c => c.batch_scope === "ALL" || c.batch_scope === batchName)
-        .map(c => ({
-          status: attendanceByClass.get(c.id) || "ABSENT",
-          class: c
-        }));
-
       const breakdownMap = buildSubjectAttendanceBreakdown(
         subjects as any || [],
-        syntheticRecords,
+        studentAttendance,
         studentHistorical
       );
 
