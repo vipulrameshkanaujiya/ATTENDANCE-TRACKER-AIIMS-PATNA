@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS pending_baselines (
 );
 
 CREATE OR REPLACE FUNCTION apply_pending_baselines()
-RETURNS TRIGGER AS \$\$
+RETURNS TRIGGER AS $$
 BEGIN
   INSERT INTO student_historical_attendance (
     student_id, subject_code,
@@ -37,7 +37,7 @@ BEGIN
   DELETE FROM pending_baselines WHERE roll_number = NEW.roll_number;
   RETURN NEW;
 END;
-\$\$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 DROP TRIGGER IF EXISTS trigger_apply_pending_baselines ON users;
 CREATE TRIGGER trigger_apply_pending_baselines
