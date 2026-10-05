@@ -93,10 +93,10 @@ export function BulkAttendanceVerification({
               </div>
               <div>
                 <h3 className="text-sm font-bold text-text uppercase tracking-wider">
-                  Pre-September Attendance History
+                  TILL SEPTEMBER ATTENDANCE HISTORICAL DATA
                 </h3>
                 <p className="text-xs text-text-muted">
-                  Official historical baseline before September 2026
+                  Official historical baseline through September 2026
                 </p>
               </div>
             </div>
@@ -117,11 +117,8 @@ export function BulkAttendanceVerification({
               const pPct = pTot > 0 ? ((pAtt / pTot) * 100).toFixed(1) : "0.0";
 
               return (
-                <div
-                  key={row.subject_code}
-                  className="py-2.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 text-xs"
-                >
-                  <div className="font-semibold text-slate-800 dark:text-[#F5F1EB] flex items-center gap-2">
+                                <div key={row.subject_code} className="py-2.5 flex flex-col gap-1.5">
+                  <div className="font-semibold text-slate-800 dark:text-[#F5F1EB] flex items-center gap-2 text-xs">
                     <span className="w-16 font-bold text-text">{row.subject_code}:</span>
                     <span className="text-slate-600 dark:text-[#A89E92] font-normal">
                       Theory{" "}
@@ -139,13 +136,27 @@ export function BulkAttendanceVerification({
                       ({pPct}%)
                     </span>
                   </div>
-                  <div className="text-[11px] text-text-faint">
-                    Total: {tAtt + pAtt}/{tTot + pTot} (
-                    {tTot + pTot > 0
-                      ? (((tAtt + pAtt) / (tTot + pTot)) * 100).toFixed(1)
-                      : "0.0"}
-                    %)
-                  </div>
+                  {row.subject_code === "PHARMA" && (
+                    <div className="mt-1 pt-1 border-t border-slate-100 dark:border-[#2A2018]">
+                      <p className="text-[10px] text-text-faint italic">
+                        ?? PHARMA Integration counts as 2 units, SDL as 1 unit, Tutorial as 1 unit
+                      </p>
+                    </div>
+                  )}
+                  {row.subject_code === "MICRO" && (
+                    <div className="mt-1 pt-1 border-t border-slate-100 dark:border-[#2A2018]">
+                      <p className="text-[10px] text-text-faint italic">
+                        ?? MICRO Integration counts as 2 units, SDL as 1 unit, Tutorial as 2 units
+                      </p>
+                    </div>
+                  )}
+                  {row.subject_code === "PATH" && (
+                    <div className="mt-1 pt-1 border-t border-slate-100 dark:border-[#2A2018]">
+                      <p className="text-[10px] text-text-faint italic">
+                        ?? PATH Integration counts as 1 unit, SDL as 1 unit, Tutorial as 1 unit
+                      </p>
+                    </div>
+                  )}
                 </div>
               );
             })}
@@ -154,7 +165,7 @@ export function BulkAttendanceVerification({
           <div className="pt-2 border-t border-slate-100 dark:border-[#2A2018] flex items-start gap-2 text-xs text-text-muted bg-slate-50/70 dark:bg-[#1A1510]/70 p-3 rounded-xl">
             <Info className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
             <p>
-              <strong>Note:</strong> Pre-September data is permanently locked to prevent accidental changes. If you notice a clerical error, please contact an Admin to request a correction.
+              <strong>Note:</strong> Data till September 2026 is permanently locked as it is the official faculty baseline and cannot be edited. If you notice a clerical error, please contact an Admin to request a correction.
             </p>
           </div>
         </div>
