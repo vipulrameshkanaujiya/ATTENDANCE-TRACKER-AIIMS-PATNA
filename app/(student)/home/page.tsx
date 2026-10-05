@@ -113,7 +113,7 @@ export default function StudentHomePage() {
   const { profile, todayClasses, activeExam, subjectAttendance, autoPresentPref } = data;
   const donations = data?.donations || [];
   const donationCount = data?.donationCount || 0;
-  const septemberDataComplete = data?.septemberDataComplete ?? true;
+  const octoberDataComplete = data?.octoberDataComplete ?? true;
   const unmarkedCount = data?.unmarkedCount || 0;
 
   const todayStr = getTodayDateString();
@@ -281,12 +281,12 @@ export default function StudentHomePage() {
         )}
       </div>
 
-      {/* September Completeness Warning Banner */}
-      {!septemberDataComplete && (
+      {/* October Completeness Warning Banner */}
+      {!octoberDataComplete && (
         <div className="p-3.5 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 text-xs text-amber-800 dark:text-amber-300 flex items-center gap-2.5 shadow-xs">
           <AlertTriangle className="w-4 h-4 shrink-0 text-amber-600 dark:text-amber-400" />
           <span>
-            Attendance percentages may be inaccurate — you have <strong>{unmarkedCount} unmarked classes</strong> since Sep 1.
+            Attendance percentages may be inaccurate — you have <strong>{unmarkedCount} unmarked classes</strong> since Oct 1.
           </span>
         </div>
       )}

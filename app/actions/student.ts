@@ -208,7 +208,7 @@ export async function getStudentDashboardData() {
     { data: autoPresentPref },
     historicalAttendance,
     { data: bulkData },
-    { data: pastSeptClasses }
+    { data: pastOctClasses }
   ] = await Promise.all([
     supabase
       .from("classes")
@@ -245,7 +245,7 @@ export async function getStudentDashboardData() {
     supabase
       .from("classes")
       .select("id")
-      .gte("date", "2026-09-01")
+      .gte("date", todayStr.substring(0, 8) + "01")
       .lt("date", todayStr)
       .in("batch_scope", ["ALL", batchName])
   ]);
@@ -269,9 +269,9 @@ export async function getStudentDashboardData() {
     attendance_status: attendanceMap[c.id] || null,
   }));
 
-  // Compute September attendance data completeness for Path to 76% gating
-  const pastSeptClassIds = (pastSeptClasses || []).map((c: any) => c.id);
-  const totalPastSeptClasses = pastSeptClassIds.length;
+  // Compute October attendance data completeness for Path to 76% gating
+  const pastOctClassIds = (pastOctClasses || []).map((c: any) => c.id);
+  const totalPastOctClasses = pastOctClassIds.length;
 
   const markedClassIdSet = new Set(
     (allStudentAttendance || [])
@@ -279,29 +279,29 @@ export async function getStudentDashboardData() {
       .map((a: any) => a.class_id)
   );
 
-  let markedSeptCount = 0;
-  for (const cid of pastSeptClassIds) {
+  let markedOctCount = 0;
+  for (const cid of pastOctClassIds) {
     if (markedClassIdSet.has(cid)) {
-      markedSeptCount++;
+      markedOctCount++;
     }
   }
 
-  const unmarkedCount = Math.max(0, totalPastSeptClasses - markedSeptCount);
-  const septemberMarkedPercent = totalPastSeptClasses > 0 
-    ? markedSeptCount / totalPastSeptClasses 
+  const unmarkedCount = Math.max(0, totalPastOctClasses - markedOctCount);
+  const octoberMarkedPercent = totalPastOctClasses > 0 
+    ? markedOctCount / totalPastOctClasses 
     : 1;
 
-  const septemberDataComplete = 
-    totalPastSeptClasses === 0 || 
-    septemberMarkedPercent >= 0.8 || 
+  const octoberDataComplete = 
+    totalPastOctClasses === 0 || 
+    octoberMarkedPercent >= 0.8 || 
     unmarkedCount <= 3;
 
-  console.log('🔍 [Sept Data]', {
-    totalPastSeptClasses,
-    markedSeptCount,
+  console.log('🔍 [Oct Data]', {
+    totalPastOctClasses,
+    markedOctCount,
     unmarkedCount,
-    septemberMarkedPercent,
-    septemberDataComplete,
+    octoberMarkedPercent,
+    octoberDataComplete,
   });
 
   // Determine "Next Class" strictly comparing current system date/time
@@ -418,7 +418,7 @@ export async function getStudentDashboardData() {
       examDate,
       donations,
       donationCount,
-      septemberDataComplete,
+      octoberDataComplete,
       unmarkedCount,
     };
 }

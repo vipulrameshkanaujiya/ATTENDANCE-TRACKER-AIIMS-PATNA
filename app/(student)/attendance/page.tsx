@@ -98,10 +98,10 @@ export default function AttendancePage() {
         </div>
       </div>
 
-      {/* Path to 76% Section — gated behind September attendance completeness */}
+      {/* Path to 76% Section — gated behind October attendance completeness */}
       {dashboardData?.pathTo76 && Object.keys(dashboardData.pathTo76).length > 0 && (
         <div className="space-y-3 pt-4 border-t border-slate-100 dark:border-[#2A2018]">
-          {(dashboardData.septemberDataComplete ?? true) ? (
+          {(dashboardData.octoberDataComplete ?? true) ? (
             <>
               <div className="flex items-center justify-between">
                 <h2 className="text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-[#A89E92]">
@@ -129,14 +129,14 @@ export default function AttendancePage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-base font-bold text-amber-900 dark:text-amber-200">
-                    Fill your September attendance first
+                    Fill your October attendance first
                   </h3>
                   <p className="text-xs sm:text-sm text-amber-800 dark:text-amber-300 mt-1 leading-relaxed">
-                    We noticed you have <strong>{dashboardData.unmarkedCount || 0} unmarked classes</strong> since September 1st.
+                    We noticed you have <strong>{dashboardData.unmarkedCount || 0} unmarked classes</strong> since October 1st.
                     The Path to 76% predictor needs complete data to give accurate recommendations.
                   </p>
                   <p className="text-xs text-amber-700 dark:text-amber-400 mt-2 leading-relaxed">
-                    👉 Go to the <strong>Schedule</strong> page and mark your Present/Absent for all past September classes.
+                    👉 Go to the <strong>Schedule</strong> page and mark your Present/Absent for all past October classes.
                     Or enable <strong>Auto-Present</strong> on the Home page to mark all past classes as Present automatically.
                   </p>
                   <div className="flex flex-wrap gap-2.5 mt-4">
