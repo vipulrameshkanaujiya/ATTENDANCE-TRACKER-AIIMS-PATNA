@@ -51,3 +51,4 @@ public/worker-*.js.map
 public/fallback-*.js
 public/fallback-*.js.map
 *_backup_*.json
+supabase/.temp/
