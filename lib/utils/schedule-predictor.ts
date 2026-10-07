@@ -28,6 +28,12 @@ export function generateFutureClasses(
   const end = parseDateString(endDate);
   const holidays = ["2026-09-04", "2026-10-02", "2026-10-20", "2026-11-08"];
 
+  const extraScheduledClasses = [
+    { date: "2026-10-10", start_time: "09:00:00", end_time: "10:00:00", subject_code: "MICRO",  class_type: "Lecture" as const },
+    { date: "2026-10-17", start_time: "09:00:00", end_time: "10:00:00", subject_code: "PHARMA", class_type: "Lecture" as const },
+    { date: "2026-10-31", start_time: "09:00:00", end_time: "10:00:00", subject_code: "PATH",   class_type: "Lecture" as const },
+  ];
+
   const batchStr = batch.startsWith("Batch A") ? "Batch A" : batch.startsWith("Batch B") ? "Batch B" : batch.startsWith("Batch C") ? "Batch C" : "Batch A";
 
   const getLocalDateString = (d: Date) => {
@@ -125,6 +131,10 @@ export function generateFutureClasses(
         addClass(dateStr, "12:00:00", "13:00:00", satSubject, "SDL", "ALL");
       }
     }
+
+    extraScheduledClasses
+      .filter((e) => e.date === dateStr)
+      .forEach((e) => addClass(e.date, e.start_time, e.end_time, e.subject_code, e.class_type, "ALL"));
 
         currentDate.setDate(currentDate.getDate() + 1);
   }
