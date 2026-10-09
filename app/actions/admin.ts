@@ -446,7 +446,7 @@ export async function adminUpdateStudentHistoricalAttendanceAction(
       return { success: false, error: "Missing student ID" };
     }
 
-    const validCodes: HistoricalSubjectCode[] = ["PATH", "PHARMA", "MICRO", "FMT", "CFM", "OBG"];
+    const validCodes: HistoricalSubjectCode[] = ["PATH", "PHARMA", "MICRO", "FMT", "CFM", "OBG", "AETCOM"];
 
     for (const entry of entries) {
       if (!validCodes.includes(entry.subject_code)) {

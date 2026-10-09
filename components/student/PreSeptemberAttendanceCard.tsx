@@ -56,6 +56,7 @@ export function PreSeptemberAttendanceCard({ initialRecords }: PreSeptemberAtten
       FMT: { theoryAttended: "0", theoryTotal: "0", practicalAttended: "0", practicalTotal: "0" },
       CFM: { theoryAttended: "0", theoryTotal: "0", practicalAttended: "0", practicalTotal: "0" },
       OBG: { theoryAttended: "0", theoryTotal: "0", practicalAttended: "0", practicalTotal: "0" },
+      AETCOM: { theoryAttended: "0", theoryTotal: "0", practicalAttended: "", practicalTotal: "" },
     };
 
     HISTORICAL_SUBJECTS.forEach((sub) => {

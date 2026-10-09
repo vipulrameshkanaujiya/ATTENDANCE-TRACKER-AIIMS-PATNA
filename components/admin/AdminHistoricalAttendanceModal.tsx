@@ -56,7 +56,8 @@ export function AdminHistoricalAttendanceModal({
     FMT: { theoryAttended: "0", theoryTotal: "0", practicalAttended: "0", practicalTotal: "0" },
     CFM: { theoryAttended: "0", theoryTotal: "0", practicalAttended: "0", practicalTotal: "0" },
     OBG: { theoryAttended: "0", theoryTotal: "0", practicalAttended: "0", practicalTotal: "0" },
-  });
+        AETCOM: { theoryAttended: "0", theoryTotal: "0", practicalAttended: "", practicalTotal: "" },
+      });
 
   const handleOpen = async () => {
     setIsOpen(true);
@@ -73,6 +74,7 @@ export function AdminHistoricalAttendanceModal({
         FMT: { theoryAttended: "0", theoryTotal: "0", practicalAttended: "0", practicalTotal: "0" },
         CFM: { theoryAttended: "0", theoryTotal: "0", practicalAttended: "0", practicalTotal: "0" },
         OBG: { theoryAttended: "0", theoryTotal: "0", practicalAttended: "0", practicalTotal: "0" },
+        AETCOM: { theoryAttended: "0", theoryTotal: "0", practicalAttended: "", practicalTotal: "" },
       };
 
       let locked = true;

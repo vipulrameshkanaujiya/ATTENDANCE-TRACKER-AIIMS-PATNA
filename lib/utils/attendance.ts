@@ -83,6 +83,7 @@ export function getHistoricalSubjectCode(code?: string | null, name?: string | n
   if (n.includes("community") || n.includes("cfm")) return "CFM";
   if (c === "OBG" || c === "OBSTETRICS") return "OBG";
   if (n.includes("obstetric") || n.includes("obg")) return "OBG";
+  if (c === "AETCOM") return "AETCOM";
   return null;
 }
 
