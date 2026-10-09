@@ -1,0 +1,136 @@
+﻿SI_No,Roll_No,Name,Held,Attended
+1,24001,Abhishek Kumar,31,28
+2,24002,Abhishek Meena,31,26
+3,24003,Abhishek Meena,31,25
+4,24004,Aditi Rani,31,27
+5,24005,Aditya Chandel,31,22
+6,24006,Aditya Meena,31,9
+7,24007,Altamash Parwez,31,27
+8,24008,Aman Raj,31,21
+9,24009,Amit Kumar Sinha,31,25
+10,24010,Amod Kumar,31,28
+11,24011,Amogh Pareek,31,19
+12,24012,Anand Kumar Meghwal,31,21
+13,24013,Anish Suman,31,26
+14,24014,Anisha Yadav,31,23
+15,24015,Ankit Saha,31,18
+16,24016,Ankita Ghosh,31,25
+17,24017,Ankita Kumawat,31,28
+18,24018,Anurag Narayan,31,29
+19,24019,Aradhya Rai,31,20
+20,24020,Arij Islam,31,23
+21,24021,Arindam Dey,31,17
+22,24022,Arun Kumar Das,31,24
+23,24023,Arunim Bhardwaj,31,19
+24,24024,Aryan Raj,31,26
+25,24025,Ashika Shrivas,31,23
+26,24026,Ashka,31,23
+27,24027,Ashok Kumar Meena,31,27
+28,24028,Ashutosh Kumar,31,26
+29,24029,Ayush Chandrakant Sirsat,31,17
+30,24030,Ayush Kumar Jha,31,25
+31,24031,Ayush Sinha,31,21
+32,24032,Ayushi Anand,31,22
+33,24033,Bablu Kumar,31,22
+34,24034,Bibaswan Das Das,31,19
+35,24035,Casurina Paul,31,23
+36,24036,Danish Sugandh,31,26
+37,24037,Dayakrishna Sharma,31,25
+38,24038,Debdip Pandit,31,23
+39,24039,Dhara Sharma,31,19
+40,24040,Dibyanshu Baral,31,24
+41,24041,Dipayan Basak,31,15
+42,24042,Hage Rinyi,31,25
+43,24043,Halima Mahjabin,31,26
+44,24044,Happy Dakua,31,9
+45,24045,Hari Narayan Meena,31,21
+46,24046,Himanshu Faujdar,31,25
+47,24047,Ishant Kumar,31,12
+48,24048,Jaswant Singh Rajput,31,23
+49,24049,Jayashetty Aditya,31,22
+50,24050,Jeet Aditya Dutta,31,14
+51,24051,Kalash Shukla,31,25
+52,24052,Kanaujiya Vipul Ramesh,31,24
+53,24053,Kartik Saini,31,23
+54,24054,Kaustav Bangabash,31,20
+55,24055,Kethavath Mahesh,31,21
+56,24056,Khushboo Priya,31,21
+57,24057,Khushi Kumari Singh,31,24
+58,24058,Mahak Choudhary,31,22
+59,24059,Md Arquam Sadeem,31,17
+60,24060,Md Ehtesham Zeya,31,21
+61,24061,Md Faizan,31,18
+62,24062,Md Musharraf Alam,31,20
+63,24063,Md Ramij Reja,31,23
+64,24064,Mohammad Masood Iqbal,31,22
+65,24065,Mohammad Nazish,31,19
+66,24066,Mohasina Khatun,31,23
+67,24067,Mrinal Madhav,31,22
+68,24068,Mukesh Kumar,31,25
+69,24069,Naina Priyadarshni,31,11
+70,24070,Nandini Paswan,31,22
+71,24071,Nikhil Verma,31,22
+72,24072,Nilesh Gaur,31,20
+73,24073,Pallavi,31,24
+74,24074,Prachi Kumari,31,20
+75,24075,Pranjali Jena,31,20
+76,24076,Prantosh Sarkar,31,22
+77,24077,Prateek Maurya,31,24
+78,24078,Pratham Sukhwani,31,20
+79,24079,Prijit Karan,31,23
+80,24080,Prince Kumar,31,17
+81,24081,Priyanshu Kumari,31,25
+82,24082,Puja Nevatia,31,26
+83,24083,Puneet Pandey,31,19
+84,24084,Pushpendra Singh,31,25
+85,24085,Rachit Grover,31,19
+86,24086,Rajnesh Raushan,31,22
+87,24087,Raju Chowdhury,31,17
+88,24088,Raksha Darji,31,23
+89,24089,Raman Singh,31,23
+90,24090,Ramay Mahendra Mishra,31,19
+91,24091,Ridhi Suresh,31,24
+92,24092,Rinku Punia,31,23
+93,24093,Rishika,31,25
+94,24094,Ritesh Kumar Gupta,31,23
+95,24095,Ritik Kumar,31,23
+96,24096,Rooma Patel,31,21
+97,24097,Rudra Chandrakar,31,20
+98,24098,Sachin Kumar,31,22
+99,24099,Sachin Saini,31,26
+100,24100,Saikat Kumar Ganguly,31,24
+101,24101,Sakshi Kumari,31,26
+102,24102,Sanjana Singh,31,25
+103,24103,Sanjeev Kumar,31,19
+104,24104,Sanjib Mandal,31,27
+105,24105,Saqueb Akhtar,31,19
+106,24106,Sarfraz Ansari,31,21
+107,24107,Sarika Kumari,31,25
+108,24108,Sayeba Khatun,31,18
+109,24109,Shivani Kumari,31,26
+110,24110,Shreyash Hemant Kamble,31,21
+111,24111,Shrikant,31,22
+112,24112,Shrutika Sharma,31,26
+113,24113,Shubhayu Deb,31,27
+114,24114,Sneha Kumari,31,21
+115,24115,Somay Virwal,31,25
+116,24116,Subhadeep Sinha Mahapatra,31,26
+117,24117,Sushree Souktika Sethy,31,18
+118,24118,Tanya,31,20
+119,24119,Thuptan Norbu,31,25
+120,24120,Udita Mehra,31,21
+121,24121,Vadini Kumari,31,26
+122,24122,Vanshika Rawal,31,24
+123,24123,Ved Vaibhav Singh,31,15
+124,24124,Yash Mishra,31,19
+125,24125,Anshu Kumar,31,16
+126,23033,Harendranath Mochahary,31,18
+127,23048,Vikash Raina,31,2
+128,23065,Nikita Chanchal,31,25
+129,23103,Md Gulam Baqui Billah,31,15
+130,23121,Aqsa Amrin,31,7
+131,22064,Noor Alam,31,22
+132,22070,Pratik Raj Singh,31,1
+133,22079,Raushan Kumar,31,1
+134,22124,,31,3
+135,21114,Vikram Pratap Singh,31,24

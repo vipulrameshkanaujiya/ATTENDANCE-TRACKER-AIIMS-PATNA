@@ -7,7 +7,7 @@ import { SubjectAttendanceCard } from "@/components/student/SubjectAttendanceCar
 import { PathTo76Card } from "@/components/student/PathTo76Card";
 import { BulkAttendanceVerification } from "@/components/student/BulkAttendanceVerification";
 import { AttendanceSkeleton } from "@/components/student/AttendanceSkeleton";
-import { buildSubjectAttendanceBreakdown } from "@/lib/utils/attendance";
+import { buildSubjectAttendanceBreakdown, PATH_TO_76_SUBJECT_CODES } from "@/lib/utils/attendance";
 import { AlertTriangle, Calendar, Zap } from "lucide-react";
 import Link from "next/link";
 import { useMemo } from "react";
@@ -109,7 +109,7 @@ export default function AttendancePage() {
                 </h2>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {Object.entries(dashboardData.pathTo76).map(([subCode, stat]: [string, any]) => {
+                {Object.entries(dashboardData.pathTo76).filter(([subCode]) => (PATH_TO_76_SUBJECT_CODES as readonly string[]).includes(subCode)).map(([subCode, stat]: [string, any]) => {
                   const subjectName = dashboardData.allSubjects?.find((s: any) => s.code === subCode)?.name || subCode;
                   return (
                     <PathTo76Card

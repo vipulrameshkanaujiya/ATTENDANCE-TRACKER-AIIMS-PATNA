@@ -55,6 +55,7 @@ export function AdminHistoricalAttendanceModal({
     MICRO: { theoryAttended: "0", theoryTotal: "0", practicalAttended: "0", practicalTotal: "0" },
     FMT: { theoryAttended: "0", theoryTotal: "0", practicalAttended: "0", practicalTotal: "0" },
     CFM: { theoryAttended: "0", theoryTotal: "0", practicalAttended: "0", practicalTotal: "0" },
+    OBG: { theoryAttended: "0", theoryTotal: "0", practicalAttended: "0", practicalTotal: "0" },
   });
 
   const handleOpen = async () => {
@@ -71,6 +72,7 @@ export function AdminHistoricalAttendanceModal({
         MICRO: { theoryAttended: "0", theoryTotal: "0", practicalAttended: "0", practicalTotal: "0" },
         FMT: { theoryAttended: "0", theoryTotal: "0", practicalAttended: "0", practicalTotal: "0" },
         CFM: { theoryAttended: "0", theoryTotal: "0", practicalAttended: "0", practicalTotal: "0" },
+        OBG: { theoryAttended: "0", theoryTotal: "0", practicalAttended: "0", practicalTotal: "0" },
       };
 
       let locked = true;

@@ -181,7 +181,7 @@ export interface BatchAggregateStats {
   subject_averages: SubjectAttendanceStat[];
 }
 
-export type HistoricalSubjectCode = "PATH" | "PHARMA" | "MICRO" | "FMT" | "CFM";
+export type HistoricalSubjectCode = "PATH" | "PHARMA" | "MICRO" | "FMT" | "CFM" | "OBG";
 
 export interface StudentHistoricalAttendance {
   id: string;

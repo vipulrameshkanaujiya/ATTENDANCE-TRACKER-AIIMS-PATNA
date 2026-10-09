@@ -58,7 +58,11 @@ import { HistoricalSubjectCode, StudentHistoricalAttendance } from "@/types/data
  * - Forensic Medicine & Toxicology (FMT)
  * - Community & Family Medicine (CFM)
  */
-export const SPLIT_SUBJECT_CODES = ["PATH", "PHARMA", "MICRO", "FMT", "CFM"] as const;
+export const SPLIT_SUBJECT_CODES = ["PATH", "PHARMA", "MICRO", "FMT", "CFM", "OBG"] as const;
+export const PATH_TO_76_SUBJECT_CODES = ["PATH", "PHARMA", "MICRO", "FMT", "CFM"] as const;
+// OBG is intentionally excluded � it will be enabled ~2 years later.
+// AETCOM is excluded entirely (records-only table).
+
 
 /**
  * Maps a subject code or name to its canonical historical subject code.
@@ -77,6 +81,8 @@ export function getHistoricalSubjectCode(code?: string | null, name?: string | n
   if (n.includes("microbiology")) return "MICRO";
   if (n.includes("forensic") || n.includes("fmt")) return "FMT";
   if (n.includes("community") || n.includes("cfm")) return "CFM";
+  if (c === "OBG" || c === "OBSTETRICS") return "OBG";
+  if (n.includes("obstetric") || n.includes("obg")) return "OBG";
   return null;
 }
 

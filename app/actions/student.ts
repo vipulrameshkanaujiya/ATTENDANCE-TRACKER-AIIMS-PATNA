@@ -557,7 +557,7 @@ export async function saveStudentHistoricalAttendanceAction(
       };
     }
 
-    const validCodes: HistoricalSubjectCode[] = ["PATH", "PHARMA", "MICRO", "FMT", "CFM"];
+    const validCodes: HistoricalSubjectCode[] = ["PATH", "PHARMA", "MICRO", "FMT", "CFM", "OBG"];
 
     for (const entry of entries) {
       if (!validCodes.includes(entry.subject_code)) {
