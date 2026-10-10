@@ -43,6 +43,7 @@ export function AttendanceToggle({ classId, initialStatus, compact = false }: At
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const isMountedRef = useRef(true);
+  const lastLocalChangeRef = useRef<number>(0);
   const { updateAttendanceLocally, refresh } = useStudentData();
 
   useEffect(() => {
@@ -54,7 +55,9 @@ export function AttendanceToggle({ classId, initialStatus, compact = false }: At
 
   // Keep internal status in sync when initialStatus prop changes from revalidation
   useEffect(() => {
-    if (!isSaving) {
+    // Only sync from props if we haven't made a local change recently.
+    // Prevents server refresh from clobbering an in-flight optimistic update.
+    if (!isSaving && Date.now() - lastLocalChangeRef.current > 5000) {
       setStatus(initialStatus);
     }
   }, [initialStatus, isSaving]);
@@ -74,6 +77,7 @@ export function AttendanceToggle({ classId, initialStatus, compact = false }: At
     updateAttendanceLocally(classId, newStatus);
 
     setIsSaving(true);
+    lastLocalChangeRef.current = Date.now();
 
     // Set pending save flags in localStorage to handle fast browser reloads or app closures
     try {
@@ -100,7 +104,13 @@ export function AttendanceToggle({ classId, initialStatus, compact = false }: At
       } catch {}
 
       // Trigger background refresh to keep server calculations & percentages synchronized
-      refresh().catch(console.error);
+      // Delay the reconciliation refresh so it runs after the server write
+      // is fully visible. The optimistic update is authoritative for now.
+      setTimeout(() => {
+        if (isMountedRef.current) {
+          refresh().catch(console.error);
+        }
+      }, 3000);
     } catch (err: any) {
       // Don't show error if component was unmounted or request was aborted by navigation/refresh
       if (!isMountedRef.current || err?.name === "AbortError" || err?.message?.includes("aborted")) {
