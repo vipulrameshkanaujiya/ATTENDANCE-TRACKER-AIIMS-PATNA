@@ -336,14 +336,28 @@ export async function getStudentDashboardData() {
   
   const futureClasses = generateFutureClasses(todayStr, adjustedEndDate, batchName, currentTimeStr);
 
+  const markedKeys = new Set<string>();
+  (allStudentAttendance || []).forEach((att: any) => {
+    if (att.status && att.class && att.class.date >= todayStr) {
+      const key = `${att.class.date}|${att.class.subject?.code}|${att.class.class_type}`;
+      markedKeys.add(key);
+    }
+  });
+
+  const filteredFuture = futureClasses.filter((c: any) => {
+    const key = `${c.date}|${c.subject_code}|${c.class_type}`;
+    return !markedKeys.has(key);
+  });
+
+
   const pathTo76: Record<string, any> = {};
   const targetSubjects = ["PATH", "PHARMA", "MICRO"];
   for (const subCode of targetSubjects) {
     const breakdown = Object.values(breakdownMap).find((b: any) => b.code === subCode);
     if (!breakdown) continue;
     
-    const futureTheoryClasses = futureClasses.filter((c: any) => c.subject_code === subCode && (c.class_type === "Lecture" || c.class_type === "Tutorial" || c.class_type === "Integration" || c.class_type === "SDL"));
-    const futurePracticalClasses = futureClasses.filter((c: any) => c.subject_code === subCode && c.class_type === "Practical");
+    const futureTheoryClasses = filteredFuture.filter((c: any) => c.subject_code === subCode && (c.class_type === "Lecture" || c.class_type === "Tutorial" || c.class_type === "Integration" || c.class_type === "SDL"));
+    const futurePracticalClasses = filteredFuture.filter((c: any) => c.subject_code === subCode && c.class_type === "Practical");
     
     const predictedFutureTheory = futureTheoryClasses.reduce((sum: number, c: any) => sum + (c.units || 1), 0);
     const predictedFuturePractical = futurePracticalClasses.reduce((sum: number, c: any) => sum + (c.units || 1), 0);
@@ -360,14 +374,14 @@ export async function getStudentDashboardData() {
     examDate,
     endDate: adjustedEndDate,
     batch: batchName,
-    futureClassesTotal: futureClasses.length,
-    pathTheoryCount: futureClasses.filter((c: any) => 
+    futureClassesTotal: filteredFuture.length,
+    pathTheoryCount: filteredFuture.filter((c: any) => 
       c.subject_code === "PATH" && (c.class_type === "Lecture" || c.class_type === "Tutorial" || c.class_type === "Integration" || c.class_type === "SDL")
     ).reduce((sum: number, c: any) => sum + (c.units || 1), 0),
-    pharmaTheoryCount: futureClasses.filter((c: any) => 
+    pharmaTheoryCount: filteredFuture.filter((c: any) => 
       c.subject_code === "PHARMA" && (c.class_type === "Lecture" || c.class_type === "Tutorial" || c.class_type === "Integration" || c.class_type === "SDL")
     ).reduce((sum: number, c: any) => sum + (c.units || 1), 0),
-    microTheoryCount: futureClasses.filter((c: any) => 
+    microTheoryCount: filteredFuture.filter((c: any) => 
       c.subject_code === "MICRO" && (c.class_type === "Lecture" || c.class_type === "Tutorial" || c.class_type === "Integration" || c.class_type === "SDL")
     ).reduce((sum: number, c: any) => sum + (c.units || 1), 0),
   });

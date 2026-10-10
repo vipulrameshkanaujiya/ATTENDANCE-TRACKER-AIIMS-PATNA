@@ -1140,6 +1140,21 @@ export async function getAllStudentsAttendanceAction() {
 
       const futureClasses = futureClassesByBatch[batchName] || [];
 
+        const markedKeys = new Set<string>();
+        studentAttendance.forEach((att: any) => {
+          if (att.status && att.class && att.class.date >= todayStr) {
+             const key = `${att.class.date}|${att.class.subject?.code}|${att.class.class_type}`;
+             markedKeys.add(key);
+          }
+        });
+
+        const filteredFuture = futureClasses.filter((c: any) => {
+          const key = `${c.date}|${c.subject_code}|${c.class_type}`;
+          return !markedKeys.has(key);
+        });
+
+
+
       let totalNeed = 0;
       let totalPredicted = 0;
       let totalOverallAttended = 0;
@@ -1151,8 +1166,8 @@ export async function getAllStudentsAttendanceAction() {
          totalOverallAttended += sub.attended;
          totalOverallClasses += sub.total;
 
-         const futureTheoryClasses = futureClasses.filter((c: any) => c.subject_code === sub.code && (c.class_type === "Lecture" || c.class_type === "Tutorial" || c.class_type === "Integration" || c.class_type === "SDL"));
-         const futurePracticalClasses = futureClasses.filter((c: any) => c.subject_code === sub.code && c.class_type === "Practical");
+         const futureTheoryClasses = filteredFuture.filter((c: any) => c.subject_code === sub.code && (c.class_type === "Lecture" || c.class_type === "Tutorial" || c.class_type === "Integration" || c.class_type === "SDL"));
+         const futurePracticalClasses = filteredFuture.filter((c: any) => c.subject_code === sub.code && c.class_type === "Practical");
          
          const predictedFutureTheory = futureTheoryClasses.reduce((sum: number, c: any) => sum + (c.units || 1), 0);
          const predictedFuturePractical = futurePracticalClasses.reduce((sum: number, c: any) => sum + (c.units || 1), 0);
