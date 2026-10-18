@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
+import Link from "next/link";
 import {
   BookOpen,
   MessageSquare,
@@ -568,7 +569,7 @@ export function HelpPageClient({
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 pt-2">
                 {/* Buy Me a Coffee button */}
                 <a
                   href="https://buymeacoffee.com/vipulk"
@@ -595,10 +596,20 @@ export function HelpPageClient({
                     style={{ borderRadius: "20px" }}
                   />
                 </a>
+
+                {/* Buy Me a Sutta button */}
+                <Link
+                  href="/sutta"
+                  className="inline-flex items-center justify-center gap-2 h-12 px-5 rounded-2xl border-2 border-[#3e2e21] bg-white dark:bg-[#1A1510] text-[#1A1613] dark:text-[#F5F1EB] hover:bg-[#FAF7F2] dark:hover:bg-[#241C14] font-bold text-xs uppercase tracking-wider transition shadow-sm hover:shadow-md hover:scale-105 cursor-pointer"
+                  style={{ borderRadius: "20px" }}
+                  title="Buy Me a Sutta"
+                >
+                  <span>🚬 Buy Me a Sutta</span>
+                </Link>
               </div>
 
               <p className="text-[10px] text-[#6B6259] dark:text-[#A89E92] text-center sm:text-left mt-2">
-                UPI · Buy Me a Coffee · Get Me Chai — choose whichever is easiest for you 💛
+                UPI · Buy Me a Coffee · Get Me Chai · Buy Me a Sutta — choose whichever is easiest for you 💛
               </p>
 
               {donationCount > 0 && (
